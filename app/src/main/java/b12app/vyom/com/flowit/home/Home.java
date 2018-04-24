@@ -35,7 +35,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 //            R.mipmap.friends_press,R.mipmap.account_press};
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
