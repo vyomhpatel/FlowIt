@@ -3,6 +3,7 @@ package b12app.vyom.com.flowit.home;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,18 +15,71 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import b12app.vyom.com.flowit.R;
+import butterknife.BindView;
 
-public class Home extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+//    @BindView(R.id.bottom_tab_layout)
+//    TabLayout botNavView;
+
+//    @BindView(R.id.drawer_layout)
+    DrawerLayout drawerLayout;
+
+//    @BindView(R.id.fab)
+//    FloatingActionButton fab;
+
+//    @BindView(R.id.toolbar)
+//    Toolbar toolbar;
+
+    private Integer[] bottomTabIcon = {R.drawable.ic_testing};
+//    private Integer[] bottomIconPress = {R.mipmap.home_press,R.mipmap.favorite_press,
+//            R.mipmap.friends_press,R.mipmap.account_press};
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        initFloat();
+        initDraw(toolbar);
+        initBottomNavView();
+    }
+
+    private void initBottomNavView() {
+        TabLayout botNavView = findViewById(R.id.bottom_tab_layout);
+        botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_testing).setText("Inbox"));
+        botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_testing).setText("Project"));
+        botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_testing).setText("Task"));
+        botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_testing).setText("Timeline"));
+        botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_testing).setText("Dashboard"));
+
+        botNavView.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+
+
+//                bottmeTab.getTabAt(pos_tab).setIcon(iconPressList.get(pos_tab));
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+    }
+
+    private void initFloat() {
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -34,21 +88,25 @@ public class Home extends AppCompatActivity
             }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+    }
+
+    private void initDraw(Toolbar toolbar) {
+        drawerLayout = findViewById(R.id.drawer_layout);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
@@ -87,9 +145,8 @@ public class Home extends AppCompatActivity
         } else if (id == R.id.nav_help) {
 
         }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }
