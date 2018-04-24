@@ -14,21 +14,24 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.wangjie.rapidfloatingactionbutton.rfabgroup.RapidFloatingActionButtonGroup;
+
 import b12app.vyom.com.flowit.R;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-//    @BindView(R.id.bottom_tab_layout)
-//    TabLayout botNavView;
+    @BindView(R.id.bottom_tab_layout)
+    TabLayout botNavView;
 
-//    @BindView(R.id.drawer_layout)
+    @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
 
-//    @BindView(R.id.fab)
-//    FloatingActionButton fab;
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
 
-//    @BindView(R.id.toolbar)
-//    Toolbar toolbar;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     private Integer[] bottomTabIcon = {R.drawable.ic_testing};
 //    private Integer[] bottomIconPress = {R.mipmap.home_press,R.mipmap.favorite_press,
@@ -39,8 +42,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        ButterKnife.bind(this);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         initFloat();
@@ -49,8 +52,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     }
 
     private void initBottomNavView() {
-        TabLayout botNavView = findViewById(R.id.bottom_tab_layout);
-        botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_testing).setText("Inbox"));
+//        botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_testing).setText("Inbox"));
         botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_testing).setText("Project"));
         botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_testing).setText("Task"));
         botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_testing).setText("Timeline"));
@@ -78,7 +80,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     }
 
     private void initFloat() {
-        FloatingActionButton fab = findViewById(R.id.fab);
+//        RapidFloatingActionButtonGroup fab = findViewById(R.id.rfab_group_sample_rfabg);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,8 +93,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     }
 
     private void initDraw(Toolbar toolbar) {
-        drawerLayout = findViewById(R.id.drawer_layout);
-
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
