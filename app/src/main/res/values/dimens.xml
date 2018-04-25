@@ -8,4 +8,8 @@
     <dimen name="small_padding">5dp</dimen>
     <dimen name="normal_dimen">10dp</dimen>
     <dimen name="xxlarge_dimen">70dp</dimen>
+    <dimen name="float_btn_margin">15dp</dimen>
+    <dimen name="large_dimen">30dp</dimen>
+    <dimen name="shadow_dimen">3dp</dimen>
+    <dimen name="medium_dimen">20dp</dimen>
 </resources>

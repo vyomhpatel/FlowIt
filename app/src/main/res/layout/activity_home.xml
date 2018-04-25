@@ -22,18 +22,18 @@
             android:id="@+id/fl_content"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"/>
 
         <android.support.design.widget.TabLayout
             android:id="@+id/bottom_tab_layout"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="@dimen/xxlarge_dimen"
             android:background="@color/colorPrimary"
-            app:tabPaddingTop="@dimen/small_padding"
-            app:tabTextColor="@android:color/white"
             app:tabIndicatorHeight="0dp"
+            app:tabPaddingTop="@dimen/small_padding"
+            app:tabSelectedTextColor="@android:color/holo_red_light"
             app:tabTextAppearance="@style/MyTabLayoutTextAppearanceInverse"
-            app:tabSelectedTextColor="@android:color/holo_red_light" />
+            app:tabTextColor="@android:color/white" />
 
     </LinearLayout>
 

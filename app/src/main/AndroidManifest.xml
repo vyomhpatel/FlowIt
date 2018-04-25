@@ -19,6 +19,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".home.ProjectCreateActivity"
+            android:theme="@style/ProjectTheme"/>
+        <activity android:name=".home.TaskCreateActivity"
+            android:theme="@style/TaskTheme"/>
     </application>
 
 </manifest>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        layout="@layout/layout_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+    <EditText
+        android:id="@+id/edt_project_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:hint="@string/title"
+        android:padding="@dimen/medium_dimen" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_btn_desc"
+        android:paddingBottom="@dimen/medium_dimen"
+        android:paddingEnd="@dimen/medium_dimen"
+        android:paddingStart="@dimen/medium_dimen"
+        android:paddingTop="@dimen/normal_dimen"
+        android:text="@string/tap_to_add_description" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/normal_dimen"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/medium_dimen"
+            android:src="@drawable/ic_members" />
+
+
+        <b12app.vyom.com.utils.MyFlowlayout
+            android:id="@+id/layout_flow"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            app:pileWidth="10dp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawablePadding="@dimen/medium_dimen"
+        android:drawableStart="@drawable/ic_date"
+        android:gravity="center_vertical"
+        android:paddingBottom="@dimen/medium_dimen"
+        android:paddingStart="@dimen/medium_dimen"
+        android:paddingTop="@dimen/normal_dimen"
+        android:text="@string/set_date" />
+
+    <TextView
+        android:id="@+id/tv_workflow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawablePadding="@dimen/medium_dimen"
+        android:drawableStart="@drawable/ic_workflow"
+        android:gravity="center_vertical"
+        android:paddingBottom="@dimen/medium_dimen"
+        android:paddingStart="@dimen/medium_dimen"
+        android:paddingTop="@dimen/normal_dimen"
+        android:text="@string/workflow_default_workflow" />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_task"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="10dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/ic_correct"
+        app:backgroundTint="@color/gay4"
+        app:backgroundTintMode="src_atop"
+        app:borderWidth="3dp"
+        app:elevation="5dp"
+        app:fabSize="normal"
+        app:rippleColor="@android:color/holo_blue_light"
+        app:useCompatPadding="true" />
+
+
+</LinearLayout>

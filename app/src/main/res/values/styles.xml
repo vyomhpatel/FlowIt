@@ -8,6 +8,23 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!-- project  theme. -->
+    <style name="ProjectTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/green2</item>
+        <item name="colorPrimaryDark">@color/green1</item>
+        <item name="colorAccent">@color/blue2</item>
+    </style>
+
+    <!-- task  theme. -->
+    <style name="TaskTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/blue0</item>
+        <item name="colorPrimaryDark">@color/blue1</item>
+        <item name="colorAccent">@color/blue2</item>
+    </style>
+
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -21,6 +38,16 @@
     <style name="MyTabLayoutTextAppearanceInverse" parent="TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse">
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@android:color/holo_red_light</item>
+    </style>
+
+    <!--Full screen dialog fragment style-->
+    <style name="DialogStyle">
+        <!--width-->
+        <item name="android:layout_width">match_parent</item>
+        <!--height-->
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:windowActionBar">true</item>
+        <item name="android:background">@color/green1</item>
     </style>
 
 </resources>

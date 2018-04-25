@@ -1,36 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:rfal="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".home.Home">
 
-    <android.support.design.widget.AppBarLayout
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+
+    <com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout
+        android:id="@+id/layout_float"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        rfal:rfal_frame_alpha="0.7"
+        rfal:rfal_frame_color="@android:color/white">
+
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:gravity="center_vertical"
+            android:lineSpacingMultiplier="1.3"
+            android:padding="@dimen/large_dimen"
+            android:text="@string/example"
+            android:textSize="16sp" />
 
-    </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_home" />
+        <com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton xmlns:rfab="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/btn_float"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="@dimen/xxlarge_dimen"
+            android:layout_marginEnd="@dimen/float_btn_margin"
+            rfab:rfab_color_normal="#37474f"
+            rfab:rfab_color_pressed="#263238"
+            rfab:rfab_drawable="@drawable/rfab__drawable_rfab_default"
+            rfab:rfab_shadow_color="@color/gray0"
+            rfab:rfab_shadow_dx="0dp"
+            rfab:rfab_shadow_dy="@dimen/shadow_dimen"
+            rfab:rfab_shadow_radius="@dimen/small_padding"
+            rfab:rfab_size="normal" />
 
-    <android.support.design.widget.FloatingActionButton
-    android:id="@+id/fab"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="bottom|end"
-    android:layout_marginBottom="@dimen/xxlarge_dimen"
-    android:layout_marginEnd="@dimen/normal_dimen"
-    android:background="@color/green0"
-    app:srcCompat="@drawable/add_icon"
-    tools:ignore="VectorDrawableCompat" />
+
+    </com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout>
 
 </android.support.design.widget.CoordinatorLayout>
