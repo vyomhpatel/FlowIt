@@ -5,4 +5,14 @@ public class PresenterHome implements IPresenterHome {
     public void floatingActionButtonClick() {
 
     }
+
+    @Override
+    public void actionbarToggleClickListener() {
+
+    }
+
+    @Override
+    public void onNavigationItemSelected() {
+
+    }
 }
