@@ -1,78 +1,94 @@
 package b12app.vyom.com.flowit.model;
 
+import java.util.List;
+
 public class Project {
 
-    private int project_id, member_id;
-    private String project_title, project_description, start_date, end_date, attach_file_name;
 
-    public Project(int project_id, int member_id, String project_title, String project_description, String start_date, String end_date, String attach_file_name) {
-        this.project_id = project_id;
-        this.member_id = member_id;
-        this.project_title = project_title;
-        this.project_description = project_description;
-        this.start_date = start_date;
-        this.end_date = end_date;
-        this.attach_file_name = attach_file_name;
+    private List<ProjectsBean> projects;
+
+
+
+    public List<ProjectsBean> getProjects() {
+        return projects;
     }
 
-
-    //----------getters-----------
-    public int getProject_id() {
-        return project_id;
+    public void setProjects(List<ProjectsBean> projects) {
+        this.projects = projects;
     }
 
-    public int getMember_id() {
-        return member_id;
-    }
+    public static class ProjectsBean {
+        /**
+         * id : 27
+         * projectname : e-commerce
+         * projectstatus : 1
+         * projectdesc : xyzss
+         * startdate : 2018-04-05
+         * endstart : 0000-00-00
+         */
 
-    public String getProject_title() {
-        return project_title;
-    }
+        private String id;
+        private String projectname;
+        private String projectstatus;
+        private String projectdesc;
+        private String startdate;
+        private String endstart;
 
-    public String getProject_description() {
-        return project_description;
-    }
+        public ProjectsBean(String id, String projectname, String projectstatus, String projectdesc, String startdate, String endstart) {
+            this.id = id;
+            this.projectname = projectname;
+            this.projectstatus = projectstatus;
+            this.projectdesc = projectdesc;
+            this.startdate = startdate;
+            this.endstart = endstart;
+        }
 
-    public String getStart_date() {
-        return start_date;
-    }
+        public String getId() {
+            return id;
+        }
 
-    public String getEnd_date() {
-        return end_date;
-    }
+        public void setId(String id) {
+            this.id = id;
+        }
 
-    public String getAttach_file_name() {
-        return attach_file_name;
-    }
+        public String getProjectname() {
+            return projectname;
+        }
 
+        public void setProjectname(String projectname) {
+            this.projectname = projectname;
+        }
 
-    //------------setters---------------
+        public String getProjectstatus() {
+            return projectstatus;
+        }
 
-    public void setProject_id(int project_id) {
-        this.project_id = project_id;
-    }
+        public void setProjectstatus(String projectstatus) {
+            this.projectstatus = projectstatus;
+        }
 
-    public void setMember_id(int member_id) {
-        this.member_id = member_id;
-    }
+        public String getProjectdesc() {
+            return projectdesc;
+        }
 
-    public void setProject_title(String project_title) {
-        this.project_title = project_title;
-    }
+        public void setProjectdesc(String projectdesc) {
+            this.projectdesc = projectdesc;
+        }
 
-    public void setProject_description(String project_description) {
-        this.project_description = project_description;
-    }
+        public String getStartdate() {
+            return startdate;
+        }
 
-    public void setStart_date(String start_date) {
-        this.start_date = start_date;
-    }
+        public void setStartdate(String startdate) {
+            this.startdate = startdate;
+        }
 
-    public void setEnd_date(String end_date) {
-        this.end_date = end_date;
-    }
+        public String getEndstart() {
+            return endstart;
+        }
 
-    public void setAttach_file_name(String attach_file_name) {
-        this.attach_file_name = attach_file_name;
+        public void setEndstart(String endstart) {
+            this.endstart = endstart;
+        }
     }
 }

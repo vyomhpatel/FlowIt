@@ -2,57 +2,77 @@ package b12app.vyom.com.flowit.model;
 
 public class User {
 
-    private int mobile;
-    private String name, type, email, password;
 
-    public User(int mobile, String name, String type, String email, String password) {
-        this.mobile = mobile;
-        this.name = name;
-        this.type = type;
-        this.email = email;
-        this.password = password;
+    /**
+     * msg : success
+     * userid : 21
+     * userfirstname : aamir
+     * userlastname : husain
+     * useremail : vyomhpatel@gmail.com
+     * appapikey  : 2152a1ad49be08259a1c8609892e9128
+     */
+
+    private String msg;
+    private String userid;
+    private String userfirstname;
+    private String userlastname;
+    private String useremail;
+    private String appapikey;
+
+    public User(String msg, String userid, String userfirstname, String userlastname, String useremail, String appapikey) {
+        this.msg = msg;
+        this.userid = userid;
+        this.userfirstname = userfirstname;
+        this.userlastname = userlastname;
+        this.useremail = useremail;
+        this.appapikey = appapikey;
     }
 
-    //getters
-    public int getMobile() {
-        return mobile;
+    public String getMsg() {
+        return msg;
     }
 
-    public String getName() {
-        return name;
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
-    public String getPassword() {
-        return password;
+    public String getUserid() {
+        return userid;
     }
 
-    public String getEmail() {
-        return email;
+    public void setUserid(String userid) {
+        this.userid = userid;
     }
 
-    public String getType() {
-        return type;
+    public String getUserfirstname() {
+        return userfirstname;
     }
 
-
-    //setters
-    public void setMobile(int mobile) {
-        this.mobile = mobile;
+    public void setUserfirstname(String userfirstname) {
+        this.userfirstname = userfirstname;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getUserlastname() {
+        return userlastname;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setUserlastname(String userlastname) {
+        this.userlastname = userlastname;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public String getUseremail() {
+        return useremail;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setUseremail(String useremail) {
+        this.useremail = useremail;
+    }
+
+    public String getAppapikey() {
+        return appapikey;
+    }
+
+    public void setAppapikey(String appapikey) {
+        this.appapikey = appapikey;
     }
 }
