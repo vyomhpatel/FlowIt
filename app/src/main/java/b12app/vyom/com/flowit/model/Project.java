@@ -43,6 +43,14 @@ public class Project {
             this.endstart = endstart;
         }
 
+        public ProjectsBean(String projectname, String projectstatus, String projectdesc, String startdate, String endstart) {
+            this.projectname = projectname;
+            this.projectstatus = projectstatus;
+            this.projectdesc = projectdesc;
+            this.startdate = startdate;
+            this.endstart = endstart;
+        }
+
         public String getId() {
             return id;
         }
