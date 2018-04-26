@@ -23,9 +23,14 @@ import com.wangjie.rapidfloatingactionbutton.util.RFABTextUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+import b12app.vyom.com.flowit.MyFragment.FragmentDashboard;
+import b12app.vyom.com.flowit.MyFragment.FragmentInbox;
+import b12app.vyom.com.flowit.MyFragment.FragmentProject;
+import b12app.vyom.com.flowit.MyFragment.FragmentTask;
 import b12app.vyom.com.flowit.R;
 import b12app.vyom.com.flowit.projectcreate.ProjectCreateActivity;
 import b12app.vyom.com.flowit.task.TaskCreateActivity;
+import b12app.vyom.com.utils.ActivityUtil;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -48,15 +53,17 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     @BindView(R.id.nav_view)
     NavigationView leftDrawer;
 
+
     private Integer[] bottomTabIcon = {R.drawable.ic_testing};
-//    private Integer[] bottomIconPress = {R.mipmap.home_press,R.mipmap.favorite_press,
-//            R.mipmap.friends_press,R.mipmap.account_press};
+    private Integer[] bottomIconPress = {R.drawable.ic_testing, R.drawable.ic_testing,
+            R.drawable.ic_testing, R.drawable.ic_testing};
 
     private RapidFloatingActionHelper rfabHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
 
@@ -71,16 +78,31 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     private void initBottomNavView() {
         botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_testing).setText("Inbox"));
-        botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_testing).setText("Browse"));
+        botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_testing).setText("Project"));
         botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_testing).setText("Task"));
-        botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_testing).setText("Timeline"));
+//        botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_testing).setText("Timeline"));
         botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_testing).setText("Dashboard"));
+
+        //default tab selected
+        setDefaultTab();
 
         botNavView.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-
-
+                switch (tab.getPosition()) {
+                    case 0:
+                        ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), new FragmentInbox(), "inboxFgt");
+                        break;
+                    case 1:
+                        ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), new FragmentProject(), "browseFgt");
+                        break;
+                    case 2:
+                        ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), new FragmentTask(), "mytaskFgt");
+                        break;
+                    case 3:
+                        ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), new FragmentDashboard(), "dashFgt");
+                        break;
+                }
 //                bottmeTab.getTabAt(pos_tab).setIcon(iconPressList.get(pos_tab));
             }
 
@@ -94,6 +116,12 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
             }
         });
+
+    }
+
+    private void setDefaultTab() {
+        botNavView.getTabAt(1).select();
+        ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), new FragmentProject(), "browseFgt");
 
     }
 
@@ -119,6 +147,23 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 .setIconPressedColor(0xff0d5302)
                 .setLabelColor(0xff056f00)
                 .setWrapper(1)
+        );
+
+        items.add(new RFACLabelItem<Integer>()
+                .setLabel("New Sub Task")
+                .setResId(R.drawable.ic_testing)
+                .setIconNormalColor(0xffd84315)
+                .setIconPressedColor(0xffbf360c)
+                .setWrapper(2)
+        );
+
+        items.add(new RFACLabelItem<Integer>()
+                .setLabel("New Team")
+                .setResId(R.drawable.ic_testing)
+                .setIconNormalColor(0xff056f00)
+                .setIconPressedColor(0xff0d5302)
+                .setLabelColor(0xff056f00)
+                .setWrapper(3)
         );
 
         rfaContent

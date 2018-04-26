@@ -7,32 +7,32 @@
     android:layout_height="match_parent"
     tools:context=".home.Home">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary"
-        app:popupTheme="@style/AppTheme.PopupOverlay" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+        <FrameLayout
+            android:id="@+id/fl_float_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
 
 
     <com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout
         android:id="@+id/layout_float"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        rfal:rfal_frame_alpha="0.7"
+        rfal:rfal_frame_alpha="0.5"
         rfal:rfal_frame_color="@android:color/white">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:gravity="center_vertical"
-            android:lineSpacingMultiplier="1.3"
-            android:padding="@dimen/large_dimen"
-            android:text="@string/example"
-            android:textSize="16sp" />
-
 
         <com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton xmlns:rfab="http://schemas.android.com/apk/res-auto"
             android:id="@+id/btn_float"
