@@ -189,7 +189,7 @@ public class ProjectCreateActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public void displaySnackbar() {
-        Snackbar.make(container_project_create,"Project Created Successfully!",Snackbar.LENGTH_SHORT).setAction("Ok", new View.OnClickListener() {
+        Snackbar.make(container_project_create,"Project Created Successfully!",Snackbar.LENGTH_SHORT).setActionTextColor(getResources().getColor(R.color.colorAccent)).setAction("Ok", new View.OnClickListener() {
             @Override
             public void onClick(View v) {}
         }).show();

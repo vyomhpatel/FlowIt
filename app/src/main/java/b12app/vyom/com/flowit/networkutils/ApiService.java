@@ -47,12 +47,12 @@ public interface ApiService {
                                             @Query("end_date") String end_date);
 
     @GET("pms_projects.php")
-    Call<Project.ProjectsBean>getProjects();
+    Call<Project>getProjects();
 
     //-------------------------------------EMPLOYEE  -----------------------------------------
 
     @GET("pms_employee_list.php")
-    Call<Employee.EmployeesBean>getEmployee();
+    Call<Employee>getEmployee();
 
     @POST("pms_create_project_team.php")
     Call<Employee>postEmployee(@Query("project_id") String project_id,
@@ -69,7 +69,7 @@ public interface ApiService {
                               @Query("end_date") String end_date);
 
     @GET("pms_project_task_list.php")
-    Call<GeneralTask.ProjecttaskBean>getTaskList();
+    Call<GeneralTask>getTaskList();
 
     //-------------------------------------SUB-TASK -----------------------------------------
 
@@ -83,7 +83,7 @@ public interface ApiService {
                                     @Query("end_date") String end_date);
 
     @GET("pms_project_sub_task_list.php")
-    Call<GeneralSubTask.ProjectsubtaskBean>listSubTask();
+    Call<GeneralSubTask>listSubTask();
 
 
 
