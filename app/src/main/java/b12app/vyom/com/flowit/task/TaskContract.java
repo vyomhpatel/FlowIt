@@ -6,12 +6,13 @@ import b12app.vyom.com.flowit.home.BaseView;
 public interface TaskContract {
 
     interface IView extends BaseView<IPresenter>{
-
+        void displaySnackbar();
 
 
     }
 
     interface IPresenter extends BasePresenter {
+
 
 
     }
