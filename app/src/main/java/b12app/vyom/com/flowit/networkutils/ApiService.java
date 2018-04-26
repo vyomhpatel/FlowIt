@@ -2,6 +2,7 @@ package b12app.vyom.com.flowit.networkutils;
 
 import java.util.List;
 
+import b12app.vyom.com.flowit.model.CommonResBody;
 import b12app.vyom.com.flowit.model.Employee;
 import b12app.vyom.com.flowit.model.GeneralTask;
 import b12app.vyom.com.flowit.model.Project;
@@ -16,11 +17,16 @@ public interface ApiService {
     //-------------------------------------USER -----------------------------------------
 
     @POST("pms_reg.php")
-    Call<User> postUser(@Query("first_name") String first_name, @Query("last_name") String last_name, @Query("email") String email
-            , @Query("mobile") String mobile, @Query("password") String password, @Query("company_size") String company_size, @Query("your_role") String your_role);
+    Call<String> postUser(@Query("first_name") String first_name,
+                        @Query("last_name") String last_name,
+                        @Query("email") String email,
+                        @Query("mobile") String mobile,
+                        @Query("password") String password,
+                        @Query("company_size") String company_size,
+                        @Query("your_role") String your_role);
 
     @GET("pms_login.php")
-    Call<User> getUser(@Query("useremail") String mobileNumber, @Query("password") String password);
+    Call<User> getUser(@Query("email") String mobileNumber, @Query("password") String password);
 
 
     //-------------------------------------PROJECT -----------------------------------------

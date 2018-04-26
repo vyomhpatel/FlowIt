@@ -24,6 +24,7 @@ import java.util.Map;
 
 import b12app.vyom.com.flowit.R;
 import b12app.vyom.com.flowit.login.LoginActivity;
+import b12app.vyom.com.flowit.model.CommonResBody;
 import b12app.vyom.com.flowit.model.User;
 import b12app.vyom.com.flowit.networkutils.ApiService;
 import b12app.vyom.com.flowit.networkutils.RetrofitInstance;
@@ -143,6 +144,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
             ApiService apiService = RetrofitInstance.getRetrofitInstance().create(ApiService.class);
             Call<String> call = apiService.postUser(firstname,lastname,email1,mobile,password,companysize,"manager");
+            Log.i("ceshi", firstname + lastname + mobile + password + companysize + email1);
             call.enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {

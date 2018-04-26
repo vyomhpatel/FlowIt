@@ -1,5 +1,7 @@
 package b12app.vyom.com.flowit.networkutils;
 
+import android.util.JsonReader;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -23,7 +25,7 @@ public class RetrofitInstance {
             retrofit = new retrofit2.Retrofit.Builder()
                     .baseUrl(BASE_URL)
 //                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .addConverterFactory(GsonConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create(gson))
                     .build();
 
 

@@ -70,21 +70,20 @@ public class LoginActivity extends AppCompatActivity {
     {
 
         ApiService apiService = RetrofitInstance.getRetrofitInstance().create(ApiService.class);
-        Call<List<User>> userCall = apiService.getUser(emailTxt.getText().toString(),pwTxt.getText().toString());
+        Call<User> userCall = apiService.getUser(emailTxt.getText().toString(),pwTxt.getText().toString());
 
-        userCall.enqueue(new Callback<List<User>>() {
+        userCall.enqueue(new Callback<User>() {
             @Override
-            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                Log.i("test", ""+response.body());
-               // User user = response.body().get(0);
-              //  Log.i("", "Login successful"+ user.getUserfirstname() + " "+ user.getUseremail());
-
-
+            public void onResponse(Call<User> call, Response<User> response) {
+                //Log.i("test", ""+response.body());
+               User user = response.body();
+               String username = response.body().getUserfirstname();
+        Log.i("test", "username is "+response.body().getUserfirstname());
 
             }
 
             @Override
-            public void onFailure(Call<List<User>> call, Throwable t) {
+            public void onFailure(Call<User> call, Throwable t) {
                 Log.i("","Login fail");
             }
         });
