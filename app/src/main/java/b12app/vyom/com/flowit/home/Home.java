@@ -48,11 +48,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     @BindView(R.id.nav_view)
     NavigationView leftDrawer;
 
-
-    @BindView(R.id.nav_view)
-    NavigationView leftDrdddawer;
-
-
     private Integer[] bottomTabIcon = {R.drawable.ic_testing};
 //    private Integer[] bottomIconPress = {R.mipmap.home_press,R.mipmap.favorite_press,
 //            R.mipmap.friends_press,R.mipmap.account_press};
