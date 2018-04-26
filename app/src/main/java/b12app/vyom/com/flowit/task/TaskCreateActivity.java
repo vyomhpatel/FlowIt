@@ -1,4 +1,4 @@
-package b12app.vyom.com.flowit.home;
+package b12app.vyom.com.flowit.task;
 
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -15,8 +15,8 @@ import b12app.vyom.com.utils.MyFlowlayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ProjectCreateActivity extends AppCompatActivity {
-    @BindView(R.id.layout_flow)
+public class TaskCreateActivity extends AppCompatActivity {
+    @BindView(R.id.layout_flow_task)
     MyFlowlayout myFlowlayout;
 
     @BindView(R.id.tb)
@@ -27,18 +27,20 @@ public class ProjectCreateActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_project_create);
-        ButterKnife.bind(this);
+        setContentView(R.layout.activity_task_create);
 
-        initToolBar();
+        ButterKnife.bind(this);
+        
+        initToolerBar();
+
         initFlow();
     }
 
-    private void initToolBar() {
-        toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.green2));
+    private void initToolerBar() {
+        toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.blue0));
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(R.string.create_project);
+        getSupportActionBar().setTitle(R.string.create_task);
     }
 
     public void initFlow() {
