@@ -19,6 +19,8 @@
     <string name="create_project">Create Project</string>
     <string name="create_task">Create Task</string>
     <string name="attachment">attachment</string>
+    <string name="feng_no_project_find">No project find</string>
+    <string name="feng_status">status</string>
 
     <string-array name="priority">
         <item>Default</item>

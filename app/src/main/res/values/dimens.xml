@@ -12,4 +12,6 @@
     <dimen name="large_dimen">30dp</dimen>
     <dimen name="shadow_dimen">3dp</dimen>
     <dimen name="medium_dimen">20dp</dimen>
+    <dimen name="feng_small_dimen">5dp</dimen>
+    <dimen name="task_txt_size">20sp</dimen>
 </resources>
