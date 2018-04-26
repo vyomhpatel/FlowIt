@@ -78,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
                 //Log.i("test", ""+response.body());
                User user = response.body();
                String username = response.body().getUserfirstname();
-        Log.i("test", "username is "+response.body().getUserfirstname());
+               Log.i("test", "username is "+response.body().getUserfirstname());
 
             }
 

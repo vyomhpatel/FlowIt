@@ -43,13 +43,28 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.github.wangjiegulu:rfab:2.0.0'
 
-    compile 'com.squareup.retrofit2:converter-gson:2.0.2'
-    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+//    compile 'com.squareup.retrofit2:converter-gson:2.0.2'
+  //  implementation 'com.squareup.retrofit2:retrofit:2.4.0'
 //    compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
 
     compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
     compile 'com.android.support:support-annotations:27.1.1'
     compile 'com.malinkang:rxvalidator:0.1'
     annotationProcessor 'com.malinkang:rxvalidator-compiler:0.1'
+
+    compile 'com.jakewharton.rxbinding:rxbinding-support-v4:1.0.0'
+    compile 'com.jakewharton.rxbinding:rxbinding-appcompat-v7:1.0.0'
+    compile 'com.jakewharton.rxbinding:rxbinding-design:1.0.0'
+
+
+
+    compile 'com.squareup.retrofit2:converter-gson:2.0.2'
+
+    //rxJava
+    compile 'io.reactivex:rxjava:x.y.z'
+    compile 'io.reactivex:rxandroid:1.0.1'
+    //gson retrofit
+    compile 'com.squareup.retrofit2:retrofit:2.0.2'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
 
 }
