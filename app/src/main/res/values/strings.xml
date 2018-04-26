@@ -11,8 +11,7 @@
     <string name="example">example</string>
     <string name="tap_to_add_description">Tap to add description</string>
     <string name="title">Title</string>
-    <string name="set_start_date">Set Start date</string>
-    <string name="set_end_date">Set End date</string>
+    <string name="set_date">Set date</string>
     <string name="workflow_default_workflow">Workflow: Default Workflow</string>
     <string name="priority">Priority</string>
     <string name="add_to_project">Add to project</string>
@@ -20,7 +19,8 @@
     <string name="create_project">Create Project</string>
     <string name="create_task">Create Task</string>
     <string name="attachment">attachment</string>
-    <string name="set_date">Set Date</string>
+    <string name="feng_no_project_find">No project find</string>
+    <string name="feng_status">status</string>
 
     <string-array name="priority">
         <item>Default</item>
