@@ -49,14 +49,15 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     NavigationView leftDrawer;
 
     private Integer[] bottomTabIcon = {R.drawable.ic_testing};
-//    private Integer[] bottomIconPress = {R.mipmap.home_press,R.mipmap.favorite_press,
-//            R.mipmap.friends_press,R.mipmap.account_press};
+    private Integer[] bottomIconPress = {R.drawable.ic_testing,R.drawable.ic_testing,
+            R.drawable.ic_testing, R.drawable.ic_testing};
 
     private RapidFloatingActionHelper rfabHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
 
@@ -72,14 +73,13 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     private void initBottomNavView() {
         botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_testing).setText("Inbox"));
         botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_testing).setText("Browse"));
-        botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_testing).setText("Task"));
-        botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_testing).setText("Timeline"));
+        botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_testing).setText("My Task"));
+//        botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_testing).setText("Timeline"));
         botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_testing).setText("Dashboard"));
 
         botNavView.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-
 
 //                bottmeTab.getTabAt(pos_tab).setIcon(iconPressList.get(pos_tab));
             }
