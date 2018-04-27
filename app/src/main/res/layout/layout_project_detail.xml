@@ -1,99 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    tools:context=".home.HomeActivity">
 
-    <TextView
+    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/detail_ll"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/medium_dimen"
-        android:textSize="20sp"
-        android:text="ID#"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/edt_project_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@null"
-        android:hint="@string/title"
-        android:padding="@dimen/medium_dimen" />
-
-    <EditText
-        android:id="@+id/edt_project_status"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@null"
-        android:hint="@string/feng_status"
-        android:padding="@dimen/medium_dimen" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/shape_btn_desc"
-        android:paddingBottom="@dimen/medium_dimen"
-        android:paddingEnd="@dimen/medium_dimen"
-        android:paddingStart="@dimen/medium_dimen"
-        android:paddingTop="@dimen/normal_dimen"
-        android:text="@string/tap_to_add_description" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/normal_dimen"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/tv_detail_id"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/medium_dimen"
-            android:src="@drawable/ic_members" />
+            android:layout_marginBottom="@dimen/normal_dimen"
+            android:layout_marginEnd="@dimen/medium_dimen"
+            android:layout_marginStart="@dimen/twof_dimen"
+            android:layout_marginTop="@dimen/medium_dimen"
+            android:text=" Project ID"
+            android:textSize="20sp" />
 
+        <EditText
+            android:id="@+id/edt_detail_name"
+            style="@style/EditModeTheme"
+            android:hint="@string/title" />
 
-        <b12app.vyom.com.utils.MyFlowlayout
-            android:id="@+id/layout_flow"
-            android:layout_width="0dp"
+        <Spinner
+            android:id="@+id/edt_detail_status"
+            style="@style/EditModeTheme"
+            android:entries="@array/project_status"
+            android:paddingStart="0dp" />
+
+        <EditText
+            android:id="@+id/tv_detail_desc"
+            style="@style/EditModeTheme"
+            android:text="@string/tap_to_add_description" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray2" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            app:pileWidth="10dp" />
+            android:layout_marginTop="@dimen/normal_dimen"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/medium_dimen"
+                android:src="@drawable/ic_members" />
+
+
+            <b12app.vyom.com.utils.MyFlowlayout
+                android:id="@+id/layout_detail_flow"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                app:pileWidth="10dp" />
+
+            <ImageButton
+                android:id="@+id/imgbtn_add_member"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:visibility="gone"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/normal_dimen"
+                android:layout_marginEnd="@dimen/medium_dimen"
+                android:src="@drawable/ic_add_member" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_detail_date"
+            style="@style/EditModeTheme"
+            android:gravity="center_vertical"
+            android:text="@string/set_date" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:drawablePadding="@dimen/medium_dimen"
-        android:drawableStart="@drawable/ic_date"
-        android:gravity="center_vertical"
-        android:paddingBottom="@dimen/medium_dimen"
-        android:paddingStart="@dimen/medium_dimen"
-        android:paddingTop="@dimen/normal_dimen"
-        android:text="@string/set_date" />
-
-    <View
-        android:layout_width="1dp"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-
-
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_task"
+        android:id="@+id/fab_detail_project"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="10dp"
+        android:layout_marginBottom="@dimen/xxlarge_dimen"
+        android:layout_marginEnd="@dimen/normal_dimen"
         android:clickable="true"
         android:focusable="true"
-        android:src="@drawable/ic_correct"
-        app:backgroundTint="@color/gay4"
+        android:src="@drawable/ic_edit"
+        app:backgroundTint="@color/gray2"
         app:backgroundTintMode="src_atop"
-        app:borderWidth="3dp"
-        app:elevation="5dp"
+        app:borderWidth="1dp"
+        app:elevation="2dp"
         app:fabSize="normal"
+        app:layout_anchor="@id/detail_ll"
+        app:layout_anchorGravity="bottom|right|end"
         app:rippleColor="@android:color/holo_blue_light"
         app:useCompatPadding="true" />
-
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

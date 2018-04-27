@@ -23,10 +23,19 @@
     <string name="attachment">attachment</string>
     <string name="feng_no_project_find">No project find</string>
     <string name="feng_status">status</string>
+    <string name="feng_edit_project">Edit Project</string>
+    <string name="feng_project_id">Project ID: </string>
+    <string name="feng_due_date">Due date:</string>
 
     <string-array name="priority">
         <item>Default</item>
         <item>High </item>
         <item>Urgent</item>
+    </string-array>
+
+    <string-array name="project_status">
+        <item>Start new project</item>
+        <item>Not complete</item>
+        <item>Completed</item>
     </string-array>
 </resources>

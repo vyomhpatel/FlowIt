@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionHelper;
@@ -23,18 +24,18 @@ import com.wangjie.rapidfloatingactionbutton.util.RFABTextUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-import b12app.vyom.com.flowit.MyFragment.FragmentDashboard;
-import b12app.vyom.com.flowit.MyFragment.FragmentInbox;
-import b12app.vyom.com.flowit.MyFragment.FragmentProject;
-import b12app.vyom.com.flowit.MyFragment.FragmentTask;
 import b12app.vyom.com.flowit.R;
 import b12app.vyom.com.flowit.projectcreate.ProjectCreateActivity;
+import b12app.vyom.com.flowit.tabfragment.FragmentDashboard;
+import b12app.vyom.com.flowit.tabfragment.FragmentInbox;
+import b12app.vyom.com.flowit.tabfragment.FragmentProject;
+import b12app.vyom.com.flowit.tabfragment.FragmentTask;
 import b12app.vyom.com.flowit.task.TaskCreateActivity;
 import b12app.vyom.com.utils.ActivityUtil;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener {
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener {
     @BindView(R.id.bottom_tab_layout)
     TabLayout botNavView;
 
@@ -92,18 +93,21 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 switch (tab.getPosition()) {
                     case 0:
                         ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), new FragmentInbox(), "inboxFgt");
+                        showMainFloatBtn();
                         break;
                     case 1:
                         ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), new FragmentProject(), "browseFgt");
+                        showMainFloatBtn();
                         break;
                     case 2:
                         ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), new FragmentTask(), "mytaskFgt");
+                        showMainFloatBtn();
                         break;
                     case 3:
                         ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), new FragmentDashboard(), "dashFgt");
+                        showMainFloatBtn();
                         break;
                 }
-//                bottmeTab.getTabAt(pos_tab).setIcon(iconPressList.get(pos_tab));
             }
 
             @Override
@@ -122,7 +126,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     private void setDefaultTab() {
         botNavView.getTabAt(1).select();
         ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), new FragmentProject(), "browseFgt");
-
     }
 
     private void initFloat() {
@@ -236,9 +239,9 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     @Override
     public void onRFACItemLabelClick(int position, RFACLabelItem item) {
         if (position == 0) {
-            startActivity(new Intent(Home.this, ProjectCreateActivity.class));
+            startActivity(new Intent(HomeActivity.this, ProjectCreateActivity.class));
         } else if (position == 1) {
-            startActivity(new Intent(Home.this, TaskCreateActivity.class));
+            startActivity(new Intent(HomeActivity.this, TaskCreateActivity.class));
 
         }
         rfabHelper.toggleContent();
@@ -247,12 +250,19 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     @Override
     public void onRFACItemIconClick(int position, RFACLabelItem item) {
         if (position == 0) {
-            startActivity(new Intent(Home.this, ProjectCreateActivity.class));
+            startActivity(new Intent(HomeActivity.this, ProjectCreateActivity.class));
         } else if (position == 1) {
-            startActivity(new Intent(Home.this, TaskCreateActivity.class));
+            startActivity(new Intent(HomeActivity.this, TaskCreateActivity.class));
 
         }
         rfabHelper.toggleContent();
+    }
 
+    public void dismissMainFloatBtn(){
+        rfaButton.setVisibility(View.GONE);
+    }
+
+    public void showMainFloatBtn(){
+        rfaButton.setVisibility(View.VISIBLE);
     }
 }
