@@ -23,6 +23,9 @@
     <string name="attachment">attachment</string>
     <string name="feng_no_project_find">No project find</string>
     <string name="feng_status">status</string>
+    <string name="add_to_task">Add to Task</string>
+    <string name="create_subtask">Create Subtask</string>
+    <string name="tap_to_add_subtask_description">Tap to add subtask description</string>
 
     <string-array name="priority">
         <item>Default</item>

@@ -29,6 +29,7 @@ import b12app.vyom.com.flowit.MyFragment.FragmentProject;
 import b12app.vyom.com.flowit.MyFragment.FragmentTask;
 import b12app.vyom.com.flowit.R;
 import b12app.vyom.com.flowit.projectcreate.ProjectCreateActivity;
+import b12app.vyom.com.flowit.subtaskcreate.SubTaskCreateActivity;
 import b12app.vyom.com.flowit.task.TaskCreateActivity;
 import b12app.vyom.com.utils.ActivityUtil;
 import butterknife.BindView;
@@ -241,6 +242,10 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             startActivity(new Intent(Home.this, TaskCreateActivity.class));
 
         }
+        else if(position == 2)
+        {
+            startActivity(new Intent(Home.this, SubTaskCreateActivity.class));
+        }
         rfabHelper.toggleContent();
     }
 
@@ -251,6 +256,10 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         } else if (position == 1) {
             startActivity(new Intent(Home.this, TaskCreateActivity.class));
 
+        }
+        else if(position == 2)
+        {
+            startActivity(new Intent(Home.this, SubTaskCreateActivity.class));
         }
         rfabHelper.toggleContent();
 

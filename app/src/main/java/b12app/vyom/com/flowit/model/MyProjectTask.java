@@ -1,16 +1,36 @@
 package b12app.vyom.com.flowit.model;
 
-/*
-this is task
-*/
-public class GeneralTask {
+// FIXME generate failure  field _$ProjectTask189
 
-    public static class ProjecttaskBean {
+import java.util.List;
+
+/**
+ * Created by jinliyu on 4/27/18.
+ */
+
+public class MyProjectTask {
+
+    //task list
+    List<taskBean> projectTaskList;
+
+
+    public List<taskBean> getProjectTaskList() {
+        return projectTaskList;
+    }
+
+    public void setProjectTaskList(List<taskBean> projectTaskList) {
+        this.projectTaskList = projectTaskList;
+    }
+
+
+
+    //task bean
+    public static class taskBean {
         /**
          * taskid : 1
          * projectid : 27
          * taskname : category screen
-         * taskstatus : 3
+         * taskstatus : 1
          * taskdesc : xyz
          * startdate : 2018-04-03
          * endstart : 2018-04-15
@@ -23,16 +43,6 @@ public class GeneralTask {
         private String taskdesc;
         private String startdate;
         private String endstart;
-
-        public ProjecttaskBean(String taskid, String projectid, String taskname, String taskstatus, String taskdesc, String startdate, String endstart) {
-            this.taskid = taskid;
-            this.projectid = projectid;
-            this.taskname = taskname;
-            this.taskstatus = taskstatus;
-            this.taskdesc = taskdesc;
-            this.startdate = startdate;
-            this.endstart = endstart;
-        }
 
         public String getTaskid() {
             return taskid;
@@ -89,18 +99,6 @@ public class GeneralTask {
         public void setEndstart(String endstart) {
             this.endstart = endstart;
         }
-
-        @Override
-        public String toString() {
-            return "ProjecttaskBean{" +
-                    "taskid='" + taskid + '\'' +
-                    ", projectid='" + projectid + '\'' +
-                    ", taskname='" + taskname + '\'' +
-                    ", taskstatus='" + taskstatus + '\'' +
-                    ", taskdesc='" + taskdesc + '\'' +
-                    ", startdate='" + startdate + '\'' +
-                    ", endstart='" + endstart + '\'' +
-                    '}';
-        }
     }
 }
+
