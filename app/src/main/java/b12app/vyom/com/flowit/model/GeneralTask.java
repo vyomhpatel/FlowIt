@@ -24,6 +24,15 @@ public class GeneralTask {
         private String startdate;
         private String endstart;
 
+        public ProjecttaskBean(String projectid, String taskname, String taskstatus, String taskdesc, String startdate, String endstart) {
+            this.projectid = projectid;
+            this.taskname = taskname;
+            this.taskstatus = taskstatus;
+            this.taskdesc = taskdesc;
+            this.startdate = startdate;
+            this.endstart = endstart;
+        }
+
         public ProjecttaskBean(String taskid, String projectid, String taskname, String taskstatus, String taskdesc, String startdate, String endstart) {
             this.taskid = taskid;
             this.projectid = projectid;

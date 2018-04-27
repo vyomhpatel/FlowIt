@@ -24,6 +24,7 @@ import java.util.Locale;
 import b12app.vyom.com.flowit.R;
 import b12app.vyom.com.flowit.datasource.DataManager;
 import b12app.vyom.com.flowit.datasource.IDataSource;
+import b12app.vyom.com.flowit.model.GeneralTask;
 import b12app.vyom.com.flowit.projectcreate.ProjectCreateActivity;
 import b12app.vyom.com.flowit.projectcreate.ProjectCreatePresenter;
 import b12app.vyom.com.utils.CircleImageView;
@@ -40,6 +41,7 @@ public class TaskCreateActivity extends AppCompatActivity implements View.OnClic
     private DataManager dataManager;
     private TaskContract.IPresenter iPresenterTask;
     private TaskContract.IPresenter iPresenter;
+    private String received_project_id;
 
     @BindView(R.id.task_create_container)
     LinearLayout task_create_container;
@@ -149,7 +151,7 @@ public class TaskCreateActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void addAssignee(View view) {
-        Snackbar.make(task_create_container,"Task Created Successfully!",Snackbar.LENGTH_SHORT).setAction("Ok", new View.OnClickListener() {
+        Snackbar.make(task_create_container,"Assignee can not be added while creating task!",Snackbar.LENGTH_SHORT).setAction("Ok", new View.OnClickListener() {
             @Override
             public void onClick(View v) {}
         }).setActionTextColor(getResources().getColor(R.color.sbRed)).show();
@@ -190,14 +192,20 @@ public class TaskCreateActivity extends AppCompatActivity implements View.OnClic
             iPresenterTask = presenter;
     }
 
-    public void createTask(View view) {
-
-    }
-
-
     @Override
     public void onComplete(String project_id, String project_name) {
 
         tv_add_project.setText(project_name);
+        received_project_id = project_id;
     }
+
+    public void createTask(View view) {
+
+        GeneralTask.ProjecttaskBean task = new GeneralTask.ProjecttaskBean(received_project_id,edt_task_name.getText().toString()
+        ,"1",edt_task_description.getText().toString(),dateStartString,dateEndString);
+        iPresenterTask.onTaskCreateButtonClick(view,task);
+    }
+
+
+
 }
