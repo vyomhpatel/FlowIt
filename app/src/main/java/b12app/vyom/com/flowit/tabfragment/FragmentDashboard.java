@@ -1,4 +1,4 @@
-package b12app.vyom.com.flowit.MyFragment;
+package b12app.vyom.com.flowit.tabfragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;

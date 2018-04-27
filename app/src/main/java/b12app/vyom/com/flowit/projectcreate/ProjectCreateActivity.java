@@ -39,7 +39,7 @@ import retrofit2.Response;
 
 public class ProjectCreateActivity extends AppCompatActivity implements View.OnClickListener, ProjectContract.IView {
 
-    private static final String TAG = "project create" ;
+    private static final String TAG = "project create";
 
     private Calendar calendar;
     private int year, month, day;
@@ -76,7 +76,6 @@ public class ProjectCreateActivity extends AppCompatActivity implements View.OnC
     EditText edt_project_name;
 
 
-
     int[] urls = {R.drawable.ic_avatar, R.drawable.ic_avatar, R.drawable.ic_avatar, R.drawable.ic_avatar};
 
     @Override
@@ -86,7 +85,7 @@ public class ProjectCreateActivity extends AppCompatActivity implements View.OnC
         ButterKnife.bind(this);
         dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 
-       // iPresenterProject = new ProjectCreatePresenter();
+        // iPresenterProject = new ProjectCreatePresenter();
 
         tv_start_date.setOnClickListener(this);
         tv_end_date.setOnClickListener(this);
@@ -95,7 +94,7 @@ public class ProjectCreateActivity extends AppCompatActivity implements View.OnC
 
         //initializing data manager
         dataManager = new DataManager();
-        iPresenterProject = new ProjectCreatePresenter(dataManager,ProjectCreateActivity.this);
+        iPresenterProject = new ProjectCreatePresenter(dataManager, ProjectCreateActivity.this);
 
         initToolBar();
         initFlow();
@@ -115,7 +114,7 @@ public class ProjectCreateActivity extends AppCompatActivity implements View.OnC
                 tv_start_date.setText(dateFormatter.format(newDate.getTime()));
             }
 
-        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
 
         toDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
 
@@ -124,11 +123,11 @@ public class ProjectCreateActivity extends AppCompatActivity implements View.OnC
                 newDate.set(year, monthOfYear, dayOfMonth);
                 dateEndString = String.valueOf(dateFormatter.format(newDate.getTime()));
                 tv_end_date.setText(dateFormatter.format(newDate.getTime()));
-               // dateEndString = dateFormatter.format(newDate.getTime());
+                // dateEndString = dateFormatter.format(newDate.getTime());
 
             }
 
-        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
     }
 
 
@@ -149,7 +148,6 @@ public class ProjectCreateActivity extends AppCompatActivity implements View.OnC
     }
 
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_attachment, menu);
@@ -160,13 +158,13 @@ public class ProjectCreateActivity extends AppCompatActivity implements View.OnC
 
         Project.ProjectsBean project = new Project.ProjectsBean(edt_project_name.getText().toString(),"1",etProjectDescription.getText().toString(),
                 dateStartString,dateEndString);
-        iPresenterProject.onProjectCreateButtonClick(view,project);
-        Log.i(TAG, "date: "+dateStartString+" "+dateEndString);
+        iPresenterProject.onProjectCreateButtonClick(view, project);
+        Log.i(TAG, "date: " + dateStartString + " " + dateEndString);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.tv_start_date:
                 fromDatePickerDialog.show();
                 break;
@@ -174,9 +172,10 @@ public class ProjectCreateActivity extends AppCompatActivity implements View.OnC
                 toDatePickerDialog.show();
                 break;
             case R.id.layout_flow:
-                Snackbar.make(container_project_create,"Members can't be added while creating project",Snackbar.LENGTH_SHORT).setAction("Ok", new View.OnClickListener() {
+                Snackbar.make(container_project_create, "Members can't be added while creating project", Snackbar.LENGTH_SHORT).setAction("Ok", new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {}
+                    public void onClick(View v) {
+                    }
                 }).show();
         }
     }
@@ -189,9 +188,10 @@ public class ProjectCreateActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public void displaySnackbar() {
-        Snackbar.make(container_project_create,"Project Created Successfully!",Snackbar.LENGTH_SHORT).setActionTextColor(getResources().getColor(R.color.colorAccent)).setAction("Ok", new View.OnClickListener() {
+        Snackbar.make(container_project_create, "Project Created Successfully!", Snackbar.LENGTH_SHORT).setActionTextColor(getResources().getColor(R.color.colorAccent)).setAction("Ok", new View.OnClickListener() {
             @Override
-            public void onClick(View v) {}
+            public void onClick(View v) {
+            }
         }).show();
     }
 }
