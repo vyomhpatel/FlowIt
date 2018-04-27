@@ -50,4 +50,16 @@
         <item name="android:background">@color/green1</item>
     </style>
 
+
+    <style name="EditModeTheme">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">@dimen/normal_dimen</item>
+        <item name="android:layout_marginTop">@dimen/normal_dimen</item>
+        <item name="android:layout_marginStart">@dimen/medium_dimen</item>
+        <item name="android:layout_marginEnd">@dimen/medium_dimen</item>
+        <item name="android:background">@drawable/selector_bg_enable</item>
+        <item name="android:textColor">@drawable/selector_enable</item>
+    </style>
+
 </resources>

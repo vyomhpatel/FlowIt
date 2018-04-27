@@ -8,5 +8,6 @@
         android:id="@+id/rv_project"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/normal_dimen"/>
+        android:padding="@dimen/normal_dimen"
+        android:layout_marginBottom="@dimen/xxlarge_dimen"/>
 </LinearLayout>

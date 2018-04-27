@@ -40,9 +40,18 @@ dependencies {
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
+    //
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.github.wangjiegulu:rfab:2.0.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.0.2'
-    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
 
+    compile 'com.squareup.retrofit2:converter-gson:2.0.2'
+
+    //rxJava
+    compile 'io.reactivex:rxjava:x.y.z'
+    compile 'io.reactivex:rxandroid:1.0.1'
+    //gson retrofit
+    compile 'com.squareup.retrofit2:retrofit:2.0.2'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
+    //annotation
+    compile 'com.android.support:support-annotations:27.1.1'
 }

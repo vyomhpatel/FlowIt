@@ -17,8 +17,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/medium_dimen"
             android:layout_marginTop="@dimen/medium_dimen"
-            android:text="Project Name"
-            android:textSize="20dp" />
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/example"
+            android:textSize="15sp" />
+
 
         <ProgressBar
             android:id="@+id/pgs_project"
@@ -33,28 +36,32 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/small_padding"
+            android:paddingEnd="@dimen/medium_dimen"
+            android:paddingStart="@dimen/medium_dimen"
+            android:paddingTop="@dimen/small_padding">
 
             <TextView
-                android:id="@+id/tv_status"
+                android:id="@+id/tv_startDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="end"
-                android:padding="@dimen/medium_dimen"
-                android:text="status"
+                android:text="start date"
+                android:textSize="10sp"
                 android:textStyle="bold" />
-            
+
             <View
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
 
             <TextView
-                android:id="@+id/tv_timeline"
+                android:id="@+id/tv_endDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/medium_dimen"
-                android:text="timeline"
+                android:text="@string/example"
+                android:textSize="@dimen/date_txt_size"
                 android:textStyle="bold" />
         </LinearLayout>
 
