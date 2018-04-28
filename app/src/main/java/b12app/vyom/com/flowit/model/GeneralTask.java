@@ -1,9 +1,34 @@
 package b12app.vyom.com.flowit.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.List;
+
 // FIXME generate failure  field _$ProjectTask249
+
 public class GeneralTask {
 
-    public static class ProjecttaskBean {
+    private List<GeneralTask.ProjecttaskBean> projecttaskBeanList;
+
+    @Override
+    public String toString() {
+
+
+        return "GeneralTask{" +
+                "projecttaskBeanList=" + projecttaskBeanList +
+                '}';
+    }
+
+    public List<GeneralTask.ProjecttaskBean> getProjecttaskBeanList() {
+        return projecttaskBeanList;
+    }
+
+    public void setProjects(List<GeneralTask.ProjecttaskBean> projecttaskBeanList) {
+        this.projecttaskBeanList = projecttaskBeanList;
+    }
+
+    public static class ProjecttaskBean implements Parcelable {
         /**
          * taskid : 1
          * projectid : 27
@@ -40,6 +65,28 @@ public class GeneralTask {
             this.startdate = startdate;
             this.endstart = endstart;
         }
+
+        protected ProjecttaskBean(Parcel in) {
+            taskid = in.readString();
+            projectid = in.readString();
+            taskname = in.readString();
+            taskstatus = in.readString();
+            taskdesc = in.readString();
+            startdate = in.readString();
+            endstart = in.readString();
+        }
+
+        public static final Creator<ProjecttaskBean> CREATOR = new Creator<ProjecttaskBean>() {
+            @Override
+            public ProjecttaskBean createFromParcel(Parcel in) {
+                return new ProjecttaskBean(in);
+            }
+
+            @Override
+            public ProjecttaskBean[] newArray(int size) {
+                return new ProjecttaskBean[size];
+            }
+        };
 
         public String getTaskid() {
             return taskid;
@@ -95,6 +142,22 @@ public class GeneralTask {
 
         public void setEndstart(String endstart) {
             this.endstart = endstart;
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(taskid);
+            dest.writeString(projectid);
+            dest.writeString(taskname);
+            dest.writeString(taskstatus);
+            dest.writeString(taskdesc);
+            dest.writeString(startdate);
+            dest.writeString(endstart);
         }
     }
 }

@@ -1,5 +1,7 @@
 package b12app.vyom.com.flowit.networkutils;
 
+import org.json.JSONObject;
+
 import java.util.List;
 
 import b12app.vyom.com.flowit.model.Employee;
@@ -76,6 +78,22 @@ public interface ApiService {
 
     @GET("pms_project_task_list.php")
     Call<GeneralTask> getTaskList();
+
+    @GET("pms_project_task_list.php")
+    Observable<GeneralTask> getTaskObservableList();
+
+    @POST("pms_assign_task_project.php")
+    Call<JSONObject>assignTask(@Query("taskid") String taskid,
+                                                @Query("project_id") String project_id,
+                                                @Query("team_member_userid") String team_member_userid);
+
+    @POST("pms_edit_task_status.php")
+    Call<GeneralTask.ProjecttaskBean>updateTaskStatus(@Query("taskid") String taskid,
+                                                      @Query("project_id") String project_id,
+                                                      @Query("userid") String userid,
+                                                      @Query("task_status") String task_status);
+
+
 
     //-------------------------------------SUB-TASK -----------------------------------------
 

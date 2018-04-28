@@ -2,8 +2,8 @@
 <b12app.vyom.com.utils.CircleImageView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_width="40dp"
-    android:layout_height="30dp"
+    android:layout_width="50dp"
+    android:layout_height="50dp"
     app:round_borderWidth="2dp"
     android:src="@android:color/white"
     app:round_borderColor="@android:color/white" />

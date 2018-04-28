@@ -77,7 +77,7 @@ public class ProjectCreateActivity extends AppCompatActivity implements View.OnC
 
 
 
-    int[] urls = {R.drawable.ic_avatar, R.drawable.ic_avatar, R.drawable.ic_avatar, R.drawable.ic_avatar};
+    int[] urls = {R.drawable.ic_avatar};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

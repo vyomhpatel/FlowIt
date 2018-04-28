@@ -38,4 +38,9 @@
         <item>Not complete</item>
         <item>Completed</item>
     </string-array>
+    <string-array name="task_status">
+        <item>Initial</item>
+        <item>In Progress</item>
+        <item>Complete</item>
+    </string-array>
 </resources>

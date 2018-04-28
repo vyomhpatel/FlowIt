@@ -71,7 +71,7 @@ public class TaskCreateActivity extends AppCompatActivity implements View.OnClic
 
 
 
-    int[] urls = {R.drawable.ic_avatar, R.drawable.ic_avatar, R.drawable.ic_avatar, R.drawable.ic_avatar};
+    int[] urls = {R.drawable.ic_avatar};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
