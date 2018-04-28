@@ -5,6 +5,7 @@ import java.util.List;
 import b12app.vyom.com.flowit.model.Employee;
 import b12app.vyom.com.flowit.model.GeneralSubTask;
 import b12app.vyom.com.flowit.model.GeneralTask;
+import b12app.vyom.com.flowit.model.MsgReponseBody;
 import b12app.vyom.com.flowit.model.Project;
 import b12app.vyom.com.flowit.model.User;
 import retrofit2.Call;
@@ -42,17 +43,15 @@ public interface ApiService {
                                            @Query("end_date") String end_date);
 
     @POST("pms_edit_project.php")
-    Call<Project.ProjectsBean> updateProject(@Query("project_name") String project_name,
-                                             @Query("project_status") String project_status,
-                                             @Query("project_desc") String project_desc,
-                                             @Query("start_date") String start_date,
-                                             @Query("end_date") String end_date);
+    Call<MsgReponseBody> updateProject(@Query("project_id") String projectId,
+                                       @Query("project_name") String project_name,
+                                       @Query("project_status") String project_status,
+                                       @Query("project_desc") String project_desc,
+                                       @Query("start_date") String start_date,
+                                       @Query("end_date") String end_date);
 
     @GET("pms_projects.php")
     Call<Project> getProjects();
-
-    @GET("pms_projects.php")
-    Observable<Project> getProjectList();
 
 
     //-------------------------------------EMPLOYEE  -----------------------------------------
@@ -61,8 +60,8 @@ public interface ApiService {
     Call<Employee> getEmployee();
 
     @POST("pms_create_project_team.php")
-    Call<Employee> postEmployee(@Query("project_id") String project_id,
-                                @Query("team_member_userid") String team_member_userid);
+    Call<MsgReponseBody> postEmployee(@Query("project_id") String project_id,
+                                      @Query("team_member_userid") String team_member_userid);
 
     //-------------------------------------TASK -----------------------------------------
 
@@ -90,6 +89,11 @@ public interface ApiService {
 
     @GET("pms_project_sub_task_list.php")
     Call<GeneralSubTask> listSubTask();
+
+
+    /******************************************************* Observable Api ********************************************************/
+    @GET("pms_projects.php")
+    Observable<Project> getProjectList();
 
 
 }

@@ -6,90 +6,99 @@
     android:layout_height="match_parent"
     tools:context=".home.HomeActivity">
 
-    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/detail_ll"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tv_detail_id"
+        <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/detail_ll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/normal_dimen"
-            android:layout_marginEnd="@dimen/medium_dimen"
-            android:layout_marginStart="@dimen/twof_dimen"
-            android:layout_marginTop="@dimen/medium_dimen"
-            android:text=" Project ID"
-            android:textSize="20sp" />
+            android:paddingBottom="@dimen/xxlarge_dimen"
+            android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/edt_detail_name"
-            style="@style/EditModeTheme"
-            android:hint="@string/title" />
-
-        <Spinner
-            android:id="@+id/edt_detail_status"
-            style="@style/EditModeTheme"
-            android:entries="@array/project_status"
-            android:paddingStart="0dp" />
-
-        <EditText
-            android:id="@+id/tv_detail_desc"
-            style="@style/EditModeTheme"
-            android:text="@string/tap_to_add_description" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/gray2" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/normal_dimen"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/tv_detail_id"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/medium_dimen"
-                android:src="@drawable/ic_members" />
-
-
-            <b12app.vyom.com.utils.MyFlowlayout
-                android:id="@+id/layout_detail_flow"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                app:pileWidth="10dp" />
-
-            <ImageButton
-                android:id="@+id/imgbtn_add_member"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:visibility="gone"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="@dimen/normal_dimen"
+                android:layout_marginBottom="@dimen/normal_dimen"
                 android:layout_marginEnd="@dimen/medium_dimen"
-                android:src="@drawable/ic_add_member" />
+                android:layout_marginStart="@dimen/twof_dimen"
+                android:layout_marginTop="@dimen/medium_dimen"
+                android:text=" Project ID"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/edt_detail_name"
+                style="@style/EditModeTheme"
+                android:hint="@string/title" />
+
+            <Spinner
+                android:id="@+id/edt_detail_status"
+                style="@style/EditModeTheme"
+                android:entries="@array/project_status"
+                android:paddingStart="0dp" />
+
+            <EditText
+                android:id="@+id/tv_detail_desc"
+                style="@style/EditModeTheme"
+                android:text="@string/tap_to_add_description" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray2" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/normal_dimen"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/medium_dimen"
+                    android:src="@drawable/ic_members" />
+
+
+                <b12app.vyom.com.utils.MyFlowlayout
+                    android:id="@+id/layout_detail_flow"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    app:pileWidth="10dp" />
+
+                <ImageButton
+                    android:id="@+id/imgbtn_add_member"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="@dimen/medium_dimen"
+                    android:layout_marginStart="@dimen/normal_dimen"
+                    android:background="@null"
+                    android:src="@drawable/ic_add_member"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_detail_date"
+                style="@style/EditModeTheme"
+                android:gravity="center_vertical"
+                android:text="@string/set_date" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_detail_date"
-            style="@style/EditModeTheme"
-            android:gravity="center_vertical"
-            android:text="@string/set_date" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
 
-    </LinearLayout>
+    </ScrollView>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_detail_project"

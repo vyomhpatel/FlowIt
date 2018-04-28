@@ -64,8 +64,14 @@ public class FragmentProject extends Fragment implements ProjectFragmentContract
                 .subscribe(new Subscriber<Project>() {
 
                     @Override
-                    public void onCompleted() {
+                    public void onStart() {
+                        super.onStart();
+                        //show progress dialog here
+                    }
 
+                    @Override
+                    public void onCompleted() {
+                        //dimiss dialog here
                     }
 
                     @Override
