@@ -2,6 +2,7 @@ package b12app.vyom.com.flowit.dialog;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
@@ -50,14 +51,16 @@ public class TeamDialog extends DialogFragment {
 
     private EmployeeRvAdapter employeeRvAdapter;
 
-    private List<String> employeeIdList;
+    private List<Employee.EmployeesBean> employeeIdList;
+    private List<Employee.EmployeesBean> memberList;
 
     public interface OnCompleteListener {
-        void onComplete(List<String> employeeIdList);
+        void onComplete(List<Employee.EmployeesBean> employeeIdList);
     }
 
-    public static TeamDialog newInstance() {
+    public static TeamDialog newInstance(List<Employee.EmployeesBean> memberList) {
         Bundle args = new Bundle();
+        args.putParcelableArrayList("list", (ArrayList<? extends Parcelable>) memberList);
         TeamDialog dialogTeam = new TeamDialog();
         dialogTeam.setArguments(args);
         return dialogTeam;
@@ -73,15 +76,6 @@ public class TeamDialog extends DialogFragment {
         window.setAttributes(params);
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-//        try {
-//            this.mListener = (OnCompleteListener) context;
-//        } catch (final ClassCastException e) {
-//            throw new ClassCastException(context.toString() + " must implement OnCompleteListener");
-//        }
-    }
 
     @Nullable
     @Override
@@ -94,33 +88,6 @@ public class TeamDialog extends DialogFragment {
 
         fetchData();
 
-//        Call<Project> projectCall = apiService.getEmployee();
-//        projectCall.enqueue(new Callback<Project>() {
-//            @Override
-//            public void onResponse(Call<Project> call, final Response<Project> response) {
-//
-//
-//                ProjectListAdapter projectListAdapter = new ProjectListAdapter(response.body().getProjects(), getActivity());
-//                employeeList.setAdapter(projectListAdapter);
-//                employeeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                    @Override
-//                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//
-//                        String project_name = response.body().getProjects().get(position).getProjectname();
-//                        String project_id = response.body().getProjects().get(position).getId();
-//                        mListener.onComplete(project_id, project_name);
-//                        getDialog().dismiss();
-//
-//                    }
-//                });
-//            }
-//
-//            @Override
-//            public void onFailure(Call<Project> call, Throwable t) {
-//
-//            }
-//        });
-
         return v;
     }
 
@@ -132,7 +99,7 @@ public class TeamDialog extends DialogFragment {
                 //loop the booleanArray to find all the key which value = true
                 for (int i = 0; i < employees.size(); i++){
                     if (employeeRvAdapter.getPickedEmployee().get(i)){
-                        employeeIdList.add(employees.get(i).getEmpid());
+                        employeeIdList.add(employees.get(i));
                         Log.i("multiple", i + "");
                     }
 
@@ -152,6 +119,8 @@ public class TeamDialog extends DialogFragment {
     }
 
     private void fetchData() {
+        memberList = getArguments().getParcelableArrayList("list");
+
         apiService = RetrofitInstance.getRetrofitInstance().create(ApiService.class);
 
         apiService.getEmployee().enqueue(new Callback<Employee>() {
@@ -171,7 +140,7 @@ public class TeamDialog extends DialogFragment {
     }
 
     private void initRecyclerView(List<Employee.EmployeesBean> employees) {
-        employeeRvAdapter = new EmployeeRvAdapter(getActivity(), employees);
+        employeeRvAdapter = new EmployeeRvAdapter(getActivity(), employees, memberList);
         employeeRv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         employeeRv.setAdapter(employeeRvAdapter);
         employeeRv.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));

@@ -2,7 +2,6 @@ package b12app.vyom.com.flowit.tabfragment;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -13,31 +12,35 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import b12app.vyom.com.flowit.R;
+import b12app.vyom.com.flowit.dialog.MemberDialog;
 import b12app.vyom.com.flowit.dialog.TeamDialog;
 import b12app.vyom.com.flowit.model.Employee;
 import b12app.vyom.com.flowit.model.MsgReponseBody;
 import b12app.vyom.com.flowit.model.Project;
 import b12app.vyom.com.flowit.networkutils.RetrofitInstance;
 import b12app.vyom.com.utils.CircleImageView;
+import b12app.vyom.com.utils.FbHelper;
 import b12app.vyom.com.utils.MyFlowlayout;
-import b12app.vyom.com.utils.StatusHelper;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -72,6 +75,9 @@ public class FragmentProjectEdit extends Fragment {
     @BindView(R.id.layout_detail_flow)
     MyFlowlayout myFlowlayout;
 
+    @BindView(R.id.ll_member)
+    LinearLayout memberLl;
+
     @BindView(R.id.fab_detail_project)
     FloatingActionButton editFloatBtn;
 
@@ -82,6 +88,8 @@ public class FragmentProjectEdit extends Fragment {
     private Project.ProjectsBean projectNode;
     private String projectId, projectName, projectDesc, currentEndDate;
     private int projectStatus;
+    private DatabaseReference myRef;
+    private List<Employee.EmployeesBean> memberList;
 
     private Unbinder unbinder;
     private static boolean FLAG_EDIT_MODE = false;
@@ -100,9 +108,33 @@ public class FragmentProjectEdit extends Fragment {
 
         initView();
 
+        initFireBase();
+
         clickListener();
 
         return v;
+    }
+
+    private void initFireBase() {
+        myRef = FbHelper.getInstance().getReference("Team");
+
+        // Read from the database
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                memberList = new ArrayList<>();
+
+                FbHelper.getInstance().getProjectTeam(memberList, dataSnapshot, projectId);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
     }
 
 
@@ -158,16 +190,20 @@ public class FragmentProjectEdit extends Fragment {
         addMemberBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TeamDialog dialog = TeamDialog.newInstance();
+                TeamDialog dialog = TeamDialog.newInstance(memberList);
+
                 dialog.showDialog(getActivity().getSupportFragmentManager(), "employeeDlg");
 
                 //listener to show the result of team creation
                 //TODO need a way to save team member data, since api only allow to post 1 employee id
                 dialog.setListener(new TeamDialog.OnCompleteListener() {
                     @Override
-                    public void onComplete(List<String> employeeIdList) {
+                    public void onComplete(List<Employee.EmployeesBean> employeeIdList) {
 
-                        Toast.makeText(getContext(), "fake msg: team created successfully", Toast.LENGTH_SHORT).show();
+                        //fireBase db add team member
+                        FbHelper.getInstance().addTeamMember(myRef, employeeIdList, projectId);
+
+                        Toast.makeText(getContext(), "Team created successfully", Toast.LENGTH_SHORT).show();
 
 //                        RetrofitInstance.apiService().postEmployee(projectNode.getId(), employeeIdList.get(0)).enqueue(new Callback<MsgReponseBody>() {
 //                            @Override
@@ -183,6 +219,19 @@ public class FragmentProjectEdit extends Fragment {
 //                        });
                     }
                 });
+            }
+        });
+
+
+        memberLl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (memberList.size() < 1 || memberList == null) {
+                    Toast.makeText(getContext(), "No team member yet", Toast.LENGTH_SHORT).show();
+                } else {
+                    MemberDialog dialog = MemberDialog.newInstance(memberList);
+                    dialog.showDialog(getActivity().getSupportFragmentManager(), "memberDlg");
+                }
             }
         });
     }

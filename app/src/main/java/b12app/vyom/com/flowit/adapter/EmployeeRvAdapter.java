@@ -31,15 +31,27 @@ import butterknife.ButterKnife;
 public class EmployeeRvAdapter extends RecyclerView.Adapter<EmployeeRvAdapter.mViewHolder> {
     private Context context;
     private List<Employee.EmployeesBean> dataList;
+    private List<Employee.EmployeesBean> memberList;
 
     private SparseBooleanArray mSelectedPos;
     private SparseBooleanArray selectedEmlopyee;
 
-    public EmployeeRvAdapter(Context context, List<Employee.EmployeesBean> dataList) {
+    public EmployeeRvAdapter(Context context, List<Employee.EmployeesBean> employees, List<Employee.EmployeesBean> memberList) {
         this.context = context;
-        this.dataList = dataList;
-        mSelectedPos = new SparseBooleanArray();
-        selectedEmlopyee = new SparseBooleanArray();
+        this.dataList = employees;
+        this.memberList = memberList;
+        mSelectedPos = new SparseBooleanArray(employees.size());
+        selectedEmlopyee = new SparseBooleanArray(employees.size());
+
+        //find out team member
+        for (int i = 0; i < employees.size(); i ++){
+            for (int j = 0 ; j < memberList.size(); j++){
+                if (memberList.get(j).getEmpid().equals(employees.get(i).getEmpid())){
+                    mSelectedPos.put(i, true);
+                    selectedEmlopyee.put(i, true);
+                }
+            }
+        }
     }
 
     @NonNull
