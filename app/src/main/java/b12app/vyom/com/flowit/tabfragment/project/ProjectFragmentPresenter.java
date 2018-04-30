@@ -9,6 +9,7 @@ import b12app.vyom.com.flowit.R;
 import b12app.vyom.com.flowit.datasource.DataManager;
 import b12app.vyom.com.flowit.home.HomeActivity;
 import b12app.vyom.com.flowit.model.Project;
+import b12app.vyom.com.flowit.networkutils.ApiService;
 import b12app.vyom.com.flowit.networkutils.RetrofitInstance;
 import b12app.vyom.com.flowit.tabfragment.FragmentProject;
 import b12app.vyom.com.flowit.tabfragment.FragmentProjectEdit;
@@ -47,9 +48,9 @@ public class ProjectFragmentPresenter implements ProjectFragmentContract.IPresen
     }
 
     @Override
-    public Disposable getProjectList() {
+    public Disposable getProjectList(ApiService apiService) {
 
-        RetrofitInstance.apiService().getProjectList()
+        apiService.getProjectList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Project>() {

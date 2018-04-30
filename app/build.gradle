@@ -10,6 +10,9 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        defaultConfig {
+            multiDexEnabled true
+        }
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -55,6 +58,11 @@ dependencies {
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
     //annotation
     compile 'com.android.support:support-annotations:27.1.1'
+
+    // dagger2 依赖部分
+    provided 'javax.annotation:jsr250-api:1.0'
+    compile 'com.google.dagger:dagger:2.0.2'
+    compile 'com.google.dagger:dagger-compiler:2.0.2'
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -1,5 +1,6 @@
 package b12app.vyom.com.flowit.tabfragment;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,20 +11,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import javax.inject.Inject;
+
 import b12app.vyom.com.flowit.R;
 import b12app.vyom.com.flowit.adapter.ProjectAdapter;
+import b12app.vyom.com.flowit.daggerUtils.AppApplication;
 import b12app.vyom.com.flowit.home.HomeActivity;
 import b12app.vyom.com.flowit.model.Project;
-import b12app.vyom.com.flowit.networkutils.RetrofitInstance;
+import b12app.vyom.com.flowit.networkutils.ApiService;
 import b12app.vyom.com.flowit.tabfragment.project.ProjectFragmentContract;
-import b12app.vyom.com.utils.ActivityUtil;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * @Package b12app.vyom.com.flowit.fragmentbrowse
@@ -41,16 +41,29 @@ public class FragmentProject extends Fragment implements ProjectFragmentContract
     private Disposable disposable;
     private Project project;
 
+    @Inject
+    SharedPreferences sharedPreferences;
+    @Inject
+    ApiService apiService;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_project, container, false);
+        //butter knife inject
         unbinder = ButterKnife.bind(this, v);
 
-        disposable = projectFragmentPresenter.getProjectList();
+        //dagger2 inject
+        AppApplication.get(getContext())
+                .getAppComponent()
+                .inject(this);
+
+        //presenter network call
+        disposable = projectFragmentPresenter.getProjectList(apiService);
 
         return v;
     }
+
 
     @Override
     public void initRecyclerView(Project project) {

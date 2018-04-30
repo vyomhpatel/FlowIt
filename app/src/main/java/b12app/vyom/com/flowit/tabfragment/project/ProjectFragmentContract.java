@@ -6,6 +6,7 @@ import android.view.View;
 import b12app.vyom.com.flowit.home.BasePresenter;
 import b12app.vyom.com.flowit.home.BaseView;
 import b12app.vyom.com.flowit.model.Project;
+import b12app.vyom.com.flowit.networkutils.ApiService;
 import io.reactivex.disposables.Disposable;
 
 /**
@@ -29,7 +30,7 @@ public interface ProjectFragmentContract {
     interface IPresenter extends BasePresenter {
 
 
-        Disposable getProjectList();
+        Disposable getProjectList(ApiService apiService);
 
         void rvItemClick(View v, int position, Project project, FragmentActivity activity);
     }

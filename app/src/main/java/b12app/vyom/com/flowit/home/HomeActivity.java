@@ -1,6 +1,7 @@
 package b12app.vyom.com.flowit.home;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
@@ -24,8 +25,14 @@ import com.wangjie.rapidfloatingactionbutton.util.RFABTextUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import b12app.vyom.com.flowit.R;
+import b12app.vyom.com.flowit.daggerUtils.AppApplication;
+import b12app.vyom.com.flowit.daggerUtils.AppComponent;
+import b12app.vyom.com.flowit.daggerUtils.DaggerAppComponent;
 import b12app.vyom.com.flowit.datasource.DataManager;
+import b12app.vyom.com.flowit.networkutils.ApiService;
 import b12app.vyom.com.flowit.projectcreate.ProjectCreateActivity;
 import b12app.vyom.com.flowit.tabfragment.FragmentDashboard;
 import b12app.vyom.com.flowit.tabfragment.FragmentInbox;
@@ -37,7 +44,7 @@ import b12app.vyom.com.utils.ActivityUtil;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener {
+public class HomeActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener {
     @BindView(R.id.bottom_tab_layout)
     TabLayout botNavView;
 
@@ -56,6 +63,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @BindView(R.id.nav_view)
     NavigationView leftDrawer;
 
+
     //presenter
     private ProjectFragmentPresenter projectFgtPresenter;
     private DataManager mDataManager;
@@ -71,6 +79,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_home);
+
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
@@ -80,6 +89,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         initDraw(toolbar);
 
         initBottomNavView();
+    }
+
+    @Override
+    protected void setupActivityComponent(AppComponent appComponent) {
+        appComponent.inject(this);
     }
 
     private void initBottomNavView() {
