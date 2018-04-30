@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "287151999781",
+    "firebase_url": "https://flowit-28146.firebaseio.com",
+    "project_id": "flowit-28146",
+    "storage_bucket": "flowit-28146.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:287151999781:android:51117ec2888c0fd0",
+        "android_client_info": {
+          "package_name": "b12app.vyom.com.flowit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "287151999781-8hfeql4nk29203a2bc8gluerildtilnn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "b12app.vyom.com.flowit",
+            "certificate_hash": "d1272e3580ac8bb22e0039a5da01aac02fba8593"
+          }
+        },
+        {
+          "client_id": "287151999781-7kmi8n9j50hhh7ehmpcu9nvhf97b2l17.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDf_Ttm3NQAM3Zm_Eo9nC1ON6jnwOPp4lo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "287151999781-7kmi8n9j50hhh7ehmpcu9nvhf97b2l17.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
