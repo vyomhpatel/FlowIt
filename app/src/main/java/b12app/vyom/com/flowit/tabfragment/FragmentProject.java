@@ -10,23 +10,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import b12app.vyom.com.flowit.R;
 import b12app.vyom.com.flowit.adapter.ProjectAdapter;
 import b12app.vyom.com.flowit.home.HomeActivity;
 import b12app.vyom.com.flowit.model.Project;
-import b12app.vyom.com.flowit.networkutils.ApiService;
 import b12app.vyom.com.flowit.networkutils.RetrofitInstance;
+import b12app.vyom.com.flowit.tabfragment.project.ProjectFragmentContract;
 import b12app.vyom.com.utils.ActivityUtil;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import rx.Scheduler;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * @Package b12app.vyom.com.flowit.fragmentbrowse
@@ -36,72 +33,43 @@ import rx.schedulers.Schedulers;
  * @Description FlowIt
  */
 
-public class FragmentProject extends Fragment implements ProjectFragmentContract.IView {
+public class FragmentProject extends Fragment implements ProjectFragmentContract.IView, ProjectAdapter.OnItemClickListener {
     @BindView(R.id.rv_project)
     RecyclerView recyclerView;
     private Unbinder unbinder;
     private ProjectFragmentContract.IPresenter projectFragmentPresenter;
-
+    private Disposable disposable;
+    private Project project;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_project, container, false);
         unbinder = ButterKnife.bind(this, v);
-        
-        getData();
+
+        disposable = projectFragmentPresenter.getProjectList();
 
         return v;
     }
 
-    private void getData() {
+    @Override
+    public void initRecyclerView(Project project) {
+        this.project = project;
 
-        ApiService apiService = RetrofitInstance.getRetrofitInstance().create(ApiService.class);
-
-        apiService.getProjectList()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Project>() {
-
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(Project projects) {
-
-                        initRecyclerView(projects);
-                    }
-                });
-    }
-
-    private void initRecyclerView(final Project project) {
         ProjectAdapter adapter = new ProjectAdapter(getContext(), project);
 
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        
+
         recyclerView.setAdapter(adapter);
 
-        adapter.setMItemClickListener(new ProjectAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View v, int position) {
-                FragmentProjectEdit fragmentProjectEdit = new FragmentProjectEdit();
-                Bundle bundle = new Bundle();
-                //project info
-                bundle.putParcelable("projectnode", project.getProjects().get(position));
-                fragmentProjectEdit.setArguments(bundle);
-                ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getActivity().getSupportFragmentManager(), fragmentProjectEdit, " editFgt");
-                //dismiss main float btn
-                HomeActivity activity = (HomeActivity)getActivity();
-                activity.dismissMainFloatBtn();
-            }
-        });
+        adapter.setMItemClickListener(this);
+    }
+
+    @Override
+    public void hideMainFloatBtn() {
+        //dismiss main float btn
+        HomeActivity activity = (HomeActivity) getActivity();
+        activity.dismissMainFloatBtn();
     }
 
 
@@ -109,11 +77,19 @@ public class FragmentProject extends Fragment implements ProjectFragmentContract
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        if (!disposable.isDisposed()){
+            disposable.dispose();
+        }
     }
 
     //we link view and presenter here
     @Override
     public void setPresenter(ProjectFragmentContract.IPresenter presenter) {
         projectFragmentPresenter = presenter;
+    }
+
+    @Override
+    public void onItemClick(View v, int position) {
+        projectFragmentPresenter.rvItemClick(v, position, project, getActivity());
     }
 }

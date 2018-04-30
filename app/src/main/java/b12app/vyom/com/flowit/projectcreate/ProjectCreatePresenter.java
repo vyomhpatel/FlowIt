@@ -14,14 +14,14 @@ import retrofit2.Response;
 
 public class ProjectCreatePresenter implements ProjectContract.IPresenter {
     private ProjectContract.IView projectCreateView;
-    private DataManager mDataManager;
+    private IDataSource dataManager;
     private ApiService apiService;
     private static String TAG = "presnter project tag";
 
 
     //ProjectContract.IView can be fragment/activity
     public ProjectCreatePresenter(DataManager dataManager, ProjectCreateActivity fragment) {
-        mDataManager = dataManager;
+        dataManager = dataManager;
         projectCreateView = fragment;
         apiService  = RetrofitInstance.getRetrofitInstance().create(ApiService.class);
     }

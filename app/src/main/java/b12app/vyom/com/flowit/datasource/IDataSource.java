@@ -2,13 +2,19 @@ package b12app.vyom.com.flowit.datasource;
 
 public interface IDataSource {
 
-    interface DbCallback{
+    String getData();
+
+    interface DbCallback {
         void onSuccess();
+
         void onFailure();
     }
 
-    interface NetworkCallback{
+    interface NetworkCallback {
         void onSuccess();
+
         void onFailure();
     }
+
+
 }

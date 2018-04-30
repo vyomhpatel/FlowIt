@@ -25,11 +25,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import b12app.vyom.com.flowit.R;
+import b12app.vyom.com.flowit.datasource.DataManager;
 import b12app.vyom.com.flowit.projectcreate.ProjectCreateActivity;
 import b12app.vyom.com.flowit.tabfragment.FragmentDashboard;
 import b12app.vyom.com.flowit.tabfragment.FragmentInbox;
 import b12app.vyom.com.flowit.tabfragment.FragmentProject;
 import b12app.vyom.com.flowit.tabfragment.FragmentTask;
+import b12app.vyom.com.flowit.tabfragment.project.ProjectFragmentPresenter;
 import b12app.vyom.com.flowit.task.TaskCreateActivity;
 import b12app.vyom.com.utils.ActivityUtil;
 import butterknife.BindView;
@@ -54,6 +56,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @BindView(R.id.nav_view)
     NavigationView leftDrawer;
 
+    //presenter
+    private ProjectFragmentPresenter projectFgtPresenter;
+    private DataManager mDataManager;
 
     private Integer[] bottomTabIcon = {R.drawable.ic_testing};
     private Integer[] bottomIconPress = {R.drawable.ic_testing, R.drawable.ic_testing,
@@ -79,10 +84,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private void initBottomNavView() {
         botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_testing).setText("Inbox"));
-        botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_testing).setText("Project"));
-        botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_testing).setText("Task"));
+        botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_tab_project).setText("Project"));
+        botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_tab_task).setText("Task"));
 //        botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_testing).setText("Timeline"));
-        botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_testing).setText("Dashboard"));
+        botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_tab_subtask).setText("SubTask"));
 
         //default tab selected
         setDefaultTab();
@@ -96,7 +101,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         showMainFloatBtn();
                         break;
                     case 1:
-                        ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), new FragmentProject(), "browseFgt");
+                        //fragment
+                        FragmentProject fragmentProject = new FragmentProject();
+                        //presenter
+                        projectFgtPresenter = new ProjectFragmentPresenter(mDataManager, fragmentProject);
+                        //add fragment
+                        ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), fragmentProject, "browseFgt");
                         showMainFloatBtn();
                         break;
                     case 2:
@@ -125,7 +135,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private void setDefaultTab() {
         botNavView.getTabAt(1).select();
-        ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), new FragmentProject(), "browseFgt");
+        //fragment
+        FragmentProject fragmentProject = new FragmentProject();
+        //presenter
+        projectFgtPresenter = new ProjectFragmentPresenter(mDataManager, fragmentProject);
+        ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(),fragmentProject, "browseFgt");
     }
 
     private void initFloat() {
@@ -137,7 +151,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         items.add(new RFACLabelItem<Integer>()
                 .setLabel(getString(R.string.new_project))
-                .setResId(R.drawable.ic_testing)
+                .setResId(R.drawable.ic_tab_project)
                 .setIconNormalColor(0xffd84315)
                 .setIconPressedColor(0xffbf360c)
                 .setWrapper(0)
@@ -145,7 +159,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         items.add(new RFACLabelItem<Integer>()
                 .setLabel(getString(R.string.new_task))
-                .setResId(R.drawable.ic_testing)
+                .setResId(R.drawable.ic_tab_task)
                 .setIconNormalColor(0xff056f00)
                 .setIconPressedColor(0xff0d5302)
                 .setLabelColor(0xff056f00)
@@ -154,7 +168,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         items.add(new RFACLabelItem<Integer>()
                 .setLabel("New Sub Task")
-                .setResId(R.drawable.ic_testing)
+                .setResId(R.drawable.ic_tab_subtask)
                 .setIconNormalColor(0xffd84315)
                 .setIconPressedColor(0xffbf360c)
                 .setWrapper(2)

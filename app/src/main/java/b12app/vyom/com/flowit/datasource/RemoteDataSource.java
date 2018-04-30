@@ -19,4 +19,9 @@ public class RemoteDataSource implements IDataSource {
         }
         return instance ;
     }
+
+    @Override
+    public String getData() {
+        return null;
+    }
 }
