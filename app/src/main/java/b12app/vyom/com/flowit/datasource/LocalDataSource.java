@@ -19,4 +19,8 @@ public static LocalDataSource getInstance(){
     return instance ;
 }
 
+    @Override
+    public String getData() {
+        return null;
+    }
 }

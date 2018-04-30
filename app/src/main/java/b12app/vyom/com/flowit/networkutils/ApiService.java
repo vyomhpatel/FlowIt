@@ -1,6 +1,5 @@
 package b12app.vyom.com.flowit.networkutils;
 
-import java.util.List;
 
 import b12app.vyom.com.flowit.model.Employee;
 import b12app.vyom.com.flowit.model.GeneralSubTask;
@@ -8,11 +7,13 @@ import b12app.vyom.com.flowit.model.GeneralTask;
 import b12app.vyom.com.flowit.model.MsgReponseBody;
 import b12app.vyom.com.flowit.model.Project;
 import b12app.vyom.com.flowit.model.User;
+import io.reactivex.Flowable;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
-import rx.Observable;
 
 public interface ApiService {
 

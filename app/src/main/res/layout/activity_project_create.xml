@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container_project_create"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/container_project_create"
     android:orientation="vertical">
 
     <include
@@ -21,15 +21,15 @@
         android:padding="@dimen/medium_dimen" />
 
     <EditText
+        android:id="@+id/etProjectDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@null"
-        android:id="@+id/etProjectDescription"
+        android:hint="@string/tap_to_add_description"
         android:paddingBottom="@dimen/medium_dimen"
         android:paddingEnd="@dimen/medium_dimen"
         android:paddingStart="@dimen/medium_dimen"
-        android:paddingTop="@dimen/normal_dimen"
-        android:hint="@string/tap_to_add_description" />
+        android:paddingTop="@dimen/normal_dimen" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -53,11 +53,13 @@
             app:pileWidth="10dp" />
 
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="2"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:weightSum="2">
+
         <TextView
             android:id="@+id/tv_start_date"
             android:layout_width="0dp"
@@ -66,24 +68,26 @@
             android:drawablePadding="@dimen/medium_dimen"
             android:drawableStart="@drawable/ic_date"
             android:gravity="center_vertical"
+            android:hint="@string/set_start_date"
             android:paddingBottom="@dimen/medium_dimen"
             android:paddingStart="@dimen/medium_dimen"
-            android:paddingTop="@dimen/normal_dimen"
-            android:text="@string/set_start_date" />
+            android:paddingTop="@dimen/normal_dimen" />
+
         <TextView
             android:id="@+id/tv_end_date"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:drawablePadding="@dimen/medium_dimen"
             android:drawableStart="@drawable/ic_date"
             android:gravity="center_vertical"
+            android:hint="@string/set_end_date"
             android:paddingBottom="@dimen/medium_dimen"
             android:paddingStart="@dimen/medium_dimen"
-            android:paddingTop="@dimen/normal_dimen"
-            android:text="@string/set_end_date" />
+            android:paddingTop="@dimen/normal_dimen" />
 
     </LinearLayout>
+
     <TextView
         android:id="@+id/tv_workflow"
         android:layout_width="match_parent"
@@ -110,12 +114,12 @@
         android:layout_margin="10dp"
         android:clickable="true"
         android:focusable="true"
+        android:onClick="createProject"
         android:src="@drawable/ic_correct"
         app:backgroundTint="@color/gay4"
         app:backgroundTintMode="src_atop"
         app:borderWidth="3dp"
         app:elevation="5dp"
-        android:onClick="createProject"
         app:fabSize="normal"
         app:rippleColor="@android:color/holo_blue_light"
         app:useCompatPadding="true" />
