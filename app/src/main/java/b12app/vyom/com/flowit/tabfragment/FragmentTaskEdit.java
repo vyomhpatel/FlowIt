@@ -4,7 +4,9 @@ import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +23,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import b12app.vyom.com.flowit.R;
+import b12app.vyom.com.flowit.datasource.DataManager;
 import b12app.vyom.com.flowit.model.GeneralTask;
 import b12app.vyom.com.flowit.networkutils.ApiService;
 import b12app.vyom.com.flowit.networkutils.RetrofitInstance;
@@ -29,8 +32,6 @@ import b12app.vyom.com.utils.MyFlowlayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import android.app.DialogFragment;
-import android.app.Fragment;
 
 /**
  * @Package b12app.vyom.com.flowit.tabfragment
@@ -40,7 +41,11 @@ import android.app.Fragment;
  * @Description FlowIt
  */
 
-public class FragmentTaskEdit extends android.support.v4.app.Fragment  {
+public class FragmentTaskEdit extends android.support.v4.app.Fragment implements TaskEditContract.IView  {
+
+    @BindView(R.id.task_edit_container)
+    CoordinatorLayout taskEditContainer;
+
     @BindView(R.id.tv_task_detail_id)
     TextView taskDetailId;
 
@@ -71,6 +76,8 @@ public class FragmentTaskEdit extends android.support.v4.app.Fragment  {
     private static boolean FLAG_EDIT_MODE = false;
     private ApiService apiService;
     private  GeneralTask.ProjecttaskBean taskNode;
+    private TaskEditContract.IPresenter iPresenterTask;
+    private DataManager dataManager;
 
     int[] urls = {R.drawable.ic_avatar};
 
@@ -83,6 +90,10 @@ public class FragmentTaskEdit extends android.support.v4.app.Fragment  {
 
         //api service initialization
          apiService = RetrofitInstance.getRetrofitInstance().create(ApiService.class);
+
+         //initializing ipresenter
+        dataManager = new DataManager();
+        iPresenterTask = new TaskEditPresenter(this,dataManager);
 
         initFlow();
 
@@ -111,7 +122,9 @@ public class FragmentTaskEdit extends android.support.v4.app.Fragment  {
                     enableEdit(FLAG_EDIT_MODE);
                     addMemberBtn.setVisibility(View.GONE);
                     editFloatBtn.setImageResource(R.drawable.ic_edit);
-
+                    GeneralTask.ProjecttaskBean projecttaskBean =
+                            new GeneralTask.ProjecttaskBean(taskNode.getTaskid(),taskNode.getProjectid(),statusSpr.getSelectedItem().toString());
+                    iPresenterTask.updateTask(v,projecttaskBean);
 
                 }
             }
@@ -198,4 +211,18 @@ public class FragmentTaskEdit extends android.support.v4.app.Fragment  {
         },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
     }
 
+    @Override
+    public void displaySuccessSnack(String taskname) {
+        Snackbar.make(taskEditContainer,"Task status updated for: "+taskname,Snackbar.LENGTH_SHORT).setAction("Ok", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+    }
+
+    @Override
+    public void setPresenter(TaskEditContract.IPresenter presenter) {
+
+    }
 }

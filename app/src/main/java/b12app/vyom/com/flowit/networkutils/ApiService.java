@@ -8,6 +8,8 @@ import b12app.vyom.com.flowit.model.Employee;
 import b12app.vyom.com.flowit.model.GeneralSubTask;
 import b12app.vyom.com.flowit.model.GeneralTask;
 import b12app.vyom.com.flowit.model.Project;
+import b12app.vyom.com.flowit.model.SubTaskMember;
+import b12app.vyom.com.flowit.model.TaskMembers;
 import b12app.vyom.com.flowit.model.User;
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -108,6 +110,27 @@ public interface ApiService {
 
     @GET("pms_project_sub_task_list.php")
     Call<GeneralSubTask> listSubTask();
+
+    //-------------------------------------USER TASK -----------------------------------------
+
+    @GET("pms_view_task_deatil.php")
+    Call<GeneralTask.ProjecttaskBean>getTaskDetails(@Query("taskid") String taskid,
+                                                   @Query("project_id") String project_id);
+
+    @GET("pms_team_task.php")
+    Call<TaskMembers>getTaskMembers(@Query("taskid") String taskid,
+                                    @Query("projectid") String projectid);
+
+    //-------------------------------------USER SUB-TASK -----------------------------------------
+
+    @GET("/pms_view_sub_task_deatil.php")
+    Call<GeneralSubTask.ProjectsubtaskBean>getSubTaskDetails(@Query("taskid") String taskid,
+                                                    @Query("subtask_id") String subtask_id,
+                                                    @Query("project_id") String project_id);
+    @GET("pms_team_sub_task.php")
+    Call<SubTaskMember>getSubTaskMembers(@Query("taskid") String taskid,
+                                      @Query("subtaskid") String subtaskid,
+                                      @Query("projectid") String projectid);
 
 
 }
