@@ -28,11 +28,11 @@ public class TaskEditPresenter implements TaskEditContract.IPresenter {
     private FragmentTaskEdit fragmentTaskEdit;
     private DataManager mDataManager;
 
-    public TaskEditPresenter(DataManager dataManager, TaskEditContract.IView taskEdtFgt) {
+    public TaskEditPresenter(DataManager dataManager, TaskEditContract.IView taskEditFrag) {
 
         this.mDataManager = dataManager;
 
-        fragmentView = taskEdtFgt;
+        fragmentView = taskEditFrag;
     }
 
     @Override

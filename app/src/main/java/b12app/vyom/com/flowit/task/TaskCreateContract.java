@@ -9,7 +9,7 @@ import b12app.vyom.com.flowit.model.Project;
 
 public interface TaskCreateContract {
 
-    interface IView extends BaseView<IPresenter>{
+    interface IView extends BaseView<TaskCreateContract.IPresenter>{
         void displaySnackbar();
 
 

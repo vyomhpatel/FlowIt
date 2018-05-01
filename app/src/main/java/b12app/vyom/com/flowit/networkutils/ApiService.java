@@ -70,7 +70,7 @@ public interface ApiService {
 
     //-------------------------------------TASK -----------------------------------------
 
-    @POST("pms_create_task.php.php")
+    @POST("pms_create_task.php")
     Call<GeneralTask> postTask(@Query("project_id") String project_id,
                                @Query("task_name") String task_name,
                                @Query("task_status") String task_status,
