@@ -1,28 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="b12app.vyom.com.flowit">
-
-    <uses-permission android:name="android.permission.INTERNET" />
-
+<uses-permission android:name="android.permission.INTERNET"/>
     <application
+        android:name=".daggerUtils.AppApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".home.HomeActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".register.SignupActivity" />
-        <activity android:name=".login.LoginActivity">
+        <activity android:name=".startup.StartUp">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,12 +18,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".projectcreate.ProjectCreateActivity"
-            android:theme="@style/ProjectTheme" />
-        <activity
-            android:name=".task.TaskCreateActivity"
-            android:theme="@style/TaskTheme" />
-        <activity android:name=".subtaskcreate.SubTaskCreateActivity"></activity>
+            android:name=".home.HomeActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+        <activity android:name=".projectcreate.ProjectCreateActivity"
+            android:theme="@style/ProjectTheme"/>
+        <activity android:name=".task.TaskCreateActivity"
+            android:theme="@style/TaskTheme"/>
     </application>
 
 </manifest>

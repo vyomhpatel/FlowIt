@@ -6,7 +6,7 @@ import b12app.vyom.com.flowit.home.BasePresenter;
 import b12app.vyom.com.flowit.home.BaseView;
 import b12app.vyom.com.flowit.model.Project;
 
-public interface ProjectContract {
+public interface ProjectCreateContract {
 
     interface IView extends BaseView<IPresenter>{
 

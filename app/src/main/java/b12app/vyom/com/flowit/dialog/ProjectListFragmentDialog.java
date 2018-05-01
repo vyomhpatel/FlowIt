@@ -1,4 +1,4 @@
-package b12app.vyom.com.flowit.task;
+package b12app.vyom.com.flowit.dialog;
 
 import android.app.DialogFragment;
 import android.content.Context;
@@ -25,7 +25,7 @@ public class ProjectListFragmentDialog extends DialogFragment {
 
    private ListView projectList;
    private ApiService apiService;
-   private OnCompleteListener mListener;
+    private OnCompleteListener mListener;
 
     public static interface OnCompleteListener {
         public abstract void onComplete(String project_id,String project_name);

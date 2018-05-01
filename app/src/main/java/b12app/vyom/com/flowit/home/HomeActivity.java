@@ -8,7 +8,6 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,20 +23,24 @@ import com.wangjie.rapidfloatingactionbutton.util.RFABTextUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
 
 import b12app.vyom.com.flowit.R;
+import b12app.vyom.com.flowit.daggerUtils.AppComponent;
+import b12app.vyom.com.flowit.datasource.DataManager;
 import b12app.vyom.com.flowit.projectcreate.ProjectCreateActivity;
-import b12app.vyom.com.flowit.subtaskcreate.SubTaskCreateActivity;
-import b12app.vyom.com.flowit.tabfragment.FragmentSubTask;
+import b12app.vyom.com.flowit.tabfragment.FragmentDashboard;
 import b12app.vyom.com.flowit.tabfragment.FragmentInbox;
 import b12app.vyom.com.flowit.tabfragment.FragmentProject;
 import b12app.vyom.com.flowit.tabfragment.FragmentTask;
+import b12app.vyom.com.flowit.tabfragment.project.ProjectFgtPresenter;
+import b12app.vyom.com.flowit.tabfragment.task.TaskFgtPresenter;
 import b12app.vyom.com.flowit.task.TaskCreateActivity;
 import b12app.vyom.com.utils.ActivityUtil;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener {
+public class HomeActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener {
     @BindView(R.id.bottom_tab_layout)
     TabLayout botNavView;
 
@@ -56,6 +59,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @BindView(R.id.nav_view)
     NavigationView leftDrawer;
 
+    @Inject
+    DataManager mDataManager;
+
+
+    //presenter
+    private ProjectFgtPresenter projectFgtPresenter;
+    private TaskFgtPresenter taskFgtPresenter;
 
     private Integer[] bottomTabIcon = {R.drawable.ic_testing};
     private Integer[] bottomIconPress = {R.drawable.ic_testing, R.drawable.ic_testing,
@@ -68,6 +78,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_home);
+
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
@@ -79,12 +90,17 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         initBottomNavView();
     }
 
+    @Override
+    protected void setupActivityComponent(AppComponent appComponent) {
+        appComponent.inject(this);
+    }
+
     private void initBottomNavView() {
         botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_testing).setText("Inbox"));
-        botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_testing).setText("Project"));
-        botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_testing).setText("Task"));
+        botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_tab_project).setText("Project"));
+        botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_tab_task).setText("Task"));
 //        botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_testing).setText("Timeline"));
-        botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_testing).setText("Subtask"));
+        botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_tab_subtask).setText("SubTask"));
 
         //default tab selected
         setDefaultTab();
@@ -95,18 +111,30 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 switch (tab.getPosition()) {
                     case 0:
                         ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), new FragmentInbox(), "inboxFgt");
+                        showMainFloatBtn();
                         break;
                     case 1:
-                        ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), new FragmentProject(), "browseFgt");
+                        //fragment
+                        FragmentProject fragmentProject = new FragmentProject();
+                        //presenter
+                        projectFgtPresenter = new ProjectFgtPresenter(mDataManager, fragmentProject);
+                        //add fragment
+                        ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), fragmentProject, "browseFgt");
+                        showMainFloatBtn();
                         break;
                     case 2:
-                        ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), new FragmentTask(), "mytaskFgt");
+                        //fragment
+                        FragmentTask fragmentTask = new FragmentTask();
+                        //presenter
+                        taskFgtPresenter = new TaskFgtPresenter(mDataManager, fragmentTask);
+                        ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), fragmentTask, "taskFgt");
+                        showMainFloatBtn();
                         break;
                     case 3:
-                        ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), new FragmentSubTask(), "dashFgt");
+                        ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), new FragmentDashboard(), "dashFgt");
+                        showMainFloatBtn();
                         break;
                 }
-//                bottmeTab.getTabAt(pos_tab).setIcon(iconPressList.get(pos_tab));
             }
 
             @Override
@@ -124,8 +152,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private void setDefaultTab() {
         botNavView.getTabAt(1).select();
-        ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), new FragmentProject(), "browseFgt");
-
+        //fragment
+        FragmentProject fragmentProject = new FragmentProject();
+        //presenter
+        projectFgtPresenter = new ProjectFgtPresenter(mDataManager, fragmentProject);
+        ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(),fragmentProject, "browseFgt");
     }
 
     private void initFloat() {
@@ -137,7 +168,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         items.add(new RFACLabelItem<Integer>()
                 .setLabel(getString(R.string.new_project))
-                .setResId(R.drawable.ic_testing)
+                .setResId(R.drawable.ic_tab_project)
                 .setIconNormalColor(0xffd84315)
                 .setIconPressedColor(0xffbf360c)
                 .setWrapper(0)
@@ -145,7 +176,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         items.add(new RFACLabelItem<Integer>()
                 .setLabel(getString(R.string.new_task))
-                .setResId(R.drawable.ic_testing)
+                .setResId(R.drawable.ic_tab_task)
                 .setIconNormalColor(0xff056f00)
                 .setIconPressedColor(0xff0d5302)
                 .setLabelColor(0xff056f00)
@@ -154,7 +185,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         items.add(new RFACLabelItem<Integer>()
                 .setLabel("New Sub Task")
-                .setResId(R.drawable.ic_testing)
+                .setResId(R.drawable.ic_tab_subtask)
                 .setIconNormalColor(0xffd84315)
                 .setIconPressedColor(0xffbf360c)
                 .setWrapper(2)
@@ -244,10 +275,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             startActivity(new Intent(HomeActivity.this, TaskCreateActivity.class));
 
         }
-        else if(position == 2)
-        {
-            startActivity(new Intent(HomeActivity.this, SubTaskCreateActivity.class));
-        }
         rfabHelper.toggleContent();
     }
 
@@ -259,12 +286,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             startActivity(new Intent(HomeActivity.this, TaskCreateActivity.class));
 
         }
-        else if(position == 2)
-        {
-            startActivity(new Intent(HomeActivity.this, SubTaskCreateActivity.class));
-        }
         rfabHelper.toggleContent();
-
     }
 
     public void dismissMainFloatBtn(){

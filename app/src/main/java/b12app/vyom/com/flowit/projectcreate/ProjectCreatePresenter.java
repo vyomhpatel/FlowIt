@@ -12,8 +12,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ProjectCreatePresenter implements ProjectContract.IPresenter {
-    private ProjectContract.IView projectCreateView;
+public class ProjectCreatePresenter implements ProjectCreateContract.IPresenter {
+    private ProjectCreateContract.IView projectCreateView;
     private IDataSource dataManager;
     private ApiService apiService;
     private static String TAG = "presnter project tag";

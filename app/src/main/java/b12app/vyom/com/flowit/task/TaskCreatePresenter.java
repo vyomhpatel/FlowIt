@@ -4,18 +4,16 @@ import android.util.Log;
 import android.view.View;
 
 import b12app.vyom.com.flowit.datasource.DataManager;
-import b12app.vyom.com.flowit.datasource.IDataSource;
 import b12app.vyom.com.flowit.model.GeneralTask;
-import b12app.vyom.com.flowit.model.Project;
 import b12app.vyom.com.flowit.networkutils.ApiService;
 import b12app.vyom.com.flowit.networkutils.RetrofitInstance;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TaskCreatePresenter implements TaskContract.IPresenter {
+public class TaskCreatePresenter implements TaskCreateContract.IPresenter {
 
-    private TaskContract.IView taskCreateView;
+    private TaskCreateContract.IView taskCreateView;
     private DataManager mdataManager;
     private ApiService apiService;
     private String TAG = TaskCreateActivity.class.getSimpleName();

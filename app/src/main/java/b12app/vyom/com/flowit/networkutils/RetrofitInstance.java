@@ -12,15 +12,16 @@ public class RetrofitInstance {
     private static final String BASE_URL = "http://rjtmobile.com/aamir/pms/android-app/";
 
     private static Retrofit retrofit = null;
-    static Gson gson = new GsonBuilder()
-            .setLenient()
-            .create();
 
     public static Retrofit getRetrofitInstance() {
 
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+
         if (retrofit == null) {
             retrofit = new retrofit2.Retrofit.Builder()
-                    .addConverterFactory(GsonConverterFactory.create(gson))         //gson
+                    .addConverterFactory(GsonConverterFactory.create(gson))      //gson
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())   //Rxjava
                     .baseUrl(BASE_URL)
                     .build();
@@ -30,5 +31,7 @@ public class RetrofitInstance {
         return retrofit;
     }
 
-
+    public static ApiService apiService() {
+        return getRetrofitInstance().create(ApiService.class);
+    }
 }
