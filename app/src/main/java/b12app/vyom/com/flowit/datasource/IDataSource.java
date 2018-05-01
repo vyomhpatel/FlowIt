@@ -24,6 +24,8 @@ public interface IDataSource {
 
     void updateTask(GeneralTask.ProjecttaskBean taskNode, NetworkCallback networkCallback);
 
+    void getTaskMemberList(DatabaseReference myRef, DbCallback dbCallback, GeneralTask.ProjecttaskBean taskNode);
+
     interface DbCallback {
 
         void onSuccess(Object response);

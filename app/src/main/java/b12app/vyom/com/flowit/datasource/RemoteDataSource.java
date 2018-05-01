@@ -135,13 +135,12 @@ public class RemoteDataSource implements IDataSource {
     @Override
     public void updateTask(GeneralTask.ProjecttaskBean taskNode, final NetworkCallback networkCallback) {
 
-        String user_id = "18";
+        String user_id = "14";
 
         RetrofitInstance.apiService().updateTaskStatus(taskNode.getTaskid(), taskNode.getProjectid(), user_id, taskNode.getTaskstatus())
                 .enqueue(new Callback<MsgReponseBody>() {
                     @Override
                     public void onResponse(Call<MsgReponseBody> call, Response<MsgReponseBody> response) {
-                        Log.i(TAG, "task edit status: " + response.body());
                         networkCallback.onSuccess(response.body().getMsg());
                     }
 
@@ -150,6 +149,11 @@ public class RemoteDataSource implements IDataSource {
                         networkCallback.onFailure(t);
                     }
                 });
+    }
+
+    @Override
+    public void getTaskMemberList(DatabaseReference myRef, DbCallback dbCallback, GeneralTask.ProjecttaskBean taskNode) {
+
     }
 
     @Override

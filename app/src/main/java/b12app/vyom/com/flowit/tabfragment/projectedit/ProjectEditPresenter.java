@@ -21,6 +21,7 @@ import java.util.Locale;
 
 import b12app.vyom.com.flowit.datasource.DataManager;
 import b12app.vyom.com.flowit.datasource.IDataSource;
+import b12app.vyom.com.flowit.home.Global;
 import b12app.vyom.com.flowit.model.Employee;
 import b12app.vyom.com.flowit.model.Project;
 import b12app.vyom.com.utils.FbHelper;
@@ -47,14 +48,14 @@ public class ProjectEditPresenter implements ProjectEditContract.IPresenter {
 
     @Override
     public void getData(Bundle bundle) {
-        Project.ProjectsBean projectNode = bundle.getParcelable("projectnode");
+        Project.ProjectsBean projectNode = bundle.getParcelable(Global.PROJECT_NODE);
 
         fragmentView.initView(projectNode);
     }
 
     @Override
     public void initFireDb(final Project.ProjectsBean projectsBean) {
-        myRef = FbHelper.getInstance().getReference("Team");
+        myRef = FbHelper.getInstance().getReference(Global.TABLE_PROJECT_TEAM);
 
         mDataManager.getMemberList(myRef, new IDataSource.DbCallback() {
             @Override

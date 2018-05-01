@@ -9,11 +9,13 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +23,7 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -28,18 +31,23 @@ import b12app.vyom.com.flowit.R;
 import b12app.vyom.com.flowit.daggerUtils.AppApplication;
 import b12app.vyom.com.flowit.datasource.DataManager;
 import b12app.vyom.com.flowit.dialog.EmployeeListFragmentDialog;
+import b12app.vyom.com.flowit.dialog.MemberDialog;
+import b12app.vyom.com.flowit.dialog.TeamDialog;
+import b12app.vyom.com.flowit.model.Employee;
 import b12app.vyom.com.flowit.model.GeneralTask;
 import b12app.vyom.com.flowit.networkutils.ApiService;
 import b12app.vyom.com.flowit.networkutils.RetrofitInstance;
 import b12app.vyom.com.flowit.tabfragment.taskedit.TaskEditContract;
 import b12app.vyom.com.flowit.tabfragment.taskedit.TaskEditPresenter;
 import b12app.vyom.com.utils.CircleImageView;
+import b12app.vyom.com.utils.FbHelper;
 import b12app.vyom.com.utils.MyFlowlayout;
+import b12app.vyom.com.utils.StatusHelper;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class FragmentTaskEdit extends Fragment implements TaskEditContract.IView, DatePickerDialog.OnDateSetListener, View.OnClickListener {
+public class FragmentTaskEdit extends Fragment implements TaskEditContract.IView, DatePickerDialog.OnDateSetListener, View.OnClickListener, TeamDialog.OnCompleteListener, EmployeeListFragmentDialog.OnCompleteListener {
 
     @BindView(R.id.task_edit_container)
     CoordinatorLayout taskEditContainer;
@@ -68,15 +76,20 @@ public class FragmentTaskEdit extends Fragment implements TaskEditContract.IView
     @BindView(R.id.imgbtn_add_member_to_task)
     ImageButton addMemberBtn;
 
+    @BindView(R.id.ll_task_member)
+    LinearLayout memberLl;
+
     @Inject
     DataManager mDataManager;
 
-
-    private DatePickerDialog toDatePickerDialog;
+    private List<Employee.EmployeesBean> memberList;
 
     private Unbinder unbinder;
+
     private static boolean FLAG_EDIT_MODE = false;
+
     private GeneralTask.ProjecttaskBean taskNode;
+
     private TaskEditContract.IPresenter taskEdtPresenter;
 
     int[] urls = {R.drawable.ic_avatar};
@@ -99,7 +112,6 @@ public class FragmentTaskEdit extends Fragment implements TaskEditContract.IView
         taskEdtPresenter = new TaskEditPresenter(mDataManager, this);
 
         taskEdtPresenter.getData(getArguments());
-
 
         return v;
     }
@@ -125,10 +137,16 @@ public class FragmentTaskEdit extends Fragment implements TaskEditContract.IView
         myFlowlayout.setEnabled(enable);
     }
 
+    @Override
+    public void updateMembList(List<Employee.EmployeesBean> list) {
+        memberList = list;
+    }
+
 
     @Override
     public void initView(Parcelable taskParc) {
         this.taskNode = (GeneralTask.ProjecttaskBean) taskParc;
+
         taskDetailId.setText("Task ID: " + taskNode.getTaskid());
         nameEdt.setText(taskNode.getTaskname());
         descEdt.setText(taskNode.getTaskdesc());
@@ -141,22 +159,13 @@ public class FragmentTaskEdit extends Fragment implements TaskEditContract.IView
 
         initFlow();
 
-        //date picker
-        Calendar newCalendar = Calendar.getInstance();
-        toDatePickerDialog = new DatePickerDialog(getContext(), this, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
-
+        //fireBase database
+        taskEdtPresenter.initFireDb(taskNode);
 
         //click listener
         editFloatBtn.setOnClickListener(this);
-        dateTv.setOnClickListener(this);
         addMemberBtn.setOnClickListener(this);
-
-    }
-
-    @Override
-    public void updateEndDate(String dateEndString) {
-        Toast.makeText(getActivity(), dateEndString, Toast.LENGTH_SHORT).show();
-        dateTv.setText(dateEndString);
+        memberLl.setOnClickListener(this);
     }
 
     @Override
@@ -171,18 +180,22 @@ public class FragmentTaskEdit extends Fragment implements TaskEditContract.IView
             addMemberBtn.setVisibility(View.GONE);
             editFloatBtn.setImageResource(R.drawable.ic_edit);
 
+            //udpate status
+            taskNode.setTaskstatus(statusSpr.getSelectedItemPosition() + 1 + "");
+            //go web request
             taskEdtPresenter.updateTask(taskNode);
         }
     }
 
     @Override
     public void showToast(String msg) {
-        Snackbar.make(taskEditContainer, msg, Snackbar.LENGTH_SHORT).setAction("Ok", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+//        Snackbar.make(taskEditContainer, msg, Snackbar.LENGTH_SHORT).setAction("Ok", new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
     }
 
     @Override
@@ -192,7 +205,7 @@ public class FragmentTaskEdit extends Fragment implements TaskEditContract.IView
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        taskEdtPresenter.datePickerClick(year, month, dayOfMonth, taskNode);
+
     }
 
     @Override
@@ -202,12 +215,15 @@ public class FragmentTaskEdit extends Fragment implements TaskEditContract.IView
                 taskEdtPresenter.editFloatBtnClick(v, FLAG_EDIT_MODE, nameEdt, statusSpr, descEdt, taskNode);
 
                 break;
-            case R.id.tv_task_detail_due_date:
 
-                toDatePickerDialog.show();
-
+            case R.id.ll_task_member:
+                if (memberList == null || memberList.size() < 1 ) {
+                    Toast.makeText(getContext(), "No team member yet", Toast.LENGTH_SHORT).show();
+                } else {
+                    MemberDialog memberDialog = MemberDialog.newInstance(memberList);
+                    memberDialog.showDialog(getActivity().getSupportFragmentManager(), "memberDlg");
+                }
                 break;
-
             case R.id.imgbtn_add_member_to_task:
 
                 EmployeeListFragmentDialog employeeListFragmentDialog = new EmployeeListFragmentDialog();
@@ -217,10 +233,20 @@ public class FragmentTaskEdit extends Fragment implements TaskEditContract.IView
                 employeeListFragmentDialog.setArguments(bundle);
                 employeeListFragmentDialog.show(getFragmentManager(), "emp dialog");
 
-                //       apiService.assignTask(taskNode.getTaskid(),taskNode.getProjectid(),)
+                employeeListFragmentDialog.setListener(this);
                 break;
         }
     }
 
 
+
+    @Override
+    public void onComplete(List<Employee.EmployeesBean> employeeIdList) {
+
+    }
+
+    @Override
+    public void onComplete(int position, List<Employee.EmployeesBean> list) {
+        taskEdtPresenter.addTaskMember(position, list, taskNode);
+    }
 }

@@ -6,10 +6,12 @@ import android.view.View;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.util.List;
+
 import b12app.vyom.com.flowit.home.BasePresenter;
 import b12app.vyom.com.flowit.home.BaseView;
+import b12app.vyom.com.flowit.model.Employee;
 import b12app.vyom.com.flowit.model.GeneralTask;
-import b12app.vyom.com.flowit.model.Project;
 
 public interface TaskEditContract {
 
@@ -18,21 +20,24 @@ public interface TaskEditContract {
 
         void initView(Parcelable taskNode);
 
-        void updateEndDate(String dateEndString);
-
         void changeEditMode(boolean flagEditMode);
 
         void showToast(String s);
+
+        void updateMembList(List<Employee.EmployeesBean> list);
+
     }
 
     interface IPresenter extends BasePresenter {
 
         void getData(Bundle arguments);
 
-        void datePickerClick(int year, int month, int dayOfMonth, GeneralTask.ProjecttaskBean taskNode);
-
         void editFloatBtnClick(View v, boolean flagEditMode, TextView nameEdt, Spinner statusSpr, TextView descEdt, GeneralTask.ProjecttaskBean taskNode);
 
         void updateTask(GeneralTask.ProjecttaskBean taskNode);
+
+        void initFireDb(GeneralTask.ProjecttaskBean taskNode);
+
+        void addTaskMember(int position, List<Employee.EmployeesBean> list, GeneralTask.ProjecttaskBean taskNode);
     }
 }

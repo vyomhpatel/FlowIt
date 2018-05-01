@@ -82,8 +82,6 @@ public class MemberDialog extends DialogFragment {
 
     private void fetchData() {
         memberList = getArguments().getParcelableArrayList("list");
-
-//        Log.i("测试", memberList.get(0).getEmpfirstname());
     }
 
     private void initRecyclerView() {
@@ -91,7 +89,6 @@ public class MemberDialog extends DialogFragment {
         memberRv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         memberRv.setAdapter(employeeRvAdapter);
         memberRv.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-
     }
 
     public void showDialog(FragmentManager fragmentManager, String tag) {

@@ -48,6 +48,7 @@
             android:background="@color/gray2" />
 
         <LinearLayout
+            android:id="@+id/ll_task_member"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/normal_dimen"

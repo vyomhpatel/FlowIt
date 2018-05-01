@@ -85,7 +85,7 @@ public interface ApiService {
     Observable<GeneralTask> getTaskObservableList();
 
     @POST("pms_assign_task_project.php")
-    Call<JSONObject>assignTask(@Query("taskid") String taskid,
+    Call<MsgReponseBody>assignTask(@Query("taskid") String taskid,
                                @Query("project_id") String project_id,
                                @Query("team_member_userid") String team_member_userid);
 

@@ -52,24 +52,16 @@ public class DataManager implements IDataSource {
     @Override
     public void updateMember(DatabaseReference myRef, List<Employee.EmployeesBean> memberList, Project.ProjectsBean projectNode, DbCallback dbCallback) {
         localDataSource.updateMember(myRef, memberList, projectNode, dbCallback);
-
-        //        RetrofitInstance.apiService().postEmployee(projectNode.getId(), employeeIdList.get(0)).enqueue(new Callback<MsgReponseBody>() {
-//            @Override
-//            public void onResponse(Call<MsgReponseBody> call, Response<MsgReponseBody> response) {
-
-//                 Toast.makeText(getContext(), response.body().getMsg().get(0), Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onFailure(Call<MsgReponseBody> call, Throwable t) {
-//
-//            }
-//        });
     }
 
     @Override
     public void updateTask(GeneralTask.ProjecttaskBean taskNode, NetworkCallback networkCallback) {
         remoteDataSource.updateTask(taskNode, networkCallback);
+    }
+
+    @Override
+    public void getTaskMemberList(DatabaseReference myRef, DbCallback dbCallback, GeneralTask.ProjecttaskBean taskNode) {
+        localDataSource.getTaskMemberList(myRef, dbCallback, taskNode);
     }
 
     @Override

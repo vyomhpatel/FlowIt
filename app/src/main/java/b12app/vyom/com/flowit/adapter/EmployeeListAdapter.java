@@ -68,19 +68,19 @@ public class EmployeeListAdapter extends BaseAdapter {
         switch (employeesBeans.get(position).getEmpdesignation()) {
 
             case "manager":
-                employeeListViewHolder.designation_text.setText("Manager");
+                employeeListViewHolder.designation_text.setText("MGR");
                 break;
             case "MNGR":
-                employeeListViewHolder.designation_text.setText("Manager");
+                employeeListViewHolder.designation_text.setText("MGR");
                 break;
             case "TL":
-                employeeListViewHolder.designation_text.setText("Team Lead");
+                employeeListViewHolder.designation_text.setText("TL");
                 break;
             case "DVLPR":
-                employeeListViewHolder.designation_text.setText("Developer");
+                employeeListViewHolder.designation_text.setText("DEV");
                 break;
             case "TSTR":
-                employeeListViewHolder.designation_text.setText("Tester");
+                employeeListViewHolder.designation_text.setText("QA");
                 break;
 
         }

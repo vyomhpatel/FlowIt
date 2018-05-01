@@ -220,26 +220,30 @@ public class FragmentProjectEdit extends Fragment implements ProjectEditContract
         switch (v.getId()) {
             case R.id.fab_detail_project:
                 projectEditPresenter.editFloatBtnClick(v, FLAG_EDIT_MODE, nameEdt, statusSpr, descEdt, projectNode);
+
                 break;
+
             case R.id.tv_detail_date:
                 projectEditPresenter.datePickerClick();
-                break;
-            case R.id.imgbtn_add_member:
 
+                break;
+
+            case R.id.imgbtn_add_member:
                 TeamDialog dialog = TeamDialog.newInstance(memberList);
                 dialog.showDialog(getActivity().getSupportFragmentManager(), "employeeDlg");
                 //dialog click listener
                 dialog.setListener(this);
 
                 break;
-            case R.id.ll_member:
 
+            case R.id.ll_member:
                 if (memberList.size() < 1 || memberList == null) {
                     Toast.makeText(getContext(), "No team member yet", Toast.LENGTH_SHORT).show();
                 } else {
                     MemberDialog memberDialog = MemberDialog.newInstance(memberList);
                     memberDialog.showDialog(getActivity().getSupportFragmentManager(), "memberDlg");
                 }
+
                 break;
         }
     }

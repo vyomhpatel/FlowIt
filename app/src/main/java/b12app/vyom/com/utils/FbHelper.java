@@ -42,7 +42,7 @@ public class FbHelper {
         return database.getReference(nodeName);
     }
 
-    public void addTeamMember(DatabaseReference myRef, List<Employee.EmployeesBean> employeeIdList, String projectId){
+    public void addTeamMember(DatabaseReference myRef, List<Employee.EmployeesBean> employeeIdList, String projectId) {
         //add team member
         //if already have member, it will wipe out content and reset
         //if not, add new project team
@@ -78,5 +78,42 @@ public class FbHelper {
 
         return memberList;
     }
+
+    public List<Employee.EmployeesBean> getTaskTeam(DataSnapshot dataSnapshot, String projectId, String taskId) {
+        List<Employee.EmployeesBean> memberList = new ArrayList<>();
+
+        for (DataSnapshot ds : dataSnapshot.child(projectId).child(taskId).getChildren()) {
+
+            Employee.EmployeesBean currentEmp = new Employee.EmployeesBean(
+                    ds.getValue(Employee.EmployeesBean.class).getEmpid(),
+                    ds.getValue(Employee.EmployeesBean.class).getEmpfirstname(),
+                    ds.getValue(Employee.EmployeesBean.class).getEmplastname(),
+                    ds.getValue(Employee.EmployeesBean.class).getEmpemail(),
+                    ds.getValue(Employee.EmployeesBean.class).getEmpmobile(),
+                    ds.getValue(Employee.EmployeesBean.class).getEmpdesignation(),
+                    ds.getValue(Employee.EmployeesBean.class).getDateofjoining());
+
+            memberList.add(currentEmp);
+        }
+
+        return memberList;
+    }
+
+
+    public void addTaskTeamMember(DatabaseReference myRef, Employee.EmployeesBean employeesBean, String projectId, String taskId) {
+        //add team member
+        //if already have member, it will wipe out content and reset
+        //if not, add new project team
+        myRef.child(projectId).child(taskId).setValue(null);
+        myRef.child(projectId).child(taskId).child(employeesBean.getEmpid()).child("empid").setValue(employeesBean.getEmpid());
+        myRef.child(projectId).child(taskId).child(employeesBean.getEmpid()).child("empfirstname").setValue(employeesBean.getEmpfirstname());
+        myRef.child(projectId).child(taskId).child(employeesBean.getEmpid()).child("emplastname").setValue(employeesBean.getEmplastname());
+        myRef.child(projectId).child(taskId).child(employeesBean.getEmpid()).child("empemail").setValue(employeesBean.getEmpemail());
+        myRef.child(projectId).child(taskId).child(employeesBean.getEmpid()).child("empmobile").setValue(employeesBean.getEmpmobile());
+        myRef.child(projectId).child(taskId).child(employeesBean.getEmpid()).child("empdesignation").setValue(employeesBean.getEmpdesignation());
+        myRef.child(projectId).child(taskId).child(employeesBean.getEmpid()).child("dateofjoining").setValue(employeesBean.getDateofjoining());
+
+    }
+
 
 }

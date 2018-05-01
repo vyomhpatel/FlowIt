@@ -1,7 +1,6 @@
 package b12app.vyom.com.flowit.datasource;
 
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -75,6 +74,25 @@ public class LocalDataSource implements IDataSource {
     @Override
     public void updateTask(GeneralTask.ProjecttaskBean taskNode, NetworkCallback networkCallback) {
 
+    }
+
+    @Override
+    public void getTaskMemberList(DatabaseReference myRef, final DbCallback dbCallback, final GeneralTask.ProjecttaskBean taskNode) {
+        // Read from the database
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                dbCallback.onSuccess(FbHelper.getInstance().getTaskTeam(dataSnapshot, taskNode.getProjectid(), taskNode.getTaskid()));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                dbCallback.onFailure(error.getMessage());
+            }
+        });
     }
 
     @Override

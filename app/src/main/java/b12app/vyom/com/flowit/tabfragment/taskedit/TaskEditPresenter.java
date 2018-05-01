@@ -5,33 +5,26 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
+import com.google.firebase.database.DatabaseReference;
 
-import b12app.vyom.com.flowit.R;
+import java.util.List;
+
 import b12app.vyom.com.flowit.datasource.DataManager;
 import b12app.vyom.com.flowit.datasource.IDataSource;
+import b12app.vyom.com.flowit.home.Global;
+import b12app.vyom.com.flowit.model.Employee;
 import b12app.vyom.com.flowit.model.GeneralTask;
-import b12app.vyom.com.flowit.networkutils.ApiService;
-import b12app.vyom.com.flowit.networkutils.RetrofitInstance;
-import b12app.vyom.com.flowit.tabfragment.FragmentTaskEdit;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import b12app.vyom.com.utils.FbHelper;
 
 public class TaskEditPresenter implements TaskEditContract.IPresenter {
     public static String TAG = "task edit presenter";
     private TaskEditContract.IView fragmentView;
-    private FragmentTaskEdit fragmentTaskEdit;
     private DataManager mDataManager;
+    private DatabaseReference myRef;
 
     public TaskEditPresenter(DataManager dataManager, TaskEditContract.IView taskEdtFgt) {
-
         this.mDataManager = dataManager;
-
         fragmentView = taskEdtFgt;
     }
 
@@ -40,20 +33,9 @@ public class TaskEditPresenter implements TaskEditContract.IPresenter {
 
     }
 
-
     @Override
     public void getData(Bundle arguments) {
         fragmentView.initView(arguments.getParcelable("taskNode"));
-    }
-
-    @Override
-    public void datePickerClick(int year, int month, int dayOfMonth, GeneralTask.ProjecttaskBean taskNode) {
-        final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-        Calendar newDate = Calendar.getInstance();
-        newDate.set(year, month, dayOfMonth);
-        String dateEndString = String.valueOf(sdf.format(newDate.getTime()));
-
-        fragmentView.updateEndDate(dateEndString);
     }
 
     @Override
@@ -78,8 +60,12 @@ public class TaskEditPresenter implements TaskEditContract.IPresenter {
         mDataManager.updateTask(taskNode, new IDataSource.NetworkCallback() {
             @Override
             public void onSuccess(Object response) {
+                List<String> msgRes = (List<String>)response;
 
-                fragmentView.showToast(response.toString());
+                fragmentView.showToast(msgRes.get(0));
+
+                Log.i(TAG, "updateTask: " + msgRes.get(0));
+
             }
 
             @Override
@@ -88,4 +74,29 @@ public class TaskEditPresenter implements TaskEditContract.IPresenter {
             }
         });
     }
+
+    @Override
+    public void initFireDb(GeneralTask.ProjecttaskBean taskNode) {
+        myRef = FbHelper.getInstance().getReference(Global.TABLE_TASK_TEAM);
+
+        mDataManager.getTaskMemberList(myRef, new IDataSource.DbCallback() {
+            @Override
+            public void onSuccess(Object response) {
+                List<Employee.EmployeesBean> list = (List<Employee.EmployeesBean>) response;
+
+                fragmentView.updateMembList(list);
+            }
+
+            @Override
+            public void onFailure(String msg) {
+                Log.i(TAG, msg);
+            }
+        }, taskNode);
+    }
+
+    @Override
+    public void addTaskMember(int position, List<Employee.EmployeesBean> list, GeneralTask.ProjecttaskBean taskNode) {
+        FbHelper.getInstance().addTaskTeamMember(myRef, list.get(position), taskNode.getProjectid(), taskNode.getTaskid());
+    }
+
 }
