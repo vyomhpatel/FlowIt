@@ -6,20 +6,19 @@ import android.view.View;
 import b12app.vyom.com.flowit.home.BasePresenter;
 import b12app.vyom.com.flowit.home.BaseView;
 import b12app.vyom.com.flowit.model.Project;
-import b12app.vyom.com.flowit.networkutils.ApiService;
 import io.reactivex.disposables.Disposable;
 
 /**
  * @Package b12app.vyom.com.flowit.tabfragment
- * @FileName ProjectFragmentContract
+ * @FileName ProjectFgtContract
  * @Date 4/26/18, 1:02 PM
  * @Author Created by fengchengding
  * @Description FlowIt
  */
 
-public interface ProjectFragmentContract {
+public interface ProjectFgtContract {
 
-    interface IView extends BaseView<ProjectFragmentContract.IPresenter> {
+    interface IView extends BaseView<ProjectFgtContract.IPresenter> {
 
 
         void initRecyclerView(Project project);
@@ -30,7 +29,7 @@ public interface ProjectFragmentContract {
     interface IPresenter extends BasePresenter {
 
 
-        Disposable getProjectList(ApiService apiService);
+        Disposable getProjectList();
 
         void rvItemClick(View v, int position, Project project, FragmentActivity activity);
     }

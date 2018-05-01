@@ -4,6 +4,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import b12app.vyom.com.flowit.model.Employee;
@@ -42,7 +43,10 @@ public class FbHelper {
     }
 
     public void addTeamMember(DatabaseReference myRef, List<Employee.EmployeesBean> employeeIdList, String projectId){
-        myRef.setValue(null);
+        //add team member
+        //if already have member, it will wipe out content and reset
+        //if not, add new project team
+        myRef.child(projectId).setValue(null);
         for (int i = 0; i < employeeIdList.size(); i++) {
             myRef.child(projectId).child(employeeIdList.get(i).getEmpid()).child("empid").setValue(employeeIdList.get(i).getEmpid());
             myRef.child(projectId).child(employeeIdList.get(i).getEmpid()).child("empfirstname").setValue(employeeIdList.get(i).getEmpfirstname());
@@ -55,7 +59,9 @@ public class FbHelper {
     }
 
 
-    public void getProjectTeam(List<Employee.EmployeesBean> memberList, DataSnapshot dataSnapshot, String projectId) {
+    public List<Employee.EmployeesBean> getProjectTeam(DataSnapshot dataSnapshot, String projectId) {
+        List<Employee.EmployeesBean> memberList = new ArrayList<>();
+
         for (DataSnapshot ds : dataSnapshot.child(projectId).getChildren()) {
 
             Employee.EmployeesBean currentEmp = new Employee.EmployeesBean(
@@ -69,6 +75,8 @@ public class FbHelper {
 
             memberList.add(currentEmp);
         }
+
+        return memberList;
     }
 
 }

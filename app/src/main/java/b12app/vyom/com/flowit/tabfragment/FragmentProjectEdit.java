@@ -17,36 +17,31 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
+
+
+import javax.inject.Inject;
 
 import b12app.vyom.com.flowit.R;
+import b12app.vyom.com.flowit.daggerUtils.AppApplication;
+import b12app.vyom.com.flowit.datasource.DataManager;
+
 import b12app.vyom.com.flowit.dialog.MemberDialog;
 import b12app.vyom.com.flowit.dialog.TeamDialog;
 import b12app.vyom.com.flowit.model.Employee;
-import b12app.vyom.com.flowit.model.MsgReponseBody;
 import b12app.vyom.com.flowit.model.Project;
-import b12app.vyom.com.flowit.networkutils.RetrofitInstance;
+import b12app.vyom.com.flowit.tabfragment.projectedit.ProjectEditContract;
+import b12app.vyom.com.flowit.tabfragment.projectedit.ProjectEditPresenter;
 import b12app.vyom.com.utils.CircleImageView;
 import b12app.vyom.com.utils.FbHelper;
 import b12app.vyom.com.utils.MyFlowlayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+
 
 /**
  * @Package b12app.vyom.com.flowit.tabfragment
@@ -56,7 +51,7 @@ import retrofit2.Response;
  * @Description FlowIt
  */
 
-public class FragmentProjectEdit extends Fragment {
+public class FragmentProjectEdit extends Fragment implements ProjectEditContract.IView, DatePickerDialog.OnDateSetListener, View.OnClickListener, TeamDialog.OnCompleteListener {
     @BindView(R.id.tv_detail_id)
     TextView projectIdTv;
 
@@ -84,12 +79,13 @@ public class FragmentProjectEdit extends Fragment {
     @BindView(R.id.imgbtn_add_member)
     ImageButton addMemberBtn;
 
+    @Inject
+    DataManager dataManager;
+
     private DatePickerDialog toDatePickerDialog;
     private Project.ProjectsBean projectNode;
-    private String projectId, projectName, projectDesc, currentEndDate;
-    private int projectStatus;
-    private DatabaseReference myRef;
     private List<Employee.EmployeesBean> memberList;
+    private ProjectEditPresenter projectEditPresenter;
 
     private Unbinder unbinder;
     private static boolean FLAG_EDIT_MODE = false;
@@ -104,169 +100,19 @@ public class FragmentProjectEdit extends Fragment {
         View v = inflater.inflate(R.layout.layout_project_detail, container, false);
         unbinder = ButterKnife.bind(this, v);
 
-        initFlow();
+        //dagger2 inject
+        AppApplication.get(getContext())
+                .getAppComponent()
+                .inject(this);
 
-        initView();
+        projectEditPresenter = new ProjectEditPresenter(dataManager, this);
 
-        initFireBase();
-
-        clickListener();
+        projectEditPresenter.getData(getArguments());
 
         return v;
     }
 
-    private void initFireBase() {
-        myRef = FbHelper.getInstance().getReference("Team");
 
-        // Read from the database
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                memberList = new ArrayList<>();
-
-                FbHelper.getInstance().getProjectTeam(memberList, dataSnapshot, projectId);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w(TAG, "Failed to read value.", error.toException());
-            }
-        });
-    }
-
-
-    private void clickListener() {
-        editFloatBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!Boolean.valueOf(v.getTag().toString())) {
-                    //enable edit mode
-                    FLAG_EDIT_MODE = true;
-                    v.setTag(FLAG_EDIT_MODE);
-                    enableEdit(FLAG_EDIT_MODE);
-                    addMemberBtn.setVisibility(View.VISIBLE);
-                    editFloatBtn.setImageResource(R.drawable.ic_correct);
-
-                } else {
-                    //disable edit mode
-                    FLAG_EDIT_MODE = false;
-                    v.setTag(FLAG_EDIT_MODE);
-                    enableEdit(FLAG_EDIT_MODE);
-                    addMemberBtn.setVisibility(View.GONE);
-                    editFloatBtn.setImageResource(R.drawable.ic_edit);
-
-                    //save new name, status, desc
-                    projectName = nameEdt.getText().toString();
-                    projectStatus = statusSpr.getSelectedItemPosition() + 1;
-                    projectDesc = descEdt.getText().toString();
-
-                    //do network call to update
-                    RetrofitInstance.apiService().updateProject(projectId, projectName, String.valueOf(projectStatus), projectDesc, projectNode.getStartdate(), currentEndDate).enqueue(new Callback<MsgReponseBody>() {
-                        @Override
-                        public void onResponse(Call<MsgReponseBody> call, Response<MsgReponseBody> response) {
-
-                            Toast.makeText(getContext(), response.body().getMsg().get(0), Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void onFailure(Call<MsgReponseBody> call, Throwable t) {
-                            t.getMessage();
-                        }
-                    });
-                }
-            }
-        });
-
-        dateTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toDatePickerDialog.show();
-            }
-        });
-
-        addMemberBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TeamDialog dialog = TeamDialog.newInstance(memberList);
-
-                dialog.showDialog(getActivity().getSupportFragmentManager(), "employeeDlg");
-
-                //listener to show the result of team creation
-                //TODO need a way to save team member data, since api only allow to post 1 employee id
-                dialog.setListener(new TeamDialog.OnCompleteListener() {
-                    @Override
-                    public void onComplete(List<Employee.EmployeesBean> employeeIdList) {
-
-                        //fireBase db add team member
-                        FbHelper.getInstance().addTeamMember(myRef, employeeIdList, projectId);
-
-                        Toast.makeText(getContext(), "Team created successfully", Toast.LENGTH_SHORT).show();
-
-//                        RetrofitInstance.apiService().postEmployee(projectNode.getId(), employeeIdList.get(0)).enqueue(new Callback<MsgReponseBody>() {
-//                            @Override
-//                            public void onResponse(Call<MsgReponseBody> call, Response<MsgReponseBody> response) {
-//
-//                                Toast.makeText(getContext(), response.body().getMsg().get(0), Toast.LENGTH_SHORT).show();
-//                            }
-//
-//                            @Override
-//                            public void onFailure(Call<MsgReponseBody> call, Throwable t) {
-//
-//                            }
-//                        });
-                    }
-                });
-            }
-        });
-
-
-        memberLl.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (memberList.size() < 1 || memberList == null) {
-                    Toast.makeText(getContext(), "No team member yet", Toast.LENGTH_SHORT).show();
-                } else {
-                    MemberDialog dialog = MemberDialog.newInstance(memberList);
-                    dialog.showDialog(getActivity().getSupportFragmentManager(), "memberDlg");
-                }
-            }
-        });
-    }
-
-    private void initView() {
-        projectNode = getArguments().getParcelable("projectnode");
-
-        projectId = projectNode.getId();
-        projectName = projectNode.getProjectname();
-        projectDesc = projectNode.getProjectdesc();
-        projectStatus = Integer.valueOf(projectNode.getProjectstatus());
-        currentEndDate = projectNode.getEndstart();
-
-        projectIdTv.setText(getString(R.string.feng_project_id) + "  " + projectId);
-        nameEdt.setText(projectName);
-        descEdt.setText(projectDesc);
-        statusSpr.setSelection(projectStatus - 1);
-        dateTv.setText(getString(R.string.feng_due_date) + "  " + currentEndDate);
-        editFloatBtn.setTag(FLAG_EDIT_MODE);
-
-        initDatePicker();
-
-        //disable edit mode
-        enableEdit(false);
-
-    }
-
-    public void initFlow() {
-        LayoutInflater inflater = LayoutInflater.from(getContext());
-        for (int url : urls) {
-            CircleImageView imageView = (CircleImageView) inflater.inflate(R.layout.item_flowlayout, myFlowlayout, false);
-            Picasso.with(getContext()).load(url).fit().into(imageView);
-            myFlowlayout.addView(imageView);
-        }
-    }
 
     @Override
     public void onDestroyView() {
@@ -282,36 +128,125 @@ public class FragmentProjectEdit extends Fragment {
         dateTv.setEnabled(enable);
     }
 
-    public void initDatePicker() {
-        Calendar newCalendar = Calendar.getInstance();
-        final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+    @Override
+    public void setPresenter(ProjectEditContract.IPresenter presenter) {
 
-        toDatePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
-
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                StringBuilder sb = new StringBuilder();
-                try {
-                    Date startDate = sdf.parse(projectNode.getStartdate());
-                    Date endDate = sdf.parse(sb.append(year).append("-").append(monthOfYear + 1).append("-").append(dayOfMonth).toString());
-
-                    //check if end date is early than start date
-                    if (startDate.getTime() > endDate.getTime()) {
-
-                        Toast.makeText(getContext(), R.string.feng_date_alert, Toast.LENGTH_SHORT).show();
-
-                    } else {
-                        //save due date
-                        currentEndDate = sdf.format(endDate);
-                        dateTv.setText(getString(R.string.feng_due_date) + " " + currentEndDate);
-
-                    }
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
     }
 
+    @Override
+    public void initView(Project.ProjectsBean projectNode) {
+        this.projectNode = projectNode;
 
+        projectIdTv.setText(getString(R.string.feng_project_id) + "  " + projectNode.getId());
+        nameEdt.setText(projectNode.getProjectname());
+        descEdt.setText(projectNode.getProjectdesc());
+        statusSpr.setSelection((Integer.valueOf(projectNode.getProjectstatus()) - 1));
+        dateTv.setText(getString(R.string.feng_due_date) + "  " + projectNode.getEndstart());
+        editFloatBtn.setTag(FLAG_EDIT_MODE);
+
+        //disable edit mode
+        enableEdit(false);
+
+        //flow layout
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        for (int url : urls) {
+            CircleImageView imageView = (CircleImageView) inflater.inflate(R.layout.item_flowlayout, myFlowlayout, false);
+            Picasso.with(getContext()).load(url).fit().into(imageView);
+            myFlowlayout.addView(imageView);
+        }
+
+        //fireBase database
+        projectEditPresenter.initFireDb(projectNode);
+
+        //date picker
+        Calendar newCalendar = Calendar.getInstance();
+        toDatePickerDialog = new DatePickerDialog(getContext(), this, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+
+        editFloatBtn.setOnClickListener(this);
+        dateTv.setOnClickListener(this);
+        addMemberBtn.setOnClickListener(this);
+        memberLl.setOnClickListener(this);
+    }
+
+    @Override
+    public void showToast() {
+        Toast.makeText(getContext(), R.string.feng_date_alert, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showToast(String msg) {
+        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void updateDate(String endDate) {
+        //update new due date
+        projectNode.setEndstart(endDate);
+
+        dateTv.setText(getString(R.string.feng_due_date) + " " + endDate);
+    }
+
+    @Override
+    public void changeEditMode(Boolean flag_edit_mode) {
+        FLAG_EDIT_MODE = flag_edit_mode;
+        enableEdit(flag_edit_mode);
+
+        if (flag_edit_mode) {
+            addMemberBtn.setVisibility(View.VISIBLE);
+            editFloatBtn.setImageResource(R.drawable.ic_correct);
+        } else {
+            addMemberBtn.setVisibility(View.GONE);
+            editFloatBtn.setImageResource(R.drawable.ic_edit);
+        }
+    }
+
+    @Override
+    public void showDatePicker() {
+        toDatePickerDialog.show();
+    }
+
+    @Override
+    public void updateMembList(List<Employee.EmployeesBean> list) {
+        memberList = list;
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        projectEditPresenter.datePickerClick(year, month, dayOfMonth, projectNode);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.fab_detail_project:
+                projectEditPresenter.editFloatBtnClick(v, FLAG_EDIT_MODE, nameEdt, statusSpr, descEdt, projectNode);
+                break;
+            case R.id.tv_detail_date:
+                projectEditPresenter.datePickerClick();
+                break;
+            case R.id.imgbtn_add_member:
+
+                TeamDialog dialog = TeamDialog.newInstance(memberList);
+                dialog.showDialog(getActivity().getSupportFragmentManager(), "employeeDlg");
+                //dialog click listener
+                dialog.setListener(this);
+
+                break;
+            case R.id.ll_member:
+
+                if (memberList.size() < 1 || memberList == null) {
+                    Toast.makeText(getContext(), "No team member yet", Toast.LENGTH_SHORT).show();
+                } else {
+                    MemberDialog memberDialog = MemberDialog.newInstance(memberList);
+                    memberDialog.showDialog(getActivity().getSupportFragmentManager(), "memberDlg");
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void onComplete(List<Employee.EmployeesBean> employeeIdList) {
+        //fireBase db add team member
+        projectEditPresenter.updateMember(employeeIdList, projectNode);
+    }
 }

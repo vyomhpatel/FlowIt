@@ -105,6 +105,7 @@ public class TeamDialog extends DialogFragment {
 
                 }
 
+                Log.i("测试123", employeeIdList.size() + "");
                 mListener.onComplete(employeeIdList);
                 dismiss();
             }

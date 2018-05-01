@@ -13,7 +13,6 @@ import android.content.Context;
 
 public class AppApplication extends Application {
     private AppComponent appComponent;
-    private static final String BASE_URL = "http://rjtmobile.com/aamir/pms/android-app/";
 
     public static  AppApplication get(Context context){
         return (AppApplication)context.getApplicationContext();
@@ -22,10 +21,11 @@ public class AppApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
         appComponent = DaggerAppComponent.builder()
                 //list of modules that are part of this component need to be created here too
-                .appModule(new AppModule(this)) //
-                .netModule(new NetModule(BASE_URL))//
+                .appModule(new AppModule(this))
+                .mvpModule(new MvpModule())
                 .build();
 
         //if a dagger2 components does not have any constructor arguments for any of its modules

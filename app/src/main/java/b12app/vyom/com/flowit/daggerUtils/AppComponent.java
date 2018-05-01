@@ -1,12 +1,12 @@
 package b12app.vyom.com.flowit.daggerUtils;
 
 
-import android.app.Activity;
-
 import javax.inject.Singleton;
 
 import b12app.vyom.com.flowit.home.HomeActivity;
 import b12app.vyom.com.flowit.tabfragment.FragmentProject;
+import b12app.vyom.com.flowit.tabfragment.FragmentProjectEdit;
+import b12app.vyom.com.flowit.tabfragment.FragmentTaskEdit;
 import dagger.Component;
 
 /**
@@ -18,12 +18,15 @@ import dagger.Component;
  */
 
 @Singleton
-@Component(modules = {AppModule.class, NetModule.class})
+@Component(modules = {AppModule.class, MvpModule.class})
 public interface AppComponent {
 
     //Because strong reference, we need specify which activity/fragment we will inject
     void inject(HomeActivity activity);
-    void inject(FragmentProject fragment);
+
+    void inject(FragmentProjectEdit fragmentProjectEdit);
+
+    void inject(FragmentTaskEdit fragmentTaskEdit);
 
 
     // void inject(MyFragment fragment);

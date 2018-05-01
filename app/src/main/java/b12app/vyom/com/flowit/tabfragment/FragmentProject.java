@@ -1,6 +1,5 @@
 package b12app.vyom.com.flowit.tabfragment;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,15 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import javax.inject.Inject;
-
 import b12app.vyom.com.flowit.R;
 import b12app.vyom.com.flowit.adapter.ProjectAdapter;
-import b12app.vyom.com.flowit.daggerUtils.AppApplication;
 import b12app.vyom.com.flowit.home.HomeActivity;
 import b12app.vyom.com.flowit.model.Project;
-import b12app.vyom.com.flowit.networkutils.ApiService;
-import b12app.vyom.com.flowit.tabfragment.project.ProjectFragmentContract;
+import b12app.vyom.com.flowit.tabfragment.project.ProjectFgtContract;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -33,18 +28,14 @@ import io.reactivex.disposables.Disposable;
  * @Description FlowIt
  */
 
-public class FragmentProject extends Fragment implements ProjectFragmentContract.IView, ProjectAdapter.OnItemClickListener {
+public class FragmentProject extends Fragment implements ProjectFgtContract.IView, ProjectAdapter.OnItemClickListener {
     @BindView(R.id.rv_project)
     RecyclerView recyclerView;
     private Unbinder unbinder;
-    private ProjectFragmentContract.IPresenter projectFragmentPresenter;
+    private ProjectFgtContract.IPresenter projectFragmentPresenter;
     private Disposable disposable;
     private Project project;
 
-    @Inject
-    SharedPreferences sharedPreferences;
-    @Inject
-    ApiService apiService;
 
     @Nullable
     @Override
@@ -53,13 +44,8 @@ public class FragmentProject extends Fragment implements ProjectFragmentContract
         //butter knife inject
         unbinder = ButterKnife.bind(this, v);
 
-        //dagger2 inject
-        AppApplication.get(getContext())
-                .getAppComponent()
-                .inject(this);
-
         //presenter network call
-        disposable = projectFragmentPresenter.getProjectList(apiService);
+        disposable = projectFragmentPresenter.getProjectList();
 
         return v;
     }
@@ -90,14 +76,14 @@ public class FragmentProject extends Fragment implements ProjectFragmentContract
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-        if (!disposable.isDisposed()){
+        if (disposable != null && !disposable.isDisposed()){
             disposable.dispose();
         }
     }
 
     //we link view and presenter here
     @Override
-    public void setPresenter(ProjectFragmentContract.IPresenter presenter) {
+    public void setPresenter(ProjectFgtContract.IPresenter presenter) {
         projectFragmentPresenter = presenter;
     }
 

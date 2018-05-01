@@ -44,11 +44,13 @@ public class EmployeeRvAdapter extends RecyclerView.Adapter<EmployeeRvAdapter.mV
         selectedEmlopyee = new SparseBooleanArray(employees.size());
 
         //find out team member
-        for (int i = 0; i < employees.size(); i ++){
-            for (int j = 0 ; j < memberList.size(); j++){
-                if (memberList.get(j).getEmpid().equals(employees.get(i).getEmpid())){
-                    mSelectedPos.put(i, true);
-                    selectedEmlopyee.put(i, true);
+        if (memberList != null){
+            for (int i = 0; i < employees.size(); i ++){
+                for (int j = 0 ; j < memberList.size(); j++){
+                    if (memberList.get(j).getEmpid().equals(employees.get(i).getEmpid())){
+                        mSelectedPos.put(i, true);
+                        selectedEmlopyee.put(i, true);
+                    }
                 }
             }
         }

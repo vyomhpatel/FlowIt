@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/task_edit_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".home.HomeActivity">
+
+    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/detail_ll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_task_detail_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/normal_dimen"
+            android:layout_marginEnd="@dimen/medium_dimen"
+            android:layout_marginStart="@dimen/twof_dimen"
+            android:layout_marginTop="@dimen/medium_dimen"
+            android:text="@string/task_id"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/edt_task__detail_name"
+            style="@style/EditModeTheme"
+            android:enabled="false"
+            android:hint="@string/title" />
+
+        <Spinner
+            android:id="@+id/spn_task_detail_status"
+            style="@style/EditModeTheme"
+            android:entries="@array/task_status"
+            android:paddingStart="0dp" />
+
+        <EditText
+            android:id="@+id/tv_task_detail_desc"
+            style="@style/EditModeTheme"
+            android:enabled="false"
+            android:text="@string/tap_to_add_description" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray2" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/normal_dimen"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/medium_dimen"
+                android:src="@drawable/single_user" />
+
+
+            <b12app.vyom.com.utils.MyFlowlayout
+                android:id="@+id/layout_task_detail_flow_task"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                app:pileWidth="10dp" />
+
+            <ImageButton
+                android:id="@+id/imgbtn_add_member_to_task"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="@dimen/medium_dimen"
+                android:layout_marginStart="@dimen/normal_dimen"
+                android:background="@null"
+                android:src="@drawable/ic_add_member"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_task_detail_due_date"
+            style="@style/EditModeTheme"
+            android:enabled="false"
+            android:gravity="center_vertical"
+            android:text="@string/due_date" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_detail_task"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/xxlarge_dimen"
+        android:layout_marginEnd="@dimen/normal_dimen"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/ic_edit"
+        app:backgroundTint="@color/gray2"
+        app:backgroundTintMode="src_atop"
+        app:borderWidth="1dp"
+        app:elevation="2dp"
+        app:fabSize="normal"
+        app:layout_anchor="@id/detail_ll"
+        app:layout_anchorGravity="bottom|right|end"
+        app:rippleColor="@android:color/holo_blue_light"
+        app:useCompatPadding="true" />
+</android.support.design.widget.CoordinatorLayout>
