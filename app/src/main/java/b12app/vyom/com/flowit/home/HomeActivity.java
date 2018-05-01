@@ -8,7 +8,6 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,20 +23,24 @@ import com.wangjie.rapidfloatingactionbutton.util.RFABTextUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import b12app.vyom.com.flowit.R;
+import b12app.vyom.com.flowit.daggerUtils.AppComponent;
 import b12app.vyom.com.flowit.datasource.DataManager;
 import b12app.vyom.com.flowit.projectcreate.ProjectCreateActivity;
 import b12app.vyom.com.flowit.tabfragment.FragmentDashboard;
 import b12app.vyom.com.flowit.tabfragment.FragmentInbox;
 import b12app.vyom.com.flowit.tabfragment.FragmentProject;
 import b12app.vyom.com.flowit.tabfragment.FragmentTask;
-import b12app.vyom.com.flowit.tabfragment.project.ProjectFragmentPresenter;
+import b12app.vyom.com.flowit.tabfragment.project.ProjectFgtPresenter;
+import b12app.vyom.com.flowit.tabfragment.task.TaskFgtPresenter;
 import b12app.vyom.com.flowit.task.TaskCreateActivity;
 import b12app.vyom.com.utils.ActivityUtil;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener {
+public class HomeActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener {
     @BindView(R.id.bottom_tab_layout)
     TabLayout botNavView;
 
@@ -56,9 +59,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @BindView(R.id.nav_view)
     NavigationView leftDrawer;
 
+    @Inject
+    DataManager mDataManager;
+
+
     //presenter
-    private ProjectFragmentPresenter projectFgtPresenter;
-    private DataManager mDataManager;
+    private ProjectFgtPresenter projectFgtPresenter;
+    private TaskFgtPresenter taskFgtPresenter;
 
     private Integer[] bottomTabIcon = {R.drawable.ic_testing};
     private Integer[] bottomIconPress = {R.drawable.ic_testing, R.drawable.ic_testing,
@@ -71,6 +78,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_home);
+
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
@@ -80,6 +88,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         initDraw(toolbar);
 
         initBottomNavView();
+    }
+
+    @Override
+    protected void setupActivityComponent(AppComponent appComponent) {
+        appComponent.inject(this);
     }
 
     private void initBottomNavView() {
@@ -104,13 +117,17 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         //fragment
                         FragmentProject fragmentProject = new FragmentProject();
                         //presenter
-                        projectFgtPresenter = new ProjectFragmentPresenter(mDataManager, fragmentProject);
+                        projectFgtPresenter = new ProjectFgtPresenter(mDataManager, fragmentProject);
                         //add fragment
                         ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), fragmentProject, "browseFgt");
                         showMainFloatBtn();
                         break;
                     case 2:
-                        ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), new FragmentTask(), "mytaskFgt");
+                        //fragment
+                        FragmentTask fragmentTask = new FragmentTask();
+                        //presenter
+                        taskFgtPresenter = new TaskFgtPresenter(mDataManager, fragmentTask);
+                        ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), fragmentTask, "taskFgt");
                         showMainFloatBtn();
                         break;
                     case 3:
@@ -138,7 +155,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         //fragment
         FragmentProject fragmentProject = new FragmentProject();
         //presenter
-        projectFgtPresenter = new ProjectFragmentPresenter(mDataManager, fragmentProject);
+        projectFgtPresenter = new ProjectFgtPresenter(mDataManager, fragmentProject);
         ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(),fragmentProject, "browseFgt");
     }
 

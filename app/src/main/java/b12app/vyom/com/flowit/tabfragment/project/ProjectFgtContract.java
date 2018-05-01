@@ -10,15 +10,15 @@ import io.reactivex.disposables.Disposable;
 
 /**
  * @Package b12app.vyom.com.flowit.tabfragment
- * @FileName ProjectFragmentContract
+ * @FileName ProjectFgtContract
  * @Date 4/26/18, 1:02 PM
  * @Author Created by fengchengding
  * @Description FlowIt
  */
 
-public interface ProjectFragmentContract {
+public interface ProjectFgtContract {
 
-    interface IView extends BaseView<ProjectFragmentContract.IPresenter> {
+    interface IView extends BaseView<ProjectFgtContract.IPresenter> {
 
 
         void initRecyclerView(Project project);

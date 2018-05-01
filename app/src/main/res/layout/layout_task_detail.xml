@@ -2,9 +2,9 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/task_edit_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/task_edit_container"
     tools:context=".home.HomeActivity">
 
     <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -21,13 +21,13 @@
             android:layout_marginEnd="@dimen/medium_dimen"
             android:layout_marginStart="@dimen/twof_dimen"
             android:layout_marginTop="@dimen/medium_dimen"
-            android:text=" Task ID"
+            android:text="@string/task_id"
             android:textSize="20sp" />
 
         <EditText
             android:id="@+id/edt_task__detail_name"
             style="@style/EditModeTheme"
-            android:clickable="false"
+            android:enabled="false"
             android:hint="@string/title" />
 
         <Spinner
@@ -39,7 +39,7 @@
         <EditText
             android:id="@+id/tv_task_detail_desc"
             style="@style/EditModeTheme"
-            android:clickable="false"
+            android:enabled="false"
             android:text="@string/tap_to_add_description" />
 
         <View
@@ -61,32 +61,31 @@
 
 
             <b12app.vyom.com.utils.MyFlowlayout
-                android:id="@+id/layout__task_detail_flow_task"
-                android:layout_width="0dp"
+                android:id="@+id/layout_task_detail_flow_task"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="1"
                 app:pileWidth="10dp" />
 
             <ImageButton
                 android:id="@+id/imgbtn_add_member_to_task"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@null"
-                android:visibility="gone"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="@dimen/normal_dimen"
                 android:layout_marginEnd="@dimen/medium_dimen"
-                android:src="@drawable/ic_add_member" />
+                android:layout_marginStart="@dimen/normal_dimen"
+                android:background="@null"
+                android:src="@drawable/ic_add_member"
+                android:visibility="gone" />
 
         </LinearLayout>
 
         <TextView
-            android:id="@+id/tv_task__detail_due_date"
+            android:id="@+id/tv_task_detail_due_date"
             style="@style/EditModeTheme"
+            android:enabled="false"
             android:gravity="center_vertical"
-            android:clickable="false"
-            android:text="Due Date" />
+            android:text="@string/due_date" />
 
         <View
             android:layout_width="match_parent"

@@ -1,15 +1,13 @@
 package b12app.vyom.com.flowit.model;
 
+import java.util.List;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.List;
-
-// FIXME generate failure  field _$ProjectTask249
-
 public class GeneralTask {
 
-    private List<GeneralTask.ProjecttaskBean> projecttaskBeanList;
+    private List<ProjecttaskBean> projecttaskBeanList;
 
     @Override
     public String toString() {
@@ -167,3 +165,4 @@ public class GeneralTask {
         }
     }
 }
+

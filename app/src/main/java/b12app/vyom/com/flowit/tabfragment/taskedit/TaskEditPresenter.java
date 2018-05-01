@@ -1,12 +1,19 @@
 package b12app.vyom.com.flowit.tabfragment.taskedit;
 
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
+import b12app.vyom.com.flowit.R;
 import b12app.vyom.com.flowit.datasource.DataManager;
+import b12app.vyom.com.flowit.datasource.IDataSource;
 import b12app.vyom.com.flowit.model.GeneralTask;
 import b12app.vyom.com.flowit.networkutils.ApiService;
 import b12app.vyom.com.flowit.networkutils.RetrofitInstance;
@@ -17,14 +24,15 @@ import retrofit2.Response;
 
 public class TaskEditPresenter implements TaskEditContract.IPresenter {
     public static String TAG = "task edit presenter";
-    private TaskEditContract.IView iView;
+    private TaskEditContract.IView fragmentView;
     private FragmentTaskEdit fragmentTaskEdit;
-    private DataManager dataManager;
+    private DataManager mDataManager;
 
-    public TaskEditPresenter(FragmentTaskEdit fragmentTaskEdit, DataManager dataManager) {
-        this.fragmentTaskEdit = fragmentTaskEdit;
-        this.dataManager = dataManager;
-//        iView = fragmentTaskEdit;
+    public TaskEditPresenter(DataManager dataManager, TaskEditContract.IView taskEdtFgt) {
+
+        this.mDataManager = dataManager;
+
+        fragmentView = taskEdtFgt;
     }
 
     @Override
@@ -32,28 +40,52 @@ public class TaskEditPresenter implements TaskEditContract.IPresenter {
 
     }
 
-    @Override
-    public void updateTask(View v, final GeneralTask.ProjecttaskBean projecttaskBean) {
 
-//        String user_id = "14";
-//        ApiService apiService = RetrofitInstance.getRetrofitInstance().create(ApiService.class);
-//        apiService.updateTaskStatus(projecttaskBean.getTaskid(),projecttaskBean.getProjectid(),user_id,projecttaskBean.getTaskstatus())
-//                .enqueue(new Callback<JSONObject>() {
-//            @Override
-//            public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
-//
-//                try {
-//                    Log.i(TAG, "task edit status: "+response.body().getJSONArray("msg").getString(0));
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//                iView.displaySuccessSnack(projecttaskBean.getTaskname());
-//            }
-//
-//            @Override
-//            public void onFailure(Call<JSONObject> call, Throwable t) {
-//                Log.i(TAG, "task edit failed: "+t.getMessage());
-//            }
-//        });
+    @Override
+    public void getData(Bundle arguments) {
+        fragmentView.initView(arguments.getParcelable("taskNode"));
+    }
+
+    @Override
+    public void datePickerClick(int year, int month, int dayOfMonth, GeneralTask.ProjecttaskBean taskNode) {
+        final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        Calendar newDate = Calendar.getInstance();
+        newDate.set(year, month, dayOfMonth);
+        String dateEndString = String.valueOf(sdf.format(newDate.getTime()));
+
+        fragmentView.updateEndDate(dateEndString);
+    }
+
+    @Override
+    public void editFloatBtnClick(View v, boolean flagEditMode, TextView nameEdt, Spinner statusSpr, TextView descEdt, GeneralTask.ProjecttaskBean taskNode) {
+
+        if (!Boolean.valueOf(v.getTag().toString())) {
+            //start edit mode
+            flagEditMode = true;
+            v.setTag(flagEditMode);
+            fragmentView.changeEditMode(flagEditMode);
+
+        } else {
+            flagEditMode = false;
+            v.setTag(flagEditMode);
+            fragmentView.changeEditMode(flagEditMode);
+
+        }
+    }
+
+    @Override
+    public void updateTask(GeneralTask.ProjecttaskBean taskNode) {
+        mDataManager.updateTask(taskNode, new IDataSource.NetworkCallback() {
+            @Override
+            public void onSuccess(Object response) {
+
+                fragmentView.showToast(response.toString());
+            }
+
+            @Override
+            public void onFailure(Throwable throwable) {
+                Log.i(TAG, throwable.getLocalizedMessage());
+            }
+        });
     }
 }

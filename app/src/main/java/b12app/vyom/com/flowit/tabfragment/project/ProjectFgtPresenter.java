@@ -1,43 +1,40 @@
 package b12app.vyom.com.flowit.tabfragment.project;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 
 import b12app.vyom.com.flowit.R;
 import b12app.vyom.com.flowit.datasource.DataManager;
-import b12app.vyom.com.flowit.home.HomeActivity;
+import b12app.vyom.com.flowit.datasource.IDataSource;
 import b12app.vyom.com.flowit.model.Project;
-import b12app.vyom.com.flowit.networkutils.RetrofitInstance;
-import b12app.vyom.com.flowit.tabfragment.FragmentProject;
 import b12app.vyom.com.flowit.tabfragment.FragmentProjectEdit;
 import b12app.vyom.com.utils.ActivityUtil;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * @Package b12app.vyom.com.flowit.tabfragment
- * @FileName ProjectFragmentPresenter
+ * @FileName ProjectFgtPresenter
  * @Date 4/26/18, 1:04 PM
  * @Author Created by fengchengding
  * @Description FlowIt
  */
 
-public class ProjectFragmentPresenter implements ProjectFragmentContract.IPresenter {
-    private ProjectFragmentContract.IView fragmentView;
+public class ProjectFgtPresenter implements ProjectFgtContract.IPresenter {
+    private ProjectFgtContract.IView fragmentView;
     private DataManager mDataManager;
     private Disposable disposable;
 
-    public ProjectFragmentPresenter(DataManager dataManager, ProjectFragmentContract.IView fragmentProject) {
-        //we link model(data source) and presenter here
-//        mDataManager = dataManager;
+    private static final String TAG = "ProjectFgtPresenter";
 
+    public ProjectFgtPresenter(DataManager dataManager, ProjectFgtContract.IView fragmentProject) {
+
+        //we link model(data source) and presenter here
+        mDataManager = dataManager;
         //we link presenter and view here
         fragmentView = fragmentProject;
-
+        //link IView to IPresenter
         fragmentView.setPresenter(this);
     }
 
@@ -48,32 +45,22 @@ public class ProjectFragmentPresenter implements ProjectFragmentContract.IPresen
 
     @Override
     public Disposable getProjectList() {
+        Log.i(TAG, "getProjectList: ");
 
-        RetrofitInstance.apiService().getProjectList()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Project>() {
+        disposable = mDataManager.queryProjectList(new IDataSource.NetworkCallback() {
+            @Override
+            public void onSuccess(Object response) {
+                Project project = (Project)response;
 
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        disposable = d;
-                    }
+                fragmentView.initRecyclerView(project);
+            }
 
-                    @Override
-                    public void onNext(Project project) {
-                        fragmentView.initRecyclerView(project);
-                    }
+            @Override
+            public void onFailure(Throwable e) {
+                Log.i(TAG, e.getLocalizedMessage());
+            }
+        });
 
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
 
         return disposable;
     }

@@ -1,14 +1,19 @@
 package b12app.vyom.com.flowit.networkutils;
 
-import java.util.List;
+
+import org.json.JSONObject;
 
 import b12app.vyom.com.flowit.model.Employee;
 import b12app.vyom.com.flowit.model.GeneralSubTask;
 import b12app.vyom.com.flowit.model.GeneralTask;
 import b12app.vyom.com.flowit.model.MsgReponseBody;
 import b12app.vyom.com.flowit.model.Project;
+import b12app.vyom.com.flowit.model.SubTaskMember;
+import b12app.vyom.com.flowit.model.TaskMembers;
 import b12app.vyom.com.flowit.model.User;
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
+import io.reactivex.Observer;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -43,7 +48,7 @@ public interface ApiService {
                                            @Query("end_date") String end_date);
 
     @POST("pms_edit_project.php")
-    Call<MsgReponseBody> updateProject(@Query("project_id") String project_id,
+    Call<MsgReponseBody> updateProject(@Query("project_id") String projectId,
                                        @Query("project_name") String project_name,
                                        @Query("project_status") String project_status,
                                        @Query("project_desc") String project_desc,
@@ -53,9 +58,6 @@ public interface ApiService {
     @GET("pms_projects.php")
     Call<Project> getProjects();
 
-    @GET("pms_projects.php")
-    Observable<Project> getProjectList();
-
 
     //-------------------------------------EMPLOYEE  -----------------------------------------
 
@@ -63,8 +65,8 @@ public interface ApiService {
     Call<Employee> getEmployee();
 
     @POST("pms_create_project_team.php")
-    Call<Employee> postEmployee(@Query("project_id") String project_id,
-                                @Query("team_member_userid") String team_member_userid);
+    Call<MsgReponseBody> postEmployee(@Query("project_id") String project_id,
+                                      @Query("team_member_userid") String team_member_userid);
 
     //-------------------------------------TASK -----------------------------------------
 
@@ -78,6 +80,21 @@ public interface ApiService {
 
     @GET("pms_project_task_list.php")
     Call<GeneralTask> getTaskList();
+
+    @GET("pms_project_task_list.php")
+    Observable<GeneralTask> getTaskObservableList();
+
+    @POST("pms_assign_task_project.php")
+    Call<JSONObject>assignTask(@Query("taskid") String taskid,
+                               @Query("project_id") String project_id,
+                               @Query("team_member_userid") String team_member_userid);
+
+    @POST("pms_edit_task_status.php")
+    Call<MsgReponseBody>updateTaskStatus(@Query("taskid") String taskid,
+                                                      @Query("project_id") String project_id,
+                                                      @Query("userid") String userid,
+                                                      @Query("task_status") String task_status);
+
 
     //-------------------------------------SUB-TASK -----------------------------------------
 
@@ -93,5 +110,31 @@ public interface ApiService {
     @GET("pms_project_sub_task_list.php")
     Call<GeneralSubTask> listSubTask();
 
+
+    /******************************************************* Observable Api ********************************************************/
+    @GET("pms_projects.php")
+    Observable<Project> getProjectList();
+
+
+    //-------------------------------------USER TASK -----------------------------------------
+
+    @GET("pms_view_task_deatil.php")
+    Call<GeneralTask.ProjecttaskBean>getTaskDetails(@Query("taskid") String taskid,
+                                                    @Query("project_id") String project_id);
+
+    @GET("pms_team_task.php")
+    Call<TaskMembers>getTaskMembers(@Query("taskid") String taskid,
+                                    @Query("projectid") String projectid);
+
+    //-------------------------------------USER SUB-TASK -----------------------------------------
+
+    @GET("/pms_view_sub_task_deatil.php")
+    Call<GeneralSubTask.ProjectsubtaskBean>getSubTaskDetails(@Query("taskid") String taskid,
+                                                             @Query("subtask_id") String subtask_id,
+                                                             @Query("project_id") String project_id);
+    @GET("pms_team_sub_task.php")
+    Call<SubTaskMember>getSubTaskMembers(@Query("taskid") String taskid,
+                                         @Query("subtaskid") String subtaskid,
+                                         @Query("projectid") String projectid);
 
 }

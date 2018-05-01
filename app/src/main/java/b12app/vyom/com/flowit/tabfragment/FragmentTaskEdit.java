@@ -2,11 +2,13 @@ package b12app.vyom.com.flowit.tabfragment;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,30 +20,26 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Locale;
+
+import javax.inject.Inject;
 
 import b12app.vyom.com.flowit.R;
+import b12app.vyom.com.flowit.daggerUtils.AppApplication;
 import b12app.vyom.com.flowit.datasource.DataManager;
+import b12app.vyom.com.flowit.dialog.EmployeeListFragmentDialog;
 import b12app.vyom.com.flowit.model.GeneralTask;
 import b12app.vyom.com.flowit.networkutils.ApiService;
 import b12app.vyom.com.flowit.networkutils.RetrofitInstance;
+import b12app.vyom.com.flowit.tabfragment.taskedit.TaskEditContract;
+import b12app.vyom.com.flowit.tabfragment.taskedit.TaskEditPresenter;
 import b12app.vyom.com.utils.CircleImageView;
 import b12app.vyom.com.utils.MyFlowlayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-/**
- * @Package b12app.vyom.com.flowit.tabfragment
- * @FileName FragmentProjectEdit
- * @Date 4/26/18, 3:58 PM
- * @Author Created by fengchengding
- * @Description FlowIt
- */
-
-public class FragmentTaskEdit extends android.support.v4.app.Fragment implements TaskEditContract.IView  {
+public class FragmentTaskEdit extends Fragment implements TaskEditContract.IView, DatePickerDialog.OnDateSetListener, View.OnClickListener {
 
     @BindView(R.id.task_edit_container)
     CoordinatorLayout taskEditContainer;
@@ -58,10 +56,10 @@ public class FragmentTaskEdit extends android.support.v4.app.Fragment implements
     @BindView(R.id.tv_task_detail_desc)
     TextView descEdt;
 
-    @BindView(R.id.tv_task__detail_due_date)
+    @BindView(R.id.tv_task_detail_due_date)
     TextView dateTv;
 
-    @BindView(R.id.layout__task_detail_flow_task)
+    @BindView(R.id.layout_task_detail_flow_task)
     MyFlowlayout myFlowlayout;
 
     @BindView(R.id.fab_detail_task)
@@ -70,106 +68,42 @@ public class FragmentTaskEdit extends android.support.v4.app.Fragment implements
     @BindView(R.id.imgbtn_add_member_to_task)
     ImageButton addMemberBtn;
 
+    @Inject
+    DataManager mDataManager;
+
+
     private DatePickerDialog toDatePickerDialog;
 
     private Unbinder unbinder;
     private static boolean FLAG_EDIT_MODE = false;
-    private ApiService apiService;
-    private  GeneralTask.ProjecttaskBean taskNode;
-    private TaskEditContract.IPresenter iPresenterTask;
-    private DataManager dataManager;
+    private GeneralTask.ProjecttaskBean taskNode;
+    private TaskEditContract.IPresenter taskEdtPresenter;
 
     int[] urls = {R.drawable.ic_avatar};
 
     private static final String TAG = "FragmentProjectEdit";
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.layout_task_detail, container, false);
         unbinder = ButterKnife.bind(this, v);
 
-        //api service initialization
-         apiService = RetrofitInstance.getRetrofitInstance().create(ApiService.class);
+        //dagger2 inject
+        AppApplication.get(getContext())
+                .getAppComponent()
+                .inject(this);
 
-         //initializing ipresenter
-//        dataManager = new DataManager();
-        iPresenterTask = new TaskEditPresenter(this,dataManager);
 
-        initFlow();
+        //initializing IPresenter
+        taskEdtPresenter = new TaskEditPresenter(mDataManager, this);
 
-        initView();
+        taskEdtPresenter.getData(getArguments());
 
-        clickListener();
 
         return v;
     }
 
-    private void clickListener() {
-        editFloatBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!Boolean.valueOf(v.getTag().toString())){
-                    //start edit mode
-                    FLAG_EDIT_MODE = true;
-                    v.setTag(FLAG_EDIT_MODE);
-                    enableEdit(FLAG_EDIT_MODE);
-                    addMemberBtn.setVisibility(View.VISIBLE);
-                    editFloatBtn.setImageResource(R.drawable.ic_correct);
-
-                }else {
-                    FLAG_EDIT_MODE = false;
-                    v.setTag(FLAG_EDIT_MODE);
-                    enableEdit(FLAG_EDIT_MODE);
-                    addMemberBtn.setVisibility(View.GONE);
-                    editFloatBtn.setImageResource(R.drawable.ic_edit);
-                    GeneralTask.ProjecttaskBean projecttaskBean =
-                            new GeneralTask.ProjecttaskBean(taskNode.getTaskid(),taskNode.getProjectid(),statusSpr.getSelectedItem().toString());
-                    iPresenterTask.updateTask(v,projecttaskBean);
-
-                }
-            }
-        });
-
-        dateTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toDatePickerDialog.show();
-            }
-        });
-
-        addMemberBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                EmployeeListFragmentDialog employeeListFragmentDialog = new EmployeeListFragmentDialog();
-                Bundle bundle = new Bundle();
-                bundle.putString("task_id",taskNode.getTaskid());
-                bundle.putString("project_id",taskNode.getProjectid());
-                employeeListFragmentDialog.setArguments(bundle);
-                    employeeListFragmentDialog.show(getFragmentManager(),"emp dialog");
-
-         //       apiService.assignTask(taskNode.getTaskid(),taskNode.getProjectid(),)
-            }
-        });
-    }
-
-    private void initView() {
-        taskNode = getArguments().getParcelable("taskNode");
-
-        taskDetailId.setText("Task ID: " + taskNode.getTaskid());
-        nameEdt.setText(taskNode.getTaskname());
-        descEdt.setText(taskNode.getTaskdesc());
-        statusSpr.setSelection(Integer.valueOf(taskNode.getTaskstatus()) - 1);
-        dateTv.setText(getString(R.string.feng_due_date) + "  " + taskNode.getEndstart());
-        editFloatBtn.setTag(FLAG_EDIT_MODE);
-
-        initDatePicker();
-
-        //disable edit mode
-        enableEdit(false);
-
-    }
 
     public void initFlow() {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
@@ -186,34 +120,64 @@ public class FragmentTaskEdit extends android.support.v4.app.Fragment implements
         unbinder.unbind();
     }
 
-    public void enableEdit(Boolean enable){
-       // nameEdt.setEnabled(enable);
+    public void enableEdit(Boolean enable) {
         statusSpr.setEnabled(enable);
-       // descEdt.setEnabled(enable);
         myFlowlayout.setEnabled(enable);
-      //  dateTv.setEnabled(enable);
     }
 
-    public void initDatePicker(){
+
+    @Override
+    public void initView(Parcelable taskParc) {
+        this.taskNode = (GeneralTask.ProjecttaskBean) taskParc;
+        taskDetailId.setText("Task ID: " + taskNode.getTaskid());
+        nameEdt.setText(taskNode.getTaskname());
+        descEdt.setText(taskNode.getTaskdesc());
+        statusSpr.setSelection(Integer.valueOf(taskNode.getTaskstatus()) - 1);
+        dateTv.setText(getString(R.string.feng_due_date) + "  " + taskNode.getEndstart());
+        editFloatBtn.setTag(FLAG_EDIT_MODE);
+
+        //disable edit mode
+        enableEdit(false);
+
+        initFlow();
+
+        //date picker
         Calendar newCalendar = Calendar.getInstance();
-     final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-//        Date date = new Date(System.currentTimeMillis());
-        toDatePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+        toDatePickerDialog = new DatePickerDialog(getContext(), this, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
 
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                Calendar newDate = Calendar.getInstance();
-                newDate.set(year, monthOfYear, dayOfMonth);
-              String  dateEndString = String.valueOf(sdf.format(newDate.getTime()));
-                Toast.makeText(getActivity(), dateEndString, Toast.LENGTH_SHORT).show();
-                dateTv.setText(dateEndString);
-            }
 
-        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        //click listener
+        editFloatBtn.setOnClickListener(this);
+        dateTv.setOnClickListener(this);
+        addMemberBtn.setOnClickListener(this);
+
     }
 
     @Override
-    public void displaySuccessSnack(String taskname) {
-        Snackbar.make(taskEditContainer,"Task status updated for: "+taskname,Snackbar.LENGTH_SHORT).setAction("Ok", new View.OnClickListener() {
+    public void updateEndDate(String dateEndString) {
+        Toast.makeText(getActivity(), dateEndString, Toast.LENGTH_SHORT).show();
+        dateTv.setText(dateEndString);
+    }
+
+    @Override
+    public void changeEditMode(boolean flagEditMode) {
+        FLAG_EDIT_MODE = flagEditMode;
+        if (flagEditMode) {
+            enableEdit(flagEditMode);
+            addMemberBtn.setVisibility(View.VISIBLE);
+            editFloatBtn.setImageResource(R.drawable.ic_correct);
+        } else {
+            enableEdit(flagEditMode);
+            addMemberBtn.setVisibility(View.GONE);
+            editFloatBtn.setImageResource(R.drawable.ic_edit);
+
+            taskEdtPresenter.updateTask(taskNode);
+        }
+    }
+
+    @Override
+    public void showToast(String msg) {
+        Snackbar.make(taskEditContainer, msg, Snackbar.LENGTH_SHORT).setAction("Ok", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -225,4 +189,38 @@ public class FragmentTaskEdit extends android.support.v4.app.Fragment implements
     public void setPresenter(TaskEditContract.IPresenter presenter) {
 
     }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        taskEdtPresenter.datePickerClick(year, month, dayOfMonth, taskNode);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.fab_detail_task:
+                taskEdtPresenter.editFloatBtnClick(v, FLAG_EDIT_MODE, nameEdt, statusSpr, descEdt, taskNode);
+
+                break;
+            case R.id.tv_task_detail_due_date:
+
+                toDatePickerDialog.show();
+
+                break;
+
+            case R.id.imgbtn_add_member_to_task:
+
+                EmployeeListFragmentDialog employeeListFragmentDialog = new EmployeeListFragmentDialog();
+                Bundle bundle = new Bundle();
+                bundle.putString("task_id", taskNode.getTaskid());
+                bundle.putString("project_id", taskNode.getProjectid());
+                employeeListFragmentDialog.setArguments(bundle);
+                employeeListFragmentDialog.show(getFragmentManager(), "emp dialog");
+
+                //       apiService.assignTask(taskNode.getTaskid(),taskNode.getProjectid(),)
+                break;
+        }
+    }
+
+
 }
