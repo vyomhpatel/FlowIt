@@ -56,7 +56,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.mViewHolder> {
     @Override
     public void onBindViewHolder(TaskAdapter.mViewHolder holder, int position) {
         if (dataList.size() > 0) {
-
             holder.nameTv.setText(dataList.get(position));
         }
     }
@@ -71,7 +70,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.mViewHolder> {
         if (dataList.size() <= 0) {
 
             return -1;
-
         }
 
         return super.getItemViewType(position);

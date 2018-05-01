@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -39,6 +40,9 @@ import b12app.vyom.com.flowit.model.Project;
 import b12app.vyom.com.flowit.networkutils.ApiService;
 import b12app.vyom.com.flowit.networkutils.RetrofitInstance;
 import b12app.vyom.com.flowit.task.ProjectListFragmentDialog;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -50,9 +54,14 @@ import retrofit2.Response;
 public class TaskListFragmentDialog extends DialogFragment {
 
     List<GeneralTask.ProjecttaskBean> alltasks;
-    private ListView taskList;
+
     private ApiService apiService;
     private TaskListFragmentDialog.OnCompleteListener mListener;
+//    private Unbinder unbinder;
+//    @BindView(R.id.taskList)
+
+    ListView taskList;
+
 
     public static interface OnCompleteListener {
         public abstract void onComplete(String task_id, String task_name);
@@ -73,11 +82,11 @@ public class TaskListFragmentDialog extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.task_list_fragment, container, false);
 
-
+//       unbinder =  ButterKnife.bind(this,view);
+        taskList = view.findViewById(R.id.taskList);
 //        apiService = RetrofitInstance.getRetrofitInstance().create(ApiService.class);
 
         alltasks = new ArrayList<GeneralTask.ProjecttaskBean>() ;
-        taskList = view.findViewById(R.id.taskList);
 
         JsonObjectRequest request  = new JsonObjectRequest(
                 Request.Method.GET,
@@ -170,10 +179,14 @@ public class TaskListFragmentDialog extends DialogFragment {
         Volley.newRequestQueue(getActivity()).add(request);
 
 
-
-
         return view;
     }
+//
+//    @Override
+//    public void onDestroyView() {
+//        super.onDestroyView();
+//        unbinder.unbind();
+//    }
 
 
 }

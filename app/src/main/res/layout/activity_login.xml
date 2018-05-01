@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#fff"
+    android:id="@+id/relativeLt"
     android:orientation="vertical"
     tools:layout_editor_absoluteY="81dp">
 
@@ -14,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="110dp"
+        android:layout_marginTop="90dp"
         android:orientation="horizontal">
 
         <!--<ImageView-->
@@ -46,7 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="170dp"
+        android:layout_marginTop="150dp"
         android:orientation="horizontal">
 
         <!--<ImageView-->
@@ -73,11 +74,11 @@
 
     <Button
         android:id="@+id/btnlogin"
-        android:layout_width="240dp"
+        android:layout_width="230dp"
         android:layout_height="49dp"
-        android:layout_alignEnd="@+id/linearLayout"
         android:layout_below="@+id/checkBox"
-        android:layout_marginTop="26dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="28dp"
         android:background="@drawable/corners"
         android:text="sign in"
         android:textColor="#ffffff"
@@ -86,7 +87,7 @@
 
     <Button
         android:id="@+id/btn_signup"
-        android:layout_width="240dp"
+        android:layout_width="230dp"
         android:layout_height="49dp"
 
         android:layout_alignStart="@+id/btnlogin"
@@ -104,10 +105,21 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/btnlogin"
         android:layout_below="@+id/linearLayout"
-        android:layout_marginStart="25dp"
+        android:layout_marginStart="39dp"
         android:layout_marginTop="20dp"
         android:text="Remember Me"
         android:textColor="@color/colorPrimary" />
+
+    <com.google.android.gms.common.SignInButton
+
+        android:id="@+id/sign_in_button"
+        android:layout_width="230dp"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/btn_signup"
+        android:layout_below="@+id/btn_signup"
+        android:layout_marginTop="19dp" />
+
+
 
 
 </RelativeLayout>

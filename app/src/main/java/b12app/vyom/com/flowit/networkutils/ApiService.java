@@ -8,6 +8,7 @@ import b12app.vyom.com.flowit.model.GeneralTask;
 import b12app.vyom.com.flowit.model.MyProjectTask;
 import b12app.vyom.com.flowit.model.Project;
 import b12app.vyom.com.flowit.model.User;
+import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -84,7 +85,12 @@ public interface ApiService {
                                      @Query("end_date") String end_date);
 
     @GET("pms_project_sub_task_list.php")
-    Call<GeneralSubTask.ProjectsubtaskBean> listSubTask();
+    Observable<GeneralSubTask.ProjectsubtaskBean> listSubTask();
 
+
+
+    /***************************************************** Observable Api ******************************************************/
+    @GET("pms_projects.php")
+    Observable<Project> getProjectList();
 
 }

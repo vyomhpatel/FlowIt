@@ -26,6 +26,8 @@
     <string name="feng_edit_project">Edit Project</string>
     <string name="feng_project_id">Project ID: </string>
     <string name="feng_due_date">Due date:</string>
+    <string name="add_to_task">Add to task</string>
+    <string name="add_subtask_description">Add subtask description</string>
 
     <string-array name="priority">
         <item>Default</item>
@@ -38,4 +40,11 @@
         <item>Not complete</item>
         <item>Completed</item>
     </string-array>
+
+    <string-array name="roles">
+        <item>Manager</item>
+        <item>User </item>
+
+    </string-array>
+
 </resources>

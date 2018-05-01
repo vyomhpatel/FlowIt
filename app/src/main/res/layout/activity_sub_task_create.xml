@@ -29,7 +29,7 @@
         android:paddingEnd="@dimen/medium_dimen"
         android:paddingStart="@dimen/medium_dimen"
         android:paddingTop="@dimen/normal_dimen"
-        android:hint="@string/tap_to_add_subtask_description" />
+        android:hint="@string/add_subtask_description" />
 
     <LinearLayout
         android:layout_width="match_parent"

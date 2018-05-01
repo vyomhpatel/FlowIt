@@ -23,6 +23,7 @@ import java.util.Locale;
 
 import b12app.vyom.com.flowit.R;
 import b12app.vyom.com.flowit.datasource.DataManager;
+import b12app.vyom.com.flowit.model.GeneralSubTask;
 import b12app.vyom.com.flowit.task.ProjectListFragmentDialog;
 import b12app.vyom.com.flowit.task.TaskCreateActivity;
 import b12app.vyom.com.flowit.task.TaskCreatePresenter;
@@ -39,6 +40,7 @@ public class SubTaskCreateActivity extends AppCompatActivity implements View.OnC
     private DatePickerDialog toDatePickerDialog;
     private SimpleDateFormat dateFormatter;
 
+    String received_task_id;
 
     @BindView(R.id.task_create_container)
     LinearLayout task_create_container;
@@ -66,7 +68,7 @@ public class SubTaskCreateActivity extends AppCompatActivity implements View.OnC
     Toolbar toolbar;
 
 
-    int[] urls = {R.drawable.ic_avatar, R.drawable.ic_avatar, R.drawable.ic_avatar, R.drawable.ic_avatar};
+    int[] urls = {R.drawable.ic_avatar};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -185,9 +187,10 @@ public class SubTaskCreateActivity extends AppCompatActivity implements View.OnC
 
 
     @Override
-    public void onComplete(String subtask_id, String subtask_name) {
+    public void onComplete(String task_id, String task_name) {
 
-        tv_add_subtask.setText(subtask_name);
+        tv_add_subtask.setText(task_name);
+        received_task_id = task_id;
     }
 
 
@@ -197,4 +200,13 @@ public class SubTaskCreateActivity extends AppCompatActivity implements View.OnC
             public void onClick(View v) {}
         }).setActionTextColor(getResources().getColor(R.color.sbRed)).show();
     }
+
+
+
+//    public void createSubTask(View view) {
+//
+//        GeneralSubTask.ProjectsubtaskBean subtask = new GeneralSubTask.ProjectsubtaskBean(received_task_id, edt_subtask_name.getText().toString()
+//               ,"" , edt_subtask_description.getText().toString(),dateStartString,dateEndString);
+//        iPresenter.onSubTaskCreateButtonClick(view,subtask);
+//    }
 }

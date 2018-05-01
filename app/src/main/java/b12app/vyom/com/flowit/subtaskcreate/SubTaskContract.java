@@ -1,7 +1,10 @@
 package b12app.vyom.com.flowit.subtaskcreate;
 
+import android.view.View;
+
 import b12app.vyom.com.flowit.home.BasePresenter;
 import b12app.vyom.com.flowit.home.BaseView;
+import b12app.vyom.com.flowit.model.GeneralSubTask;
 import b12app.vyom.com.flowit.task.TaskContract;
 
 /**
@@ -19,6 +22,7 @@ public interface SubTaskContract {
 
     interface IPresenter extends BasePresenter {
 
+        void  onSubTaskCreateButtonClick(View view, GeneralSubTask.ProjectsubtaskBean projectsubtaskBean);
 
 
     }

@@ -13,8 +13,10 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import b12app.vyom.com.flowit.R;
 import b12app.vyom.com.flowit.adapter.ProjectAdapter;
+
 import b12app.vyom.com.flowit.home.HomeActivity;
 import b12app.vyom.com.flowit.model.Project;
 import b12app.vyom.com.flowit.networkutils.ApiService;
@@ -23,10 +25,8 @@ import b12app.vyom.com.utils.ActivityUtil;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import rx.Scheduler;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 
 /**
  * @Package b12app.vyom.com.flowit.fragmentbrowse
@@ -50,7 +50,6 @@ public class FragmentProject extends Fragment implements ProjectFragmentContract
         unbinder = ButterKnife.bind(this, v);
         
         getData();
-
         return v;
     }
 
@@ -59,17 +58,21 @@ public class FragmentProject extends Fragment implements ProjectFragmentContract
         ApiService apiService = RetrofitInstance.getRetrofitInstance().create(ApiService.class);
 
         apiService.getProjectList()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Project>() {
+                
+                .subscribe(new Observer<Project>() {
 
                     @Override
-                    public void onCompleted() {
+                    public void onError(Throwable e) {
 
                     }
 
                     @Override
-                    public void onError(Throwable e) {
+                    public void onComplete() {
+
+                    }
+
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
                     }
 
@@ -98,7 +101,7 @@ public class FragmentProject extends Fragment implements ProjectFragmentContract
                 fragmentProjectEdit.setArguments(bundle);
                 ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getActivity().getSupportFragmentManager(), fragmentProjectEdit, " editFgt");
                 //dismiss main float btn
-                HomeActivity activity = (HomeActivity)getActivity();
+                HomeActivity activity = (HomeActivity) getActivity();
                 activity.dismissMainFloatBtn();
             }
         });
@@ -116,4 +119,7 @@ public class FragmentProject extends Fragment implements ProjectFragmentContract
     public void setPresenter(ProjectFragmentContract.IPresenter presenter) {
         projectFragmentPresenter = presenter;
     }
+
+
+
 }
