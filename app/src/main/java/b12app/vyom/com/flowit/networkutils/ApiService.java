@@ -25,7 +25,7 @@ public interface ApiService {
     //-------------------------------------USER -----------------------------------------
 
     @POST("pms_reg.php")
-    Call<User> postUser(@Query("first_name") String first_name,
+    Call<String> postUser(@Query("first_name") String first_name,
                         @Query("last_name") String last_name,
                         @Query("email") String email,
                         @Query("mobile") String mobile,
@@ -108,7 +108,7 @@ public interface ApiService {
                                      @Query("end_date") String end_date);
 
     @GET("pms_project_sub_task_list.php")
-    Call<GeneralSubTask> listSubTask();
+    Observable<GeneralSubTask.ProjectsubtaskBean> listSubTask();
 
 
     /******************************************************* Observable Api ********************************************************/

@@ -35,10 +35,8 @@ import b12app.vyom.com.flowit.networkutils.RetrofitInstance;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import rx.Observable;
 import rx.Subscription;
 import rx.functions.Action1;
-import rx.functions.Func6;
 
 public class SignupActivity extends AppCompatActivity implements View.OnClickListener{
     @NotEmpty(order = 1, message = "firstname can't be empty")

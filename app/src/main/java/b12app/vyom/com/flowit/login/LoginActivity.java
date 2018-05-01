@@ -1,6 +1,8 @@
 package b12app.vyom.com.flowit.login;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -13,6 +15,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -21,6 +27,11 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -73,6 +84,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private GoogleSignInClient mGoogleSignInClient;
     private RelativeLayout container;
 
+    SharedPreferences sharedPreferences;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,17 +97,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         container = findViewById(R.id.relativeLt);
 
-        retrofit = new retrofit2.Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-//                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build();
+
+        sharedPreferences = getSharedPreferences("local_user", Context.MODE_PRIVATE);
 
 
-
-
-        // Configure sign-in to request the user's ID, email address, and basic
-        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+         //Configure sign-in to request the user's ID, email address, and basic
+         //profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -114,7 +122,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onStart() {
         super.onStart();
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-//        updateUI(account);
+        updateUI(account);
     }
 
     @OnClick(R.id.btn_signup)
@@ -127,28 +135,40 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @OnClick(R.id.btnlogin)
     public void loginClicked()
     {
+            String email  = emailTxt.getText().toString();
+            String pass = pwTxt.getText().toString();
 
-        ApiService apiService = RetrofitInstance.getRetrofitInstance().create(ApiService.class);
-        Call<User> userCall = apiService.getUser(emailTxt.getText().toString(),pwTxt.getText().toString());
 
-        userCall.enqueue(new Callback<User>() {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "http://rjtmobile.com/aamir/pms/android-app/pms_login.php?email=" + email + "&password=" + pass
+                , null, new com.android.volley.Response.Listener<JSONObject>() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                //Log.i("test", ""+response.body());
-               User user = response.body();
-               String username = response.body().getUserfirstname();
-               Log.i("test", "username is "+response.body().getUserfirstname());
+            public void onResponse(JSONObject response) {
+                Log.i(TAG, "onResponse: "+response);
 
-               Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                startActivity(intent);
+                try {
+                    String userid =   response.getString("userid");
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("userid", userid);
+                    editor.putString("email",response.getString("userfirstname"));
+                    editor.putString("firstname",response.getString("useremail"));
+                    editor.commit();
+                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                    startActivity(intent);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
             }
-
+        }, new com.android.volley.Response.ErrorListener() {
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                Log.i("","Login fail");
+            public void onErrorResponse(VolleyError error) {
+                Log.i(TAG, "onErrorResponse: "+error);
             }
         });
 
+
+        Volley.newRequestQueue(this).add(request);
     }
 
 
@@ -187,23 +207,34 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void updateUI(@Nullable GoogleSignInAccount account) {
         if (account != null) {
 
-
-//            Intent i = new Intent(LoginActivity.this, HomeActivity.class);
-//            startActivity(i);
             Log.i(TAG, "updateUI: "+"\n display name: "+account.getDisplayName()+"" +
                     "\n email: "+account.getEmail()+"" +
                     "n"+account.getFamilyName()
                     +"\n "+account.zzabc());
 
-            Snackbar.make(container,"Display Name: "+account.getDisplayName() +
-                    "\n Email: "+account.getEmail()+"" +
-                    "\n Family Name: "+account.getFamilyName(),Snackbar.LENGTH_SHORT).setAction("Ok", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+
+            String username = account.getEmail();
+            String firstname = account.getGivenName();
+            String lastname = account.getFamilyName();
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("email",username);
+            editor.putString("firstname",firstname);
+            editor.putString("lastname",lastname);
+            editor.putString("userid","22");
+            editor.commit();
+
+
+
+
+//            Snackbar.make(container,"Display Name: "+account.getDisplayName() +
+//                    "\n Email: "+account.getEmail()+"" +
+//                    "\n Family Name: "+account.getFamilyName(),Snackbar.LENGTH_SHORT).setAction("Ok", new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
             Intent i = new Intent(LoginActivity.this, HomeActivity.class);
             startActivity(i);
-                }
-            }).show();
+//                }
+//            }).show();
 
 
         } else {

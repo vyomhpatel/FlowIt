@@ -23,10 +23,15 @@
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
+
+        <activity android:name=".login.LoginActivity"/>
+        <activity android:name=".register.SignupActivity"/>
+
         <activity android:name=".projectcreate.ProjectCreateActivity"
             android:theme="@style/ProjectTheme"/>
         <activity android:name=".task.TaskCreateActivity"
             android:theme="@style/TaskTheme"/>
+        <activity android:name=".subtaskcreate.SubTaskCreateActivity"/>
     </application>
 
 </manifest>

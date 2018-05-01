@@ -8,8 +8,6 @@ import b12app.vyom.com.flowit.model.GeneralSubTask;
 import b12app.vyom.com.flowit.model.GeneralTask;
 import b12app.vyom.com.flowit.networkutils.ApiService;
 import b12app.vyom.com.flowit.networkutils.RetrofitInstance;
-import b12app.vyom.com.flowit.task.TaskContract;
-import b12app.vyom.com.flowit.task.TaskCreateActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

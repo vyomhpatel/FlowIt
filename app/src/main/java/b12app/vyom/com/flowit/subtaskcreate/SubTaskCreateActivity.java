@@ -24,7 +24,6 @@ import java.util.Locale;
 import b12app.vyom.com.flowit.R;
 import b12app.vyom.com.flowit.datasource.DataManager;
 import b12app.vyom.com.flowit.model.GeneralSubTask;
-import b12app.vyom.com.flowit.task.ProjectListFragmentDialog;
 import b12app.vyom.com.flowit.task.TaskCreateActivity;
 import b12app.vyom.com.flowit.task.TaskCreatePresenter;
 import b12app.vyom.com.utils.CircleImageView;
@@ -80,7 +79,7 @@ public class SubTaskCreateActivity extends AppCompatActivity implements View.OnC
 
 
         //initializing data manager
-        dataManager = new DataManager();
+//        dataManager = new DataManager();
         iPresenter = new SubTaskPresenter(dataManager,SubTaskCreateActivity.this);
 
 

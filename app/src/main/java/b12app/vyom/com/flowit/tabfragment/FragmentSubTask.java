@@ -46,7 +46,7 @@ import io.reactivex.disposables.Disposable;
  * @Description FlowIt
  */
 
-public class FragmentSubTask extends Fragment implements SubTaskFragmentContract.IView {
+public class FragmentSubTask extends Fragment implements SubTaskFragmentContract.IView, SubTaskAdapter.OnItemClickListener {
     @BindView(R.id.rv_subtask)
     RecyclerView subtask_recyclerview;
     private Unbinder unbinder;
@@ -60,6 +60,8 @@ public class FragmentSubTask extends Fragment implements SubTaskFragmentContract
         View v = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
         unbinder = ButterKnife.bind(this, v);
+
+
 
 
         return v;
@@ -139,6 +141,11 @@ public class FragmentSubTask extends Fragment implements SubTaskFragmentContract
 
     @Override
     public void hideMainFloatBtn() {
+
+    }
+
+    @Override
+    public void onItemClick(View v, int position) {
 
     }
 }

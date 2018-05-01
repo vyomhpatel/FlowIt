@@ -1,6 +1,8 @@
 package b12app.vyom.com.flowit.home;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
@@ -12,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionHelper;
@@ -28,10 +31,14 @@ import javax.inject.Inject;
 import b12app.vyom.com.flowit.R;
 import b12app.vyom.com.flowit.daggerUtils.AppComponent;
 import b12app.vyom.com.flowit.datasource.DataManager;
+import b12app.vyom.com.flowit.model.Employee;
+import b12app.vyom.com.flowit.networkutils.ApiService;
+import b12app.vyom.com.flowit.networkutils.RetrofitInstance;
 import b12app.vyom.com.flowit.projectcreate.ProjectCreateActivity;
-import b12app.vyom.com.flowit.tabfragment.FragmentDashboard;
+import b12app.vyom.com.flowit.subtaskcreate.SubTaskCreateActivity;
 import b12app.vyom.com.flowit.tabfragment.FragmentInbox;
 import b12app.vyom.com.flowit.tabfragment.FragmentProject;
+import b12app.vyom.com.flowit.tabfragment.FragmentSubTask;
 import b12app.vyom.com.flowit.tabfragment.FragmentTask;
 import b12app.vyom.com.flowit.tabfragment.project.ProjectFgtPresenter;
 import b12app.vyom.com.flowit.tabfragment.task.TaskFgtPresenter;
@@ -39,6 +46,8 @@ import b12app.vyom.com.flowit.task.TaskCreateActivity;
 import b12app.vyom.com.utils.ActivityUtil;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class HomeActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener {
     @BindView(R.id.bottom_tab_layout)
@@ -63,9 +72,14 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     DataManager mDataManager;
 
 
+    SharedPreferences sharedPreferences;
+    ApiService apiService;
+
     //presenter
     private ProjectFgtPresenter projectFgtPresenter;
     private TaskFgtPresenter taskFgtPresenter;
+
+    TextView usernameTv, emailTv;
 
     private Integer[] bottomTabIcon = {R.drawable.ic_testing};
     private Integer[] bottomIconPress = {R.drawable.ic_testing, R.drawable.ic_testing,
@@ -88,6 +102,25 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         initDraw(toolbar);
 
         initBottomNavView();
+
+        getUserInfo();
+
+
+    }
+
+    private void getUserInfo() {
+        sharedPreferences = getSharedPreferences("local_user", Context.MODE_PRIVATE);
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
+        View header = navigationView.getHeaderView(0);
+
+        usernameTv = header.findViewById(R.id.userName);
+        emailTv = header.findViewById(R.id.userRole);
+        String getusername = sharedPreferences.getString("firstname","");
+        String getuserrole = sharedPreferences.getString("email","");
+        usernameTv.setText(getusername);
+        emailTv.setText(getuserrole);
     }
 
     @Override
@@ -131,7 +164,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                         showMainFloatBtn();
                         break;
                     case 3:
-                        ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), new FragmentDashboard(), "dashFgt");
+                        ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), new FragmentSubTask(), "dashFgt");
                         showMainFloatBtn();
                         break;
                 }
@@ -274,6 +307,9 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         } else if (position == 1) {
             startActivity(new Intent(HomeActivity.this, TaskCreateActivity.class));
 
+        }else if(position == 2)
+        {
+            startActivity(new Intent(HomeActivity.this, SubTaskCreateActivity.class));
         }
         rfabHelper.toggleContent();
     }
@@ -285,6 +321,9 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         } else if (position == 1) {
             startActivity(new Intent(HomeActivity.this, TaskCreateActivity.class));
 
+        } else if(position == 2)
+        {
+            startActivity(new Intent(HomeActivity.this, SubTaskCreateActivity.class));
         }
         rfabHelper.toggleContent();
     }

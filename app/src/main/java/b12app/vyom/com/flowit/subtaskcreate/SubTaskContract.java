@@ -5,7 +5,6 @@ import android.view.View;
 import b12app.vyom.com.flowit.home.BasePresenter;
 import b12app.vyom.com.flowit.home.BaseView;
 import b12app.vyom.com.flowit.model.GeneralSubTask;
-import b12app.vyom.com.flowit.task.TaskContract;
 
 /**
  * Created by jinliyu on 4/26/18.
