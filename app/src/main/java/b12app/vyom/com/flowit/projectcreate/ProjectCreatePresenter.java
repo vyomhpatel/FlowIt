@@ -4,6 +4,7 @@ import android.util.Log;
 import android.view.View;
 
 import b12app.vyom.com.flowit.datasource.DataManager;
+import b12app.vyom.com.flowit.datasource.IDataSource;
 import b12app.vyom.com.flowit.model.Project;
 import b12app.vyom.com.flowit.networkutils.ApiService;
 import b12app.vyom.com.flowit.networkutils.RetrofitInstance;
@@ -13,14 +14,14 @@ import retrofit2.Response;
 
 public class ProjectCreatePresenter implements ProjectCreateContract.IPresenter {
     private ProjectCreateContract.IView projectCreateView;
-    private DataManager mDataManager;
+    private IDataSource dataManager;
     private ApiService apiService;
     private static String TAG = "presnter project tag";
 
 
-    //ProjectCreateContract.IView can be fragment/activity
+    //ProjectContract.IView can be fragment/activity
     public ProjectCreatePresenter(DataManager dataManager, ProjectCreateActivity fragment) {
-        mDataManager = dataManager;
+        dataManager = dataManager;
         projectCreateView = fragment;
         apiService  = RetrofitInstance.getRetrofitInstance().create(ApiService.class);
     }

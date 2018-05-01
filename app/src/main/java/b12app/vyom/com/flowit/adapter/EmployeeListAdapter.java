@@ -19,8 +19,8 @@ public class EmployeeListAdapter extends BaseAdapter {
 
     private final LayoutInflater layoutInflater;
     private List<Employee.EmployeesBean> employeesBeans;
-    private ListView listView;
-    private Context context;
+   private ListView listView;
+   private Context context;
 
     public EmployeeListAdapter(List<Employee.EmployeesBean> employeesBeans, Context context) {
         this.employeesBeans = employeesBeans;
@@ -47,9 +47,9 @@ public class EmployeeListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         EmployeeListViewHolder employeeListViewHolder;
 
-        if (convertView == null) {
+        if(convertView==null){
             employeeListViewHolder = new EmployeeListViewHolder();
-            convertView = layoutInflater.inflate(R.layout.employee_list_item_format, parent, false);
+            convertView = layoutInflater.inflate(R.layout.employee_list_item_format,parent,false);
             employeeListViewHolder.emp_name = convertView.findViewById(R.id.emp_name);
             employeeListViewHolder.emp_email = convertView.findViewById(R.id.emp_email);
             employeeListViewHolder.emp_mobile = convertView.findViewById(R.id.emp_mobile);
@@ -60,12 +60,12 @@ public class EmployeeListAdapter extends BaseAdapter {
             employeeListViewHolder = (EmployeeListViewHolder) convertView.getTag();
         }
 
-        employeeListViewHolder.emp_name.setText(employeesBeans.get(position).getEmpfirstname() + " "
-                + employeesBeans.get(position).getEmplastname());
+        employeeListViewHolder.emp_name.setText(employeesBeans.get(position).getEmpfirstname()+" "
+                                                +employeesBeans.get(position).getEmplastname());
 
         employeeListViewHolder.emp_mobile.setText(employeesBeans.get(position).getEmpmobile());
         employeeListViewHolder.emp_email.setText(employeesBeans.get(position).getEmpemail());
-        switch (employeesBeans.get(position).getEmpdesignation()) {
+        switch (employeesBeans.get(position).getEmpdesignation()){
 
             case "manager":
                 employeeListViewHolder.designation_text.setText("MGR");
@@ -87,9 +87,9 @@ public class EmployeeListAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private class EmployeeListViewHolder {
+    private class EmployeeListViewHolder{
 
-        TextView designation_text, emp_name, emp_mobile, emp_email;
+        TextView designation_text,emp_name,emp_mobile,emp_email;
 
     }
 }

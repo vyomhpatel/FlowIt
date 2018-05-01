@@ -1,22 +1,20 @@
 package b12app.vyom.com.flowit.projectcreate;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -27,10 +25,16 @@ import java.util.Locale;
 import b12app.vyom.com.flowit.R;
 import b12app.vyom.com.flowit.datasource.DataManager;
 import b12app.vyom.com.flowit.model.Project;
+import b12app.vyom.com.flowit.networkutils.ApiService;
+import b12app.vyom.com.flowit.networkutils.RetrofitInstance;
 import b12app.vyom.com.utils.CircleImageView;
 import b12app.vyom.com.utils.MyFlowlayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ProjectCreateActivity extends AppCompatActivity implements View.OnClickListener, ProjectCreateContract.IView {
 
@@ -78,7 +82,6 @@ public class ProjectCreateActivity extends AppCompatActivity implements View.OnC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project_create);
         ButterKnife.bind(this);
-
         dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 
         // iPresenterProject = new ProjectCreatePresenter();
@@ -87,15 +90,15 @@ public class ProjectCreateActivity extends AppCompatActivity implements View.OnC
         tv_end_date.setOnClickListener(this);
         myFlowlayout.setOnClickListener(this);
 
+
         //initializing data manager
 //        dataManager = new DataManager();
         iPresenterProject = new ProjectCreatePresenter(dataManager, ProjectCreateActivity.this);
 
         initToolBar();
-
         initFlow();
-
         setDateTimeField();
+
 
     }
 
@@ -151,14 +154,10 @@ public class ProjectCreateActivity extends AppCompatActivity implements View.OnC
     }
 
     public void createProject(View view) {
-        if (TextUtils.isEmpty(edt_project_name.getText().toString()) || TextUtils.isEmpty(etProjectDescription.getText().toString())
-                || TextUtils.isEmpty(dateStartString) || TextUtils.isEmpty(dateEndString)) {
-            Toast.makeText(this, "Text field can not be null", Toast.LENGTH_SHORT).show();
-        }
 
-//            Project.ProjectsBean project = new Project.ProjectsBean(edt_project_name.getText().toString(), "1", etProjectDescription.getText().toString(),
-//                    dateStartString, dateEndString);
-//        iPresenterProject.onProjectCreateButtonClick(view, project);
+        Project.ProjectsBean project = new Project.ProjectsBean(edt_project_name.getText().toString(),"1",etProjectDescription.getText().toString(),
+                dateStartString,dateEndString);
+        iPresenterProject.onProjectCreateButtonClick(view, project);
         Log.i(TAG, "date: " + dateStartString + " " + dateEndString);
     }
 
@@ -182,7 +181,7 @@ public class ProjectCreateActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public void setPresenter(ProjectCreateContract.IPresenter presenter) {
-        //to connect iView to the presenter.
+        //to connect iview to the presenter.
         iPresenterProject = presenter;
     }
 
@@ -193,15 +192,5 @@ public class ProjectCreateActivity extends AppCompatActivity implements View.OnC
             public void onClick(View v) {
             }
         }).show();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 }

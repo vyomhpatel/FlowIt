@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
 
 import com.squareup.picasso.Picasso;
 
@@ -16,7 +15,7 @@ import b12app.vyom.com.utils.MyFlowlayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class TaskCreateActivity extends AppCompatActivity {
+public class TaskCreateActivity extends AppCompatActivity implements TaskCreateContract.IView {
     @BindView(R.id.layout_flow_task)
     MyFlowlayout myFlowlayout;
 
@@ -60,12 +59,12 @@ public class TaskCreateActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case android.R.id.home:
-                finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
+    public void displaySnackbar() {
+
+    }
+
+    @Override
+    public void setPresenter(TaskCreateContract.IPresenter presenter) {
+
     }
 }

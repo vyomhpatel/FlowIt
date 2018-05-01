@@ -18,8 +18,8 @@ public class ProjectListAdapter extends BaseAdapter {
 
     private final LayoutInflater layoutInflater;
     private List<Project.ProjectsBean> project;
-    private ListView listView;
-    private Context context;
+   private ListView listView;
+   private Context context;
 
     public ProjectListAdapter(List<Project.ProjectsBean> project, Context context) {
         this.project = project;
@@ -46,9 +46,9 @@ public class ProjectListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ProjectListViewHolder projectListViewHolder;
 
-        if (convertView == null) {
+        if(convertView==null){
             projectListViewHolder = new ProjectListViewHolder();
-            convertView = layoutInflater.inflate(R.layout.project_list_item_format, parent, false);
+            convertView = layoutInflater.inflate(R.layout.project_list_item_format,parent,false);
             projectListViewHolder.tvTitle = convertView.findViewById(R.id.tvTitle);
             convertView.setTag(projectListViewHolder);
         } else {
@@ -61,7 +61,7 @@ public class ProjectListAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private class ProjectListViewHolder {
+    private class ProjectListViewHolder{
 
         TextView tvTitle;
 

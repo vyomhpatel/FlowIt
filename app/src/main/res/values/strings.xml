@@ -28,7 +28,7 @@
     <string name="feng_due_date">Due date:</string>
     <string name="feng_date_alert">End date can not early than start date</string>
     <string name="due_date">Due Date</string>
-    <string name="task_id">Task ID</string>
+    <string name="task_id">Task Id</string>
 
     <string-array name="priority">
         <item>Default</item>
@@ -41,7 +41,6 @@
         <item>Not complete</item>
         <item>Completed</item>
     </string-array>
-
     <string-array name="task_status">
         <item>Initial</item>
         <item>In Progress</item>

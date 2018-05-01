@@ -56,7 +56,7 @@ dependencies {
     //annotation
     compile 'com.android.support:support-annotations:27.1.1'
 
-    // dagger2 依赖部分
+    // dagger2
     provided 'javax.annotation:jsr250-api:1.0'
     compile 'com.google.dagger:dagger:2.0.2'
     compile 'com.google.dagger:dagger-compiler:2.0.2'

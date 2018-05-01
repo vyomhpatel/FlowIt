@@ -15,15 +15,16 @@ import b12app.vyom.com.flowit.adapter.ProjectListAdapter;
 import b12app.vyom.com.flowit.model.Project;
 import b12app.vyom.com.flowit.networkutils.ApiService;
 import b12app.vyom.com.flowit.networkutils.RetrofitInstance;
-
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ProjectListFragmentDialog extends DialogFragment {
 
-    private ListView projectList;
-    private ApiService apiService;
+   private ListView projectList;
+   private ApiService apiService;
     private OnCompleteListener mListener;
 
     public static interface OnCompleteListener {
