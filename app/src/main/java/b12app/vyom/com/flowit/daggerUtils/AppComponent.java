@@ -7,6 +7,7 @@ import b12app.vyom.com.flowit.home.HomeActivity;
 import b12app.vyom.com.flowit.tabfragment.FragmentProject;
 import b12app.vyom.com.flowit.tabfragment.FragmentProjectEdit;
 import b12app.vyom.com.flowit.tabfragment.FragmentTaskEdit;
+import b12app.vyom.com.flowit.task.TaskCreateActivity;
 import dagger.Component;
 
 /**
@@ -27,6 +28,8 @@ public interface AppComponent {
     void inject(FragmentProjectEdit fragmentProjectEdit);
 
     void inject(FragmentTaskEdit fragmentTaskEdit);
+
+    void inject(TaskCreateActivity taskCreateActivity);
 
 
     // void inject(MyFragment fragment);
