@@ -37,7 +37,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ProjectCreateActivity extends AppCompatActivity implements View.OnClickListener, ProjectContract.IView {
+public class ProjectCreateActivity extends AppCompatActivity implements View.OnClickListener, ProjectCreateContract.IView {
 
     private static final String TAG = "project create";
 
@@ -47,7 +47,7 @@ public class ProjectCreateActivity extends AppCompatActivity implements View.OnC
     private DatePickerDialog fromDatePickerDialog;
     private DatePickerDialog toDatePickerDialog;
     private SimpleDateFormat dateFormatter;
-    private ProjectContract.IPresenter iPresenterProject;
+    private ProjectCreateContract.IPresenter iPresenterProject;
     private DataManager dataManager;
 
 
@@ -93,7 +93,7 @@ public class ProjectCreateActivity extends AppCompatActivity implements View.OnC
 
 
         //initializing data manager
-        dataManager = new DataManager();
+//        dataManager = new DataManager();
         iPresenterProject = new ProjectCreatePresenter(dataManager, ProjectCreateActivity.this);
 
         initToolBar();
@@ -181,7 +181,7 @@ public class ProjectCreateActivity extends AppCompatActivity implements View.OnC
     }
 
     @Override
-    public void setPresenter(ProjectContract.IPresenter presenter) {
+    public void setPresenter(ProjectCreateContract.IPresenter presenter) {
         //to connect iview to the presenter.
         iPresenterProject = presenter;
     }

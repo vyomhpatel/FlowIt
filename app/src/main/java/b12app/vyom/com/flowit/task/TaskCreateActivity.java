@@ -15,7 +15,7 @@ import b12app.vyom.com.utils.MyFlowlayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class TaskCreateActivity extends AppCompatActivity {
+public class TaskCreateActivity extends AppCompatActivity implements TaskCreateContract.IView {
     @BindView(R.id.layout_flow_task)
     MyFlowlayout myFlowlayout;
 
@@ -56,5 +56,15 @@ public class TaskCreateActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_attachment, menu);
         return true;
+    }
+
+    @Override
+    public void displaySnackbar() {
+
+    }
+
+    @Override
+    public void setPresenter(TaskCreateContract.IPresenter presenter) {
+
     }
 }

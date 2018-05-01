@@ -27,6 +27,7 @@
         <EditText
             android:id="@+id/edt_task__detail_name"
             style="@style/EditModeTheme"
+            android:clickable="false"
             android:hint="@string/title" />
 
         <Spinner
@@ -38,6 +39,7 @@
         <EditText
             android:id="@+id/tv_task_detail_desc"
             style="@style/EditModeTheme"
+            android:clickable="false"
             android:text="@string/tap_to_add_description" />
 
         <View
@@ -83,6 +85,7 @@
             android:id="@+id/tv_task__detail_due_date"
             style="@style/EditModeTheme"
             android:gravity="center_vertical"
+            android:clickable="false"
             android:text="Due Date" />
 
         <View

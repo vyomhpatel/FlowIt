@@ -5,13 +5,14 @@ import java.util.List;
 import b12app.vyom.com.flowit.model.Employee;
 import b12app.vyom.com.flowit.model.GeneralSubTask;
 import b12app.vyom.com.flowit.model.GeneralTask;
+import b12app.vyom.com.flowit.model.MsgReponseBody;
 import b12app.vyom.com.flowit.model.Project;
 import b12app.vyom.com.flowit.model.User;
+import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
-import rx.Observable;
 
 public interface ApiService {
 
@@ -42,11 +43,12 @@ public interface ApiService {
                                            @Query("end_date") String end_date);
 
     @POST("pms_edit_project.php")
-    Call<Project.ProjectsBean> updateProject(@Query("project_name") String project_name,
-                                             @Query("project_status") String project_status,
-                                             @Query("project_desc") String project_desc,
-                                             @Query("start_date") String start_date,
-                                             @Query("end_date") String end_date);
+    Call<MsgReponseBody> updateProject(@Query("project_id") String project_id,
+                                       @Query("project_name") String project_name,
+                                       @Query("project_status") String project_status,
+                                       @Query("project_desc") String project_desc,
+                                       @Query("start_date") String start_date,
+                                       @Query("end_date") String end_date);
 
     @GET("pms_projects.php")
     Call<Project> getProjects();

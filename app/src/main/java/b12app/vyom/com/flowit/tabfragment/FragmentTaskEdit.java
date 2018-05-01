@@ -92,7 +92,7 @@ public class FragmentTaskEdit extends android.support.v4.app.Fragment implements
          apiService = RetrofitInstance.getRetrofitInstance().create(ApiService.class);
 
          //initializing ipresenter
-        dataManager = new DataManager();
+//        dataManager = new DataManager();
         iPresenterTask = new TaskEditPresenter(this,dataManager);
 
         initFlow();

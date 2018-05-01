@@ -48,43 +48,43 @@ public class EmployeeListFragmentDialog extends android.support.v4.app.DialogFra
             @Override
             public void onResponse(Call<Employee> call, final Response<Employee> response) {
 
-
-                Log.i(TAG, "employee list: "+response);
-                EmployeeListAdapter employeeListAdapter = new EmployeeListAdapter(response.body().getEmployees(), getActivity());
-                empList.setAdapter(employeeListAdapter);
-                empList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                        String empfirstname = response.body().getEmployees().get(position).getEmpfirstname();
-                        String empid = response.body().getEmployees().get(position).getEmpid();
-                        Bundle bundle = getArguments();
-                        String task_id = bundle.getString("task_id");
-                        String project_id = bundle.getString("project_id");
-                        apiService.assignTask(task_id,project_id,empid).enqueue(new Callback<JSONObject>() {
-
-                            @Override
-                            public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
-
-                                try {
-                                    Log.i(TAG, "Task Assign Status"+response.body().toString());
-                                    JSONArray jsonArray = response.body().getJSONArray("msg");
-
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-
-                            }
-
-                            @Override
-                            public void onFailure(Call<JSONObject> call, Throwable t) {
-                                Log.i(TAG, "Task Assign Failure"+t.getMessage());
-                            }
-                        });
-                        getDialog().dismiss();
-
-                    }
-                });
+//
+//                Log.i(TAG, "employee list: "+response);
+//                EmployeeListAdapter employeeListAdapter = new EmployeeListAdapter(response.body().getEmployees(), getActivity());
+//                empList.setAdapter(employeeListAdapter);
+//                empList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                    @Override
+//                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//
+//                        String empfirstname = response.body().getEmployees().get(position).getEmpfirstname();
+//                        String empid = response.body().getEmployees().get(position).getEmpid();
+//                        Bundle bundle = getArguments();
+//                        String task_id = bundle.getString("task_id");
+//                        String project_id = bundle.getString("project_id");
+//                        apiService.assignTask(task_id,project_id,empid).enqueue(new Callback<JSONObject>() {
+//
+//                            @Override
+//                            public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
+//
+//                                try {
+//                                    Log.i(TAG, "Task Assign Status"+response.body().toString());
+//                                    JSONArray jsonArray = response.body().getJSONArray("msg");
+//
+//                                } catch (JSONException e) {
+//                                    e.printStackTrace();
+//                                }
+//
+//                            }
+//
+//                            @Override
+//                            public void onFailure(Call<JSONObject> call, Throwable t) {
+//                                Log.i(TAG, "Task Assign Failure"+t.getMessage());
+//                            }
+//                        });
+//                        getDialog().dismiss();
+//
+//                    }
+//                });
             }
 
             @Override
