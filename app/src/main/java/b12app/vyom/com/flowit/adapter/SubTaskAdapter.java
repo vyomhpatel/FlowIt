@@ -57,7 +57,7 @@ public class SubTaskAdapter extends RecyclerView.Adapter<SubTaskAdapter.myViewHo
         if(dataList.size() > 0) {
             holder.subtaskname.setText(dataList.get(position).getSubtaskname());
             holder.subtaskstatus.setText("status: "+ StatusHelper.getTaskStatus(Integer.parseInt(dataList.get(position).getSubtaskstatus())));
-            holder.subtasktimeline.setText("end date: "+ dataList.get(position).getStartdate());
+            holder.subtasktimeline.setText("TimeLine: "+ dataList.get(position).getStartdate()+ " —— "+ dataList.get(position).getEndstart());
             holder.subtaskdesc.setText(dataList.get(position).getSubtaskdesc());
 
             holder.itemView.setTag(position);

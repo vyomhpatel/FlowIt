@@ -66,6 +66,7 @@ public class SubTaskCreateActivity extends AppCompatActivity implements View.OnC
     @BindView(R.id.tb)
     Toolbar toolbar;
 
+    String project_id;
 
     int[] urls = {R.drawable.ic_avatar};
 
@@ -186,10 +187,12 @@ public class SubTaskCreateActivity extends AppCompatActivity implements View.OnC
 
 
     @Override
-    public void onComplete(String task_id, String task_name) {
+    public void onComplete(String project_id, String task_id, String task_name) {
 
         tv_add_subtask.setText(task_name);
         received_task_id = task_id;
+        this.project_id = project_id;
+
     }
 
 
@@ -204,8 +207,8 @@ public class SubTaskCreateActivity extends AppCompatActivity implements View.OnC
 
     public void createsubTask(View view) {
 
-        GeneralSubTask.ProjectsubtaskBean subtask = new GeneralSubTask.ProjectsubtaskBean(received_task_id,"18","18", edt_subtask_name.getText().toString()
-               ,"1" , edt_subtask_description.getText().toString(),dateStartString,dateEndString);
+        GeneralSubTask.ProjectsubtaskBean subtask = new GeneralSubTask.ProjectsubtaskBean("1",received_task_id,project_id, edt_subtask_name.getText().toString()
+               ,"0" , edt_subtask_description.getText().toString(),dateStartString,dateEndString);
         iPresenter.onSubTaskCreateButtonClick(view,subtask);
     }
 }

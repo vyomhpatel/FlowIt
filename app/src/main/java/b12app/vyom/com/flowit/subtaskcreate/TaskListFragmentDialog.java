@@ -58,7 +58,7 @@ public class TaskListFragmentDialog extends DialogFragment {
 
 
     public static interface OnCompleteListener {
-        public abstract void onComplete(String task_id, String task_name);
+        public abstract void onComplete(String project_id, String task_id, String task_name);
     }
 
     @Override
@@ -126,10 +126,12 @@ public class TaskListFragmentDialog extends DialogFragment {
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         String task_name = alltasks.get(position).getTaskname();
                         String task_id = alltasks.get(position).getTaskid();
+                        String project_id = alltasks.get(position).getProjectid();
 
 
 
-                        mListener.onComplete(task_id, task_name);
+
+                        mListener.onComplete(project_id, task_id, task_name);
                         getDialog().dismiss();
                     }
                 });

@@ -61,7 +61,6 @@ public class FragmentSubTask extends Fragment implements SubTaskFragmentContract
 
         unbinder = ButterKnife.bind(this, v);
 
-
         subtaskFgtPresenter.getSubtaskList(getActivity());
 
         return v;
