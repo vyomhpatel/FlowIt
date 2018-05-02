@@ -14,7 +14,7 @@ public interface FCMApiService {
 
     @Headers({
             "Content-Type:application/json",
-            "Authorization:key=cxb3ZD3T0WA:APA91bHkJ2xeWuetzmeBYWCLKifkY580vCgSXi0XhJuwPd8hdyp9KaVknUc2Hn_ovLS2q26orWpaIQnIGk3IHPyCzKF_FucfrutpEbyW1J6m42ub_DIMxa6-J0pbayBxw9BYLCGOVbdr"
+            "Authorization:key=AAAAQtuXyyU:APA91bEaNV_axpnTKeV-SID52k3IWBOXmGrau58Jqq1gtmHhVWLpLli-BwgQHNCdRWE_qMjnuxCT9wNrUb6OU1o5wwtND4w7PoTIyUb2a8iizur9hDN5PgOfnJX3IeEEq3nlZozvDVNz"
     })
     @POST("fcm/send")
     Call<FcmResponse> sendNotification(@Body Sender body) ;

@@ -11,7 +11,7 @@ public class Sender {
     private NotificationBean notification;
     private String to;
 
-    public Sender(NotificationBean notification, String to) {
+    public Sender( String to,NotificationBean notification) {
         this.notification = notification;
         this.to = to;
     }

@@ -81,13 +81,14 @@ public class EmployeeListFragmentDialog extends android.support.v4.app.DialogFra
 
 
                                     String current_token = FirebaseInstanceId.getInstance().getToken();
+                                Log.i(TAG, "fcm token"+current_token);
                                     Sender.NotificationBean notificationBean = new Sender.NotificationBean("You have been assigned to do","Task Assignment");
-                                    Sender sender = new Sender(notificationBean,current_token);
+                                    Sender sender = new Sender(current_token,notificationBean);
                                     FCMApiService fcmApiService = FCMRetrofitClient.getRetrofit().create(FCMApiService.class);
                                     fcmApiService.sendNotification(sender).enqueue(new Callback<FcmResponse>() {
                                         @Override
                                         public void onResponse(Call<FcmResponse> call, Response<FcmResponse> response) {
-                                            Log.i(TAG, "fcm response: "+response.message());
+                                            Log.i(TAG, "fcm response: "+response.body().getResults().get(0).getMessage_id());
 //                                            if(response.body().getSuccess()==1){
 //                                                Toast.makeText(getActivity(),"Message delivered",Toast.LENGTH_SHORT).show();
 //                                            }
@@ -98,7 +99,7 @@ public class EmployeeListFragmentDialog extends android.support.v4.app.DialogFra
 
                                         @Override
                                         public void onFailure(Call<FcmResponse> call, Throwable t) {
-                                                Toast.makeText(getActivity(),"error"+t.getMessage(),Toast.LENGTH_SHORT).show();
+                                            Log.i(TAG, "onFailure: "+t.getMessage());
                                         }
                                     });
 

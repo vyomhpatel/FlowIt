@@ -31,7 +31,7 @@ public class FCMRetrofitInstance {
         return retrofit;
     }
 
-    public static ApiService apiService() {
-        return getFCMRetrofitInstance().create(ApiService.class);
+    public static FCMApiService apiService() {
+        return getFCMRetrofitInstance().create(FCMApiService.class);
     }
 }

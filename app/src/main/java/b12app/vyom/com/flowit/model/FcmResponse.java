@@ -14,7 +14,7 @@ public class FcmResponse {
      * results : [{"message_id":"1:08"}]
      */
 
-    private int multicast_id;
+    private long multicast_id;
     private int success;
     private int failure;
     private int canonical_ids;
@@ -23,7 +23,7 @@ public class FcmResponse {
     public FcmResponse() {
     }
 
-    public FcmResponse(int multicast_id, int success, int failure, int canonical_ids, List<ResultsBean> results) {
+    public FcmResponse(long multicast_id, int success, int failure, int canonical_ids, List<ResultsBean> results) {
         this.multicast_id = multicast_id;
         this.success = success;
         this.failure = failure;
@@ -31,7 +31,7 @@ public class FcmResponse {
         this.results = results;
     }
 
-    public int getMulticast_id() {
+    public long getMulticast_id() {
         return multicast_id;
     }
 
@@ -70,10 +70,7 @@ public class FcmResponse {
 
         private String message_id;
 
-        public static ResultsBean objectFromData(String str) {
 
-            return new Gson().fromJson(str, ResultsBean.class);
-        }
 
         public String getMessage_id() {
             return message_id;
