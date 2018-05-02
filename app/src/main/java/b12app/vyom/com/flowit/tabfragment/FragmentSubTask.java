@@ -152,7 +152,7 @@ public class FragmentSubTask extends Fragment implements SubTaskFragmentContract
 
     @Override
     public void onItemClick(View v, int position) {
-        Log.i("click", "Clicked!!!!!");
+
         subtaskFgtPresenter.rvItemClick(v, position, subtaskBeanList, getActivity());
 
     }
