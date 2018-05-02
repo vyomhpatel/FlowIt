@@ -17,6 +17,8 @@ import org.json.JSONObject;
 
 import b12app.vyom.com.flowit.R;
 import b12app.vyom.com.flowit.adapter.EmployeeListAdapter;
+import b12app.vyom.com.flowit.fcmutils.FlowItInstanceIdService;
+import b12app.vyom.com.flowit.fcmutils.FlowItMessagingService;
 import b12app.vyom.com.flowit.model.Employee;
 import b12app.vyom.com.flowit.model.GeneralTask;
 import b12app.vyom.com.flowit.networkutils.ApiService;
@@ -69,6 +71,8 @@ public class EmployeeListFragmentDialog extends android.support.v4.app.DialogFra
                                 try {
                                     Log.i(TAG, "Task Assign Status" + response.body().toString());
                                     JSONArray jsonArray = response.body().getJSONArray("msg");
+                                    FlowItInstanceIdService.getInstance().onTokenRefresh();
+
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();

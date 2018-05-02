@@ -27,6 +27,18 @@
             android:theme="@style/ProjectTheme"/>
         <activity android:name=".task.TaskCreateActivity"
             android:theme="@style/TaskTheme"/>
+        <service
+            android:name=".fcmutils.FlowItInstanceIdService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+        <service
+            android:name=".fcmutils.FlowItMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "287151999781-mmtf3qpsnrou2shfenjgt1uk6rig6iri.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "b12app.vyom.com.flowit",
+            "certificate_hash": "33c878b8fe5637348a2970eeda2dac8adde995a7"
+          }
+        },
+        {
           "client_id": "287151999781-8hfeql4nk29203a2bc8gluerildtilnn.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
