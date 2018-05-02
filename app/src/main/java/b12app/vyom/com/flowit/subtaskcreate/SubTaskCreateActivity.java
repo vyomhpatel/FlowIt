@@ -2,6 +2,7 @@ package b12app.vyom.com.flowit.subtaskcreate;
 
 import android.app.DatePickerDialog;
 import android.app.FragmentManager;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -21,17 +22,22 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import javax.inject.Inject;
+
 import b12app.vyom.com.flowit.R;
+import b12app.vyom.com.flowit.daggerUtils.AppComponent;
 import b12app.vyom.com.flowit.datasource.DataManager;
 
+import b12app.vyom.com.flowit.home.BaseActivity;
+import b12app.vyom.com.flowit.model.GeneralSubTask;
 import b12app.vyom.com.utils.CircleImageView;
 import b12app.vyom.com.utils.MyFlowlayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SubTaskCreateActivity extends AppCompatActivity implements View.OnClickListener, SubTaskContract.IView, TaskListFragmentDialog.OnCompleteListener{
-    private  DataManager dataManager;
-    private  SubTaskContract.IPresenter iPresenter;
+public class SubTaskCreateActivity extends BaseActivity implements View.OnClickListener, SubTaskContract.IView, TaskListFragmentDialog.OnCompleteListener {
+
+    private SubTaskContract.IPresenter iPresenter;
     private String dateStartString, dateEndString;
     private DatePickerDialog fromDatePickerDialog;
     private DatePickerDialog toDatePickerDialog;
@@ -40,8 +46,7 @@ public class SubTaskCreateActivity extends AppCompatActivity implements View.OnC
     String received_task_id;
 
     @BindView(R.id.task_create_container)
-    LinearLayout task_create_container;
-
+    CoordinatorLayout task_create_container;
 
     @BindView(R.id.layout_flow_task)
     MyFlowlayout myFlowlayout;
@@ -64,6 +69,10 @@ public class SubTaskCreateActivity extends AppCompatActivity implements View.OnC
     @BindView(R.id.tb)
     Toolbar toolbar;
 
+    @Inject
+    DataManager dataManager;
+
+    String project_id;
 
     int[] urls = {R.drawable.ic_avatar};
 
@@ -75,10 +84,8 @@ public class SubTaskCreateActivity extends AppCompatActivity implements View.OnC
         ButterKnife.bind(this);
 
 
-
         //initializing data manager
-//        dataManager = new DataManager();
-        iPresenter = new SubTaskPresenter(dataManager,SubTaskCreateActivity.this);
+        iPresenter = new SubTaskPresenter(dataManager, SubTaskCreateActivity.this);
 
 
         dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
@@ -95,6 +102,11 @@ public class SubTaskCreateActivity extends AppCompatActivity implements View.OnC
         setDateTimeField();
     }
 
+    @Override
+    protected void setupActivityComponent(AppComponent appComponent) {
+        appComponent.inject(SubTaskCreateActivity.this);
+    }
+
     private void setDateTimeField() {
         Calendar newCalendar = Calendar.getInstance();
         fromDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
@@ -106,7 +118,7 @@ public class SubTaskCreateActivity extends AppCompatActivity implements View.OnC
                 tv_task_start_date.setText(dateFormatter.format(newDate.getTime()));
             }
 
-        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
 
         toDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
 
@@ -119,8 +131,7 @@ public class SubTaskCreateActivity extends AppCompatActivity implements View.OnC
 
             }
 
-        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
-
+        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
 
 
     }
@@ -136,10 +147,10 @@ public class SubTaskCreateActivity extends AppCompatActivity implements View.OnC
     }
 
     private void initToolerBar() {
-//        toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.blue0));
-//        setSupportActionBar(toolbar);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        getSupportActionBar().setTitle(R.string.create_subtask);
+        toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.blue0));
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(R.string.create_subtask);
     }
 
     @Override
@@ -166,7 +177,7 @@ public class SubTaskCreateActivity extends AppCompatActivity implements View.OnC
     private void displayProjectFragment() {
         FragmentManager manager = getFragmentManager();
         TaskListFragmentDialog dialog = new TaskListFragmentDialog();
-        dialog.show(manager,"task list");
+        dialog.show(manager, "task list");
     }
 
     @Override
@@ -176,28 +187,38 @@ public class SubTaskCreateActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public void displaySnackbar() {
-        Snackbar.make(task_create_container,"Task Created Successfully!",Snackbar.LENGTH_SHORT).setAction("Ok", new View.OnClickListener() {
+        Snackbar.make(task_create_container, "Task Created Successfully!", Snackbar.LENGTH_SHORT).setAction("Ok", new View.OnClickListener() {
             @Override
-            public void onClick(View v) {}
+            public void onClick(View v) {
+            }
         }).setActionTextColor(getResources().getColor(R.color.colorAccent)).show();
     }
 
 
     @Override
-    public void onComplete(String task_id, String task_name) {
+    public void onComplete(String project_id, String task_id, String task_name) {
 
         tv_add_subtask.setText(task_name);
         received_task_id = task_id;
+        this.project_id = project_id;
+
     }
 
 
     public void addAssignee(View view) {
-        Snackbar.make(task_create_container,"Sub Task Created Successfully!",Snackbar.LENGTH_SHORT).setAction("Ok", new View.OnClickListener() {
+        Snackbar.make(task_create_container, "Sub Task Created Successfully!", Snackbar.LENGTH_SHORT).setAction("Ok", new View.OnClickListener() {
             @Override
-            public void onClick(View v) {}
+            public void onClick(View v) {
+            }
         }).setActionTextColor(getResources().getColor(R.color.sbRed)).show();
     }
 
 
+    public void createsubTask(View view) {
+
+        GeneralSubTask.ProjectsubtaskBean subtask = new GeneralSubTask.ProjectsubtaskBean("1", received_task_id, project_id, edt_subtask_name.getText().toString()
+                , "0", edt_subtask_description.getText().toString(), dateStartString, dateEndString);
+        iPresenter.onSubTaskCreateButtonClick(view, subtask);
+    }
 
 }

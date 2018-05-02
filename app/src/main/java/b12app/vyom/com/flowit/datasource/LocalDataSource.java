@@ -10,6 +10,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.List;
 
 import b12app.vyom.com.flowit.model.Employee;
+import b12app.vyom.com.flowit.model.GeneralSubTask;
 import b12app.vyom.com.flowit.model.GeneralTask;
 import b12app.vyom.com.flowit.model.Project;
 import b12app.vyom.com.utils.FbHelper;
@@ -117,5 +118,35 @@ public class LocalDataSource implements IDataSource {
     @Override
     public Disposable queryProjectList(NetworkCallback networkCallback) {
         return null;
+    }
+
+    @Override
+    public void updateSubTask(String userId, GeneralSubTask.ProjectsubtaskBean subtaskNode, NetworkCallback networkCallback) {
+
+    }
+
+    @Override
+    public void querySubTaskList(FragmentActivity activity, NetworkCallback networkCallback) {
+
+    }
+
+    @Override
+    public void querySubTaskListByName(DatabaseReference databaseReference, final String userId, final DbCallback dbCallback) {
+        // Read from the database
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                dbCallback.onSuccess(FbHelper.getInstance().getSubTaskTeamByName(dataSnapshot, userId));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                dbCallback.onFailure(error.getMessage());
+            }
+        });
+
     }
 }

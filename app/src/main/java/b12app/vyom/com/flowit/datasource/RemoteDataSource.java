@@ -1,5 +1,6 @@
 package b12app.vyom.com.flowit.datasource;
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
@@ -19,6 +20,7 @@ import java.util.List;
 
 
 import b12app.vyom.com.flowit.model.Employee;
+import b12app.vyom.com.flowit.model.GeneralSubTask;
 import b12app.vyom.com.flowit.model.GeneralTask;
 import b12app.vyom.com.flowit.model.MsgReponseBody;
 import b12app.vyom.com.flowit.model.Project;
@@ -38,7 +40,7 @@ public class RemoteDataSource implements IDataSource {
     private Disposable disposable;
 
     private List<GeneralTask.ProjecttaskBean> taskBeanList;
-    private List<UserAssignment.UserAssignmentBean> userAssignmentList;
+    private List<GeneralSubTask.ProjectsubtaskBean> subtaskBeanList;
 
     private static RemoteDataSource instance;
     private static final String TAG = "RemoteDataSource";
@@ -142,7 +144,7 @@ public class RemoteDataSource implements IDataSource {
         RetrofitInstance.apiService().updateTaskStatus(taskNode.getTaskid(), taskNode.getProjectid(), user_id, taskNode.getTaskstatus())
                 .enqueue(new Callback<MsgReponseBody>() {
                     @Override
-                    public void onResponse(Call<MsgReponseBody> call, Response<MsgReponseBody> response) {
+                    public void onResponse(@NonNull Call<MsgReponseBody> call, @NonNull Response<MsgReponseBody> response) {
                         networkCallback.onSuccess(response.body().getMsg());
                     }
 
@@ -194,5 +196,75 @@ public class RemoteDataSource implements IDataSource {
                 });
 
         return disposable;
+    }
+
+    @Override
+    public void updateSubTask(String userId, GeneralSubTask.ProjectsubtaskBean subtaskNode, final NetworkCallback networkCallback) {
+
+        userId = "34";
+
+        Log.i("test123", subtaskNode.getTaskid() + subtaskNode.getSubtaskid() + subtaskNode.getProjectid()
+                + userId + subtaskNode.getSubtaskstatus());
+
+        RetrofitInstance.apiService().updateSubTaskStatus(subtaskNode.getTaskid(), subtaskNode.getSubtaskid(), subtaskNode.getProjectid(), userId, subtaskNode.getSubtaskstatus())
+                .enqueue(new Callback<MsgReponseBody>() {
+                    @Override
+                    public void onResponse(Call<MsgReponseBody> call, Response<MsgReponseBody> response) {
+                        Log.i(TAG, "subUpdate test: " + response.body().getMsg());
+                        Log.i("test123", "onResponse: " + call.toString());
+                        networkCallback.onSuccess(response.body().getMsg());
+                    }
+
+                    @Override
+                    public void onFailure(Call<MsgReponseBody> call, Throwable t) {
+                        networkCallback.onFailure(t);
+                    }
+                });
+    }
+
+    @Override
+    public void querySubTaskList(FragmentActivity activity, final NetworkCallback networkCallback) {
+        String url = "http://rjtmobile.com/aamir/pms/android-app/pms_project_sub_task_list.php?";
+        subtaskBeanList = new ArrayList<>();
+        final RequestQueue requestQueue = Volley.newRequestQueue(activity);
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new com.android.volley.Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONArray gotsubtask = response.getJSONArray("project sub task");
+                    for (int i = 0; i < gotsubtask.length(); i++) {
+                        JSONObject subtask = gotsubtask.getJSONObject(i);
+                        String subtaskid = subtask.getString("subtaskid");
+                        String taskid = subtask.getString("taskid");
+                        String projectid = subtask.getString("projectid");
+                        String subtaskname = subtask.getString("subtaskname");
+                        String subtaskstatus = subtask.getString("subtaskstatus");
+                        String subtaskdesc = subtask.getString("subtaskdesc");
+                        String startdate = subtask.getString("startdate");
+                        String enddate = subtask.getString("endstart");
+                        GeneralSubTask.ProjectsubtaskBean subtaskbean = new GeneralSubTask.ProjectsubtaskBean(subtaskid,
+                                taskid, projectid, subtaskname, subtaskstatus, subtaskdesc, startdate, enddate);
+                        subtaskBeanList.add(subtaskbean);
+
+
+                    }
+                    networkCallback.onSuccess(subtaskBeanList);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new com.android.volley.Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        requestQueue.add(request);
+    }
+
+    @Override
+    public void querySubTaskListByName(DatabaseReference databaseReference, String userId, DbCallback dbCallback) {
+
     }
 }

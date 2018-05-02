@@ -50,8 +50,6 @@ public class ProjectCreateActivity extends BaseActivity implements View.OnClickL
     public static final String ERROR_AUTHENTICATING = "Error authenticating";
     public static final String PROJECTSTATUS = "1";
 
-    private Calendar calendar;
-    private int year, month, day;
     private String dateStartString, dateEndString;
     private DatePickerDialog fromDatePickerDialog;
     private DatePickerDialog toDatePickerDialog;

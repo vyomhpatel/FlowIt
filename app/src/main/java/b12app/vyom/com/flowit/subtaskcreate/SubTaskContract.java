@@ -21,7 +21,7 @@ public interface SubTaskContract {
 
     interface IPresenter extends BasePresenter {
 
-        void  onSubTaskCreateButtonClick(View view, GeneralSubTask.ProjectsubtaskBean projectsubtaskBean);
+        void onSubTaskCreateButtonClick(View view, GeneralSubTask.ProjectsubtaskBean projectsubtaskBean);
 
 
     }

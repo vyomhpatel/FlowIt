@@ -111,6 +111,13 @@ public interface ApiService {
     Observable<GeneralSubTask.ProjectsubtaskBean> listSubTask();
 
 
+    @POST("pms_assign_sub_task_project.php")
+    Call<MsgReponseBody> assignSubTask(@Query("taskid") String taskid,
+                                       @Query("subtaskid") String subtaskid,
+                                       @Query("project_id") String project_id,
+                                       @Query("team_member_userid") String team_member_userid);
+
+
     /******************************************************* Observable Api ********************************************************/
     @GET("pms_projects.php")
     Observable<Project> getProjectList();
@@ -137,5 +144,13 @@ public interface ApiService {
     Call<SubTaskMember> getSubTaskMembers(@Query("taskid") String taskid,
                                           @Query("subtaskid") String subtaskid,
                                           @Query("projectid") String projectid);
+
+
+    @POST("pms_edit_sub_task_status.php")
+    Call<MsgReponseBody> updateSubTaskStatus(@Query("taskid") String task_id,
+                                             @Query("subtaskid") String subtask_id,
+                                             @Query("project_id") String project_id,
+                                             @Query("userid") String userid,
+                                             @Query("subtask_status") String subtask_status);
 
 }

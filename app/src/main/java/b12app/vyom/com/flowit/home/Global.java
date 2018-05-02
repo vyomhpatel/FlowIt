@@ -12,6 +12,7 @@ public class Global {
 
     public final static String TABLE_PROJECT_TEAM = "ProjectTeam";
     public final static String TABLE_TASK_TEAM = "TaskTeam";
+    public final static String TABLE_SUBTASK_TEAM = "SubTaskTeam";
 
     public final static String PROJECT_NODE = "projectnode";
     public final static String TASK_NODE = "tasknode";

@@ -17,6 +17,7 @@ import retrofit2.Response;
 
 public class SubTaskPresenter implements SubTaskContract.IPresenter {
 
+
     private SubTaskContract.IView subtaskCreateView;
     private DataManager mdataManager;
     private ApiService apiService;
@@ -33,7 +34,6 @@ public class SubTaskPresenter implements SubTaskContract.IPresenter {
     }
 
 
-
     @Override
     public void onSubTaskCreateButtonClick(View view, GeneralSubTask.ProjectsubtaskBean projectsubtaskBean) {
         Call<GeneralSubTask> call = apiService.postSubTask(
@@ -48,8 +48,8 @@ public class SubTaskPresenter implements SubTaskContract.IPresenter {
         call.enqueue(new Callback<GeneralSubTask>() {
             @Override
             public void onResponse(Call<GeneralSubTask> call, Response<GeneralSubTask> response) {
-                Log.i("test", "on create task response: "+response);
-                subtaskCreateView.displaySnackbar();
+                Log.i("test", "on create task response: " + response);
+//                subtaskCreateView.displaySnackbar();
             }
 
             @Override

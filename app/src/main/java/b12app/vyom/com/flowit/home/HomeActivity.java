@@ -1,6 +1,5 @@
 package b12app.vyom.com.flowit.home;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,15 +9,11 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.dropbox.client2.DropboxAPI;
-import com.dropbox.client2.android.AndroidAuthSession;
-import com.dropbox.client2.session.AppKeyPair;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionHelper;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout;
@@ -43,6 +38,7 @@ import b12app.vyom.com.flowit.tabfragment.FragmentProject;
 import b12app.vyom.com.flowit.tabfragment.FragmentSubTask;
 import b12app.vyom.com.flowit.tabfragment.FragmentTask;
 import b12app.vyom.com.flowit.tabfragment.project.ProjectFgtPresenter;
+import b12app.vyom.com.flowit.tabfragment.subtask.SubTaskFragmentPresenter;
 import b12app.vyom.com.flowit.tabfragment.task.TaskFgtPresenter;
 import b12app.vyom.com.flowit.task.TaskCreateActivity;
 import b12app.vyom.com.utils.ActivityUtil;
@@ -95,6 +91,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     //presenter
     private ProjectFgtPresenter projectFgtPresenter;
     private TaskFgtPresenter taskFgtPresenter;
+    private SubTaskFragmentPresenter subTaskFgtPresenter;
 
     private RapidFloatingActionHelper rfabHelper;
 
@@ -167,7 +164,10 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                             showMainFloatBtn();
                             break;
                         case 3:
-                            ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), new FragmentSubTask(), DASH_FGT);
+                            FragmentSubTask fragmentSubTask = new FragmentSubTask();
+
+                            subTaskFgtPresenter = new SubTaskFragmentPresenter(mDataManager, fragmentSubTask);
+                            ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), fragmentSubTask, "dashFgt");
                             showMainFloatBtn();
                             break;
                     }
@@ -220,8 +220,9 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                             break;
                         case 2:
                             FragmentSubTask fragmentSubTask = new FragmentSubTask();
+                            subTaskFgtPresenter = new SubTaskFragmentPresenter(mDataManager, fragmentSubTask);
                             fragmentSubTask.setArguments(bundle);
-                            ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), new FragmentSubTask(), DASH_FGT);
+                            ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), fragmentSubTask, DASH_FGT);
                             break;
                     }
                 }
@@ -314,7 +315,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     private void initDraw(Toolbar toolbar) {
-        if (getIntent().getExtras()!= null){
+        if (getIntent().getExtras() != null) {
             user = getIntent().getExtras().getParcelable(USER);
         }
 
@@ -395,6 +396,8 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         } else if (position == 1) {
             startActivity(new Intent(HomeActivity.this, TaskCreateActivity.class));
 
+        } else if (position == 2) {
+            startActivity(new Intent(HomeActivity.this, SubTaskCreateActivity.class));
         }
         rfabHelper.toggleContent();
     }

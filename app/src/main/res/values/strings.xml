@@ -20,6 +20,7 @@
     <string name="add_assignee">Add assignee</string>
     <string name="create_project">Create Project</string>
     <string name="create_task">Create Task</string>
+    <string name="create_subtask">Create SubTask</string>
     <string name="attachment">attachment</string>
     <string name="feng_no_project_find">Nothing Find</string>
     <string name="feng_status">status</string>
@@ -44,6 +45,8 @@
     <string name="login_alert">Invalid email/password</string>
     <string name="google_signin">Welcome Back</string>
     <string name="new_assignment">New Assignment</string>
+    <string name="subtask_id">subtask id</string>
+
 
     <string-array name="priority">
         <item>Default</item>
@@ -67,4 +70,7 @@
         <item>Manager</item>
         <item>User </item>
     </string-array>
+
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 </resources>
