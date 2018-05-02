@@ -29,6 +29,8 @@
     <string name="feng_date_alert">End date can not early than start date</string>
     <string name="due_date">Due Date</string>
     <string name="task_id">Task Id</string>
+    <string name="add_to_task">Add to task</string>
+    <string name="add_subtask_description">Add subtask description</string>
 
     <string-array name="priority">
         <item>Default</item>
@@ -40,10 +42,5 @@
         <item>Start new project</item>
         <item>Not complete</item>
         <item>Completed</item>
-    </string-array>
-    <string-array name="task_status">
-        <item>Initial</item>
-        <item>In Progress</item>
-        <item>Complete</item>
     </string-array>
 </resources>

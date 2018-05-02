@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    >
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/first_name_text_input_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        >
+
+
+    <EditText
+        android:id="@+id/firstTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:ems="10"
+        android:hint="firstname"
+        android:inputType="textPersonName"
+        android:padding="10dp"
+        android:text="" />
+    </android.support.design.widget.TextInputLayout>
+
+
+
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/last_name_text_input_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    <EditText
+        android:id="@+id/lastnameTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:ems="10"
+        android:hint="lastname"
+        android:inputType="textPersonName"
+        android:padding="10dp"
+        android:text="" />
+    </android.support.design.widget.TextInputLayout>
+
+
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/mobile_text_input_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+       >
+        <EditText
+            android:id="@+id/mobileTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:ems="10"
+            android:hint="mobile"
+            android:inputType="textPersonName"
+            android:padding="10dp"
+            android:text="" />
+    </android.support.design.widget.TextInputLayout>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/password_text_input_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        >
+        <EditText
+            android:id="@+id/passwordTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="10dp"
+            android:layout_marginTop="28dp"
+
+            android:ems="10"
+            android:hint="password"
+            android:inputType="textPersonName"
+            android:text="" />
+    </android.support.design.widget.TextInputLayout>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/companysize_text_input_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+     >
+        <EditText
+            android:layout_gravity="center"
+            android:id="@+id/companysizeTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_marginTop="19dp"
+            android:ems="10"
+            android:hint="company size"
+            android:inputType="textPersonName"
+            android:text="" />
+    </android.support.design.widget.TextInputLayout>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/email_text_input_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+  >
+        <EditText
+            android:id="@+id/emailTxt"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_marginTop="29dp"
+            android:ems="10"
+            android:hint="email"
+            android:inputType="textPersonName"
+            android:text="" />
+    </android.support.design.widget.TextInputLayout>
+
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="221dp"
+        android:layout_height="34dp"
+        android:layout_marginEnd="70dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="20dp"
+        android:entries="@array/roles" />
+
+    <Button
+        android:id="@+id/signupbtn"
+        android:layout_width="240dp"
+        android:layout_height="49dp"
+        android:layout_marginBottom="63dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/corners"
+        android:text="sign up"
+        android:textColor="#ffffff" />
+</LinearLayout>
+</ScrollView>

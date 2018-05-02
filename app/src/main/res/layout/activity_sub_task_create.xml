@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/task_create_container"
+    android:orientation="vertical">
+
+    <include
+        layout="@layout/layout_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+    <EditText
+        android:id="@+id/edt_subtask_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:hint="@string/title"
+        android:padding="@dimen/medium_dimen" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/edt_subtask_description"
+        android:background="@drawable/shape_btn_desc"
+        android:paddingBottom="@dimen/medium_dimen"
+        android:paddingEnd="@dimen/medium_dimen"
+        android:paddingStart="@dimen/medium_dimen"
+        android:paddingTop="@dimen/normal_dimen"
+        android:hint="@string/add_subtask_description" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/tv_task_start_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="@dimen/medium_dimen"
+            android:drawableStart="@drawable/ic_date"
+            android:gravity="center_vertical"
+            android:paddingBottom="@dimen/medium_dimen"
+            android:paddingStart="@dimen/medium_dimen"
+            android:paddingTop="@dimen/normal_dimen"
+            android:text="@string/set_start_date" />
+        <TextView
+            android:id="@+id/tv_task_end_date"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/medium_dimen"
+            android:drawableStart="@drawable/ic_date"
+            android:gravity="center_vertical"
+            android:paddingBottom="@dimen/medium_dimen"
+            android:paddingStart="@dimen/medium_dimen"
+            android:paddingTop="@dimen/normal_dimen"
+            android:text="@string/set_end_date" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/medium_dimen"
+            android:src="@drawable/ic_members" />
+
+
+        <b12app.vyom.com.utils.MyFlowlayout
+            android:id="@+id/layout_flow_task"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            app:pileWidth="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/add_assignee"
+            android:onClick="addAssignee"
+            android:drawableLeft="@drawable/ic_right"
+            android:gravity="center_vertical"
+            android:layout_marginEnd="@dimen/xxlarge_dimen"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_add_subtask"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/add_to_task"
+        android:drawableLeft="@drawable/ic_project"
+        android:drawablePadding="@dimen/medium_dimen"
+        android:gravity="center_vertical"
+        android:padding="@dimen/medium_dimen"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/normal_dimen"
+        android:paddingBottom="@dimen/medium_dimen"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/tv_priority"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_priority"
+            android:layout_gravity="center_vertical"
+            android:paddingStart="@dimen/medium_dimen"
+            android:paddingEnd="@dimen/normal_dimen"
+            android:text="@string/priority" />
+
+
+        <Spinner
+            android:id="@+id/spinner_priority"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:spinnerMode="dropdown"
+            android:dropDownHorizontalOffset="@dimen/medium_dimen"
+            android:dropDownVerticalOffset="@dimen/large_dimen"
+            android:entries="@array/priority"
+            />
+    </LinearLayout>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_task"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="10dp"
+        android:clickable="true"
+        android:onClick="createsubTask"
+        android:src="@drawable/ic_correct"
+        app:backgroundTint="@color/gay4"
+        app:backgroundTintMode="src_atop"
+        app:borderWidth="3dp"
+        app:elevation="5dp"
+        app:fabSize="normal"
+        app:rippleColor="@android:color/holo_blue_light"
+        app:useCompatPadding="true"
+        android:focusable="true" />
+
+
+</LinearLayout>

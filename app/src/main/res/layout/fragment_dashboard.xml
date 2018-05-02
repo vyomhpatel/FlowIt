@@ -4,9 +4,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="dashboard"/>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_subtask"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/xxlarge_dimen"
+        android:padding="@dimen/normal_dimen" />
 
 </LinearLayout>

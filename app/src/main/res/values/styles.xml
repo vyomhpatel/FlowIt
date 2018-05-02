@@ -37,7 +37,7 @@
 
     <style name="MyTabLayoutTextAppearanceInverse" parent="TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse">
         <item name="android:textSize">12sp</item>
-        <item name="android:textColor">@android:color/holo_red_light</item>
+        <item name="android:textColor">@android:color/black</item>
     </style>
 
     <!--Full screen dialog fragment style-->
