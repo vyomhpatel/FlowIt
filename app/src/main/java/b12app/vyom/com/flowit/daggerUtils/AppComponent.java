@@ -4,9 +4,11 @@ package b12app.vyom.com.flowit.daggerUtils;
 import javax.inject.Singleton;
 
 import b12app.vyom.com.flowit.home.HomeActivity;
+import b12app.vyom.com.flowit.projectcreate.ProjectCreateActivity;
 import b12app.vyom.com.flowit.tabfragment.FragmentProject;
 import b12app.vyom.com.flowit.tabfragment.FragmentProjectEdit;
 import b12app.vyom.com.flowit.tabfragment.FragmentTaskEdit;
+import b12app.vyom.com.flowit.task.TaskCreateActivity;
 import dagger.Component;
 
 /**
@@ -27,6 +29,10 @@ public interface AppComponent {
     void inject(FragmentProjectEdit fragmentProjectEdit);
 
     void inject(FragmentTaskEdit fragmentTaskEdit);
+
+    void inject(ProjectCreateActivity projectCreateActivity);
+
+    void inject(TaskCreateActivity taskCreateActivity);
 
 
     // void inject(MyFragment fragment);

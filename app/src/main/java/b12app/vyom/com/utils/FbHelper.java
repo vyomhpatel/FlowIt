@@ -1,5 +1,7 @@
 package b12app.vyom.com.utils;
 
+import android.util.Log;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -8,6 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import b12app.vyom.com.flowit.model.Employee;
+import b12app.vyom.com.flowit.model.FbTaskUserModel;
+import b12app.vyom.com.flowit.model.GeneralTask;
+import b12app.vyom.com.flowit.model.InboxModel;
+import b12app.vyom.com.flowit.model.UserAssignment;
 
 /**
  * @Package b12app.vyom.com.utils
@@ -82,38 +88,94 @@ public class FbHelper {
     public List<Employee.EmployeesBean> getTaskTeam(DataSnapshot dataSnapshot, String projectId, String taskId) {
         List<Employee.EmployeesBean> memberList = new ArrayList<>();
 
-        for (DataSnapshot ds : dataSnapshot.child(projectId).child(taskId).getChildren()) {
+        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+            if (taskId.equals(ds.getValue(FbTaskUserModel.class).getTaskid())) {
+                Employee.EmployeesBean currentEmp = new Employee.EmployeesBean(
+                        ds.getValue(FbTaskUserModel.class).getEmpid(),
+                        ds.getValue(FbTaskUserModel.class).getEmpfirstname(),
+                        ds.getValue(FbTaskUserModel.class).getEmplastname(),
+                        ds.getValue(FbTaskUserModel.class).getEmpemail(),
+                        ds.getValue(FbTaskUserModel.class).getEmpmobile(),
+                        ds.getValue(FbTaskUserModel.class).getEmpdesignation(),
+                        ds.getValue(FbTaskUserModel.class).getDateofjoining());
 
-            Employee.EmployeesBean currentEmp = new Employee.EmployeesBean(
-                    ds.getValue(Employee.EmployeesBean.class).getEmpid(),
-                    ds.getValue(Employee.EmployeesBean.class).getEmpfirstname(),
-                    ds.getValue(Employee.EmployeesBean.class).getEmplastname(),
-                    ds.getValue(Employee.EmployeesBean.class).getEmpemail(),
-                    ds.getValue(Employee.EmployeesBean.class).getEmpmobile(),
-                    ds.getValue(Employee.EmployeesBean.class).getEmpdesignation(),
-                    ds.getValue(Employee.EmployeesBean.class).getDateofjoining());
-
-            memberList.add(currentEmp);
+                memberList.add(currentEmp);
+            }
         }
 
         return memberList;
     }
 
+    public List<UserAssignment.UserAssignmentBean> getTaskTeamByName(DataSnapshot dataSnapshot, String userId) {
+        List<UserAssignment.UserAssignmentBean> userTaskList = new ArrayList<>();
 
-    public void addTaskTeamMember(DatabaseReference myRef, Employee.EmployeesBean employeesBean, String projectId, String taskId) {
-        //add team member
-        //if already have member, it will wipe out content and reset
-        //if not, add new project team
-        myRef.child(projectId).child(taskId).setValue(null);
-        myRef.child(projectId).child(taskId).child(employeesBean.getEmpid()).child("empid").setValue(employeesBean.getEmpid());
-        myRef.child(projectId).child(taskId).child(employeesBean.getEmpid()).child("empfirstname").setValue(employeesBean.getEmpfirstname());
-        myRef.child(projectId).child(taskId).child(employeesBean.getEmpid()).child("emplastname").setValue(employeesBean.getEmplastname());
-        myRef.child(projectId).child(taskId).child(employeesBean.getEmpid()).child("empemail").setValue(employeesBean.getEmpemail());
-        myRef.child(projectId).child(taskId).child(employeesBean.getEmpid()).child("empmobile").setValue(employeesBean.getEmpmobile());
-        myRef.child(projectId).child(taskId).child(employeesBean.getEmpid()).child("empdesignation").setValue(employeesBean.getEmpdesignation());
-        myRef.child(projectId).child(taskId).child(employeesBean.getEmpid()).child("dateofjoining").setValue(employeesBean.getDateofjoining());
+        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+            if (ds.getKey().equals(userId)) {
+                UserAssignment.UserAssignmentBean userAssignmentBean = new UserAssignment.UserAssignmentBean(
+                        ds.getValue(FbTaskUserModel.class).getProjectid(),
+                        ds.getValue(FbTaskUserModel.class).getTaskid(),
+                        "",
+                        ds.getValue(FbTaskUserModel.class).getTaskname(),
+                        ds.getValue(FbTaskUserModel.class).getTaskdesc(),
+                        ds.getValue(FbTaskUserModel.class).getTaskstatus(),
+                        ds.getValue(FbTaskUserModel.class).getTaskstartdate(),
+                        ds.getValue(FbTaskUserModel.class).getTaskenddate());
 
+                userTaskList.add(userAssignmentBean);
+            }
+        }
+
+        return userTaskList;
     }
 
 
+    public void addTaskTeamMember(DatabaseReference myRef, Employee.EmployeesBean employeesBean, String projectId, GeneralTask.ProjecttaskBean projecttaskBean) {
+        //add team member
+        //if already have member, it will wipe out content and reset
+        //if not, add new project team
+        myRef.child(employeesBean.getEmpid()).setValue(null);
+        myRef.child(employeesBean.getEmpid()).child("empid").setValue(employeesBean.getEmpid());
+        myRef.child(employeesBean.getEmpid()).child("empfirstname").setValue(employeesBean.getEmpfirstname());
+        myRef.child(employeesBean.getEmpid()).child("emplastname").setValue(employeesBean.getEmplastname());
+        myRef.child(employeesBean.getEmpid()).child("empemail").setValue(employeesBean.getEmpemail());
+        myRef.child(employeesBean.getEmpid()).child("empmobile").setValue(employeesBean.getEmpmobile());
+        myRef.child(employeesBean.getEmpid()).child("empdesignation").setValue(employeesBean.getEmpdesignation());
+        myRef.child(employeesBean.getEmpid()).child("dateofjoining").setValue(employeesBean.getDateofjoining());
+        myRef.child(employeesBean.getEmpid()).child("taskid").setValue(projecttaskBean.getTaskid());
+        myRef.child(employeesBean.getEmpid()).child("taskname").setValue(projecttaskBean.getTaskname());
+        myRef.child(employeesBean.getEmpid()).child("taskstatus").setValue(projecttaskBean.getTaskstatus());
+        myRef.child(employeesBean.getEmpid()).child("taskdesc").setValue(projecttaskBean.getTaskdesc());
+        myRef.child(employeesBean.getEmpid()).child("taskstartdate").setValue(projecttaskBean.getStartdate());
+        myRef.child(employeesBean.getEmpid()).child("taskenddate").setValue(projecttaskBean.getEndstart());
+
+        myRef.child(employeesBean.getEmpid()).child("projectid").setValue(projectId);
+    }
+
+
+    public List<InboxModel> getUserInbox(DataSnapshot dataSnapshot, String userId) {
+        List<InboxModel> inboxModelList = new ArrayList<>();
+
+        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+            if (ds.getKey().equals(userId)){
+                InboxModel currentEmp = new InboxModel(
+                        ds.getValue(InboxModel.class).getUserId(),
+                        ds.getValue(InboxModel.class).getTaskName(),
+                        ds.getValue(InboxModel.class).getTaskId(),
+                        ds.getValue(InboxModel.class).getTaskDesc());
+
+                inboxModelList.add(currentEmp);
+            }
+        }
+
+        return inboxModelList;
+    }
+
+    public void addUserInbox(String taskId, String taskName, String taskDesc, String userId) {
+        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("Inbox");
+        myRef.child(userId).setValue(null);
+        myRef.child(userId).child("userId").setValue(userId);
+        myRef.child(userId).child("taskId").setValue(taskId);
+        myRef.child(userId).child("taskName").setValue(taskName);
+        myRef.child(userId).child("taskDesc").setValue(taskDesc);
+    }
 }

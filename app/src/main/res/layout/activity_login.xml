@@ -4,10 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff"
+    android:background="@android:color/white"
     android:id="@+id/relativeLt"
-    android:orientation="vertical"
-    tools:layout_editor_absoluteY="81dp">
+    android:orientation="vertical">
 
 
     <LinearLayout
@@ -31,9 +30,10 @@
             android:layout_width="247dp"
             android:layout_height="50dp"
             android:layout_marginLeft="37dp"
+            android:paddingStart="@dimen/medium_dimen"
             android:background="@drawable/edittxt_corner"
             android:ems="10"
-            android:hint="   Email"
+            android:hint="@string/email"
             android:inputType="textPersonName"
             android:text=""
             tools:layout_editor_absoluteX="106dp"
@@ -46,7 +46,7 @@
         android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="150dp"
         android:orientation="horizontal">
 
@@ -64,10 +64,11 @@
             android:id="@+id/passwordTxtLogin"
             android:layout_width="247dp"
             android:layout_height="50dp"
-            android:layout_marginLeft="37dp"
+            android:layout_marginStart="37dp"
+            android:paddingStart="@dimen/medium_dimen"
             android:background="@drawable/edittxt_corner"
             android:ems="10"
-            android:hint="   Password"
+            android:hint="@string/password"
             android:inputType="textPassword" />
     </LinearLayout>
 
@@ -80,19 +81,16 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="28dp"
         android:background="@drawable/corners"
-        android:text="sign in"
-        android:textColor="#ffffff"
-        tools:layout_editor_absoluteX="123dp"
-        tools:layout_editor_absoluteY="319dp" />
+        android:text="@string/sign_in"
+        android:textColor="@android:color/white" />
 
     <Button
         android:id="@+id/btn_signup"
         android:layout_width="230dp"
         android:layout_height="49dp"
-
         android:layout_alignStart="@+id/btnlogin"
         android:layout_below="@+id/btnlogin"
-        android:layout_marginTop="21dp"
+        android:layout_marginTop="@dimen/medium_dimen"
         android:background="@drawable/corners1"
         android:text="need an account?"
         android:textColor="#021e59"
@@ -106,8 +104,8 @@
         android:layout_alignStart="@+id/btnlogin"
         android:layout_below="@+id/linearLayout"
         android:layout_marginStart="39dp"
-        android:layout_marginTop="20dp"
-        android:text="Remember Me"
+        android:layout_marginTop="@dimen/medium_dimen"
+        android:text="@string/remember_me"
         android:textColor="@color/colorPrimary" />
 
     <com.google.android.gms.common.SignInButton
@@ -117,7 +115,7 @@
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/btn_signup"
         android:layout_below="@+id/btn_signup"
-        android:layout_marginTop="19dp" />
+        android:layout_marginTop="@dimen/medium_dimen" />
 
 
 

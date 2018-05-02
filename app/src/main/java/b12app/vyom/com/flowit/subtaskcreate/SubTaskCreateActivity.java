@@ -23,10 +23,7 @@ import java.util.Locale;
 
 import b12app.vyom.com.flowit.R;
 import b12app.vyom.com.flowit.datasource.DataManager;
-import b12app.vyom.com.flowit.model.GeneralSubTask;
-import b12app.vyom.com.flowit.task.ProjectListFragmentDialog;
-import b12app.vyom.com.flowit.task.TaskCreateActivity;
-import b12app.vyom.com.flowit.task.TaskCreatePresenter;
+
 import b12app.vyom.com.utils.CircleImageView;
 import b12app.vyom.com.utils.MyFlowlayout;
 import butterknife.BindView;
@@ -80,7 +77,7 @@ public class SubTaskCreateActivity extends AppCompatActivity implements View.OnC
 
 
         //initializing data manager
-        dataManager = new DataManager();
+//        dataManager = new DataManager();
         iPresenter = new SubTaskPresenter(dataManager,SubTaskCreateActivity.this);
 
 
@@ -203,10 +200,4 @@ public class SubTaskCreateActivity extends AppCompatActivity implements View.OnC
 
 
 
-//    public void createSubTask(View view) {
-//
-//        GeneralSubTask.ProjectsubtaskBean subtask = new GeneralSubTask.ProjectsubtaskBean(received_task_id, edt_subtask_name.getText().toString()
-//               ,"" , edt_subtask_description.getText().toString(),dateStartString,dateEndString);
-//        iPresenter.onSubTaskCreateButtonClick(view,subtask);
-//    }
 }

@@ -49,8 +49,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     EditText lastnameEt;
     TextInputLayout lastnameTextInputLayout;
 
-
-
     @NotEmpty(order = 3, message = "mobile can't be empty")
     @RegExp(order = 4, message = "Please input valid phone number", regexp = "^(?:\\+?1[-.●]?)?\\(?([0-9]{3})\\)?[-.●]?([0-9]{3})[-.●]?([0-9]{4})$")
     EditText mobileTxt;
@@ -82,7 +80,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-
         firstnameEt = findViewById(R.id.firstTxt);
         lastnameEt = findViewById(R.id.lastnameTxt);
         sinupbtn = findViewById(R.id.signupbtn);
@@ -106,50 +103,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         inputLayoutMap.put(companyEt, companyTextInputLayout);
         inputLayoutMap.put(email, emailTextInputLayout);
 
-/*
-        Observable<CharSequence> firstnameObservable = RxTextView.textChanges(firstnameEt);
-        Observable<CharSequence> lastnameObservable = RxTextView.textChanges(lastnameEt);
-        Observable<CharSequence> mobileObservable = RxTextView.textChanges(mobileTxt);
-        Observable<CharSequence> passwordObservable = RxTextView.textChanges(passwordTxt);
-        Observable<CharSequence> companyObservable = RxTextView.textChanges(companyEt);
-        Observable<CharSequence> emailObservable = RxTextView.textChanges(email);
-
-        rx.Observable.combineLatest(firstnameObservable, lastnameObservable, mobileObservable,
-                passwordObservable, companyObservable, emailObservable,
-                new Func6<CharSequence, CharSequence, CharSequence, CharSequence, CharSequence, CharSequence, Boolean>() {
-
-
-                    @Override
-                    public Boolean call(CharSequence firstnameObservable, CharSequence lastnameObservable, CharSequence mobileObservable
-                            , CharSequence passwordObservable, CharSequence companyObservable, CharSequence emailObservable) {
-                    if(!TextUtils.isEmpty(firstnameObservable) && !TextUtils.isEmpty(lastnameObservable))
-                    {
-                    return true;
-                    }
-                    else if(TextUtils.isEmpty(firstnameObservable))
-                    {
-
-                    }
-                    else if(TextUtils.isEmpty(lastnameObservable))
-                    {
-
-                    }
-                    return false;
-                    }
-                }).subscribe(new Action1<Boolean>() {
-            @Override
-            public void call(Boolean isBtnAvailalbe) {
-                RxView.enabled(sinupbtn).call(isBtnAvailalbe);
-            }
-        })
-        ;
-
-*/
-
-
         sinupbtn.setOnClickListener(this);
-
-
 
     }
 
@@ -192,13 +146,14 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
             ApiService apiService = RetrofitInstance.getRetrofitInstance().create(ApiService.class);
             Call<String> call = apiService.postUser(firstname,lastname,email1,mobile,password,companysize,role);
-            Log.i("ceshi", firstname + lastname + mobile + password + companysize + email1);
+
             call.enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
-                    Log.i("test",""+response.body());
+
                     String result = String.valueOf(response.body());
                     if(result.contains("successfully")){
+                        Toast.makeText(getBaseContext(), R.string.signup_success, Toast.LENGTH_SHORT).show();
                       Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
                       startActivity(intent);
                     }

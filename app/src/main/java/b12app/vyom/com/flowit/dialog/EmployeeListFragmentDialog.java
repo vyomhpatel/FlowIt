@@ -1,7 +1,5 @@
 package b12app.vyom.com.flowit.dialog;
 
-import android.app.DialogFragment;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -11,20 +9,23 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.List;
 
 import b12app.vyom.com.flowit.R;
 import b12app.vyom.com.flowit.adapter.EmployeeListAdapter;
+import b12app.vyom.com.flowit.home.Global;
 import b12app.vyom.com.flowit.model.Employee;
+import b12app.vyom.com.flowit.model.FcmResponse;
 import b12app.vyom.com.flowit.model.GeneralTask;
 import b12app.vyom.com.flowit.model.MsgReponseBody;
+import b12app.vyom.com.flowit.model.Sender;
 import b12app.vyom.com.flowit.networkutils.ApiService;
+import b12app.vyom.com.flowit.networkutils.FCMApiService;
+import b12app.vyom.com.flowit.networkutils.FCMRetrofitInstance;
 import b12app.vyom.com.flowit.networkutils.RetrofitInstance;
 import b12app.vyom.com.utils.FbHelper;
 import retrofit2.Call;
@@ -34,8 +35,8 @@ import retrofit2.Response;
 public class EmployeeListFragmentDialog extends android.support.v4.app.DialogFragment {
 
     private ListView empList;
-    private ApiService apiService;
     private OnCompleteListener mListener;
+    private GeneralTask.ProjecttaskBean projecttaskBean;
     private static final String TAG = "EmployeeListFragmentDia";
 
     public interface OnCompleteListener {
@@ -50,42 +51,74 @@ public class EmployeeListFragmentDialog extends android.support.v4.app.DialogFra
 
         View view = inflater.inflate(R.layout.project_list_fragment, container, false);
 
+        getData();
+
         empList = view.findViewById(R.id.projectList);
 
         RetrofitInstance.apiService().getEmployee().enqueue(new Callback<Employee>() {
             @Override
             public void onResponse(Call<Employee> call, final Response<Employee> response) {
-                
+
                 EmployeeListAdapter employeeListAdapter = new EmployeeListAdapter(response.body().getEmployees(), getActivity());
                 empList.setAdapter(employeeListAdapter);
                 empList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                        final String employeId = response.body().getEmployees().get(position).getEmpid();
+
                         mListener.onComplete(position, response.body().getEmployees());
+
+                        //FCM notification
+                        String current_token = FirebaseInstanceId.getInstance().getToken();
+                        Sender.NotificationBean notificationBean = new Sender.NotificationBean(getString(R.string.new_task_assign) +
+                                projecttaskBean.getTaskid() + ". " + projecttaskBean.getTaskname(),
+                                getString(R.string.fcm_title));
+                        //send to self
+                        Sender sender = new Sender(current_token, notificationBean);
+                        //send notification
+                        FCMRetrofitInstance.apiService()
+                                .sendNotification(sender)
+                                .enqueue(new Callback<FcmResponse>() {
+                                    @Override
+                                    public void onResponse(Call<FcmResponse> call, Response<FcmResponse> response) {
+                                        Log.i(TAG, "fcm response: " + response.body().getResults().get(0).getMessage_id());
+                                        //Fb database
+                                        FbHelper.getInstance().addUserInbox(projecttaskBean.getTaskid(),
+                                                projecttaskBean.getTaskname(),
+                                                projecttaskBean.getTaskdesc(),
+                                                employeId);
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<FcmResponse> call, Throwable t) {
+                                        Log.i(TAG, "onFailure: " + t.getMessage());
+                                    }
+                                });
 
                         //web request
                         String empfirstname = response.body().getEmployees().get(position).getEmpfirstname();
                         String empid = response.body().getEmployees().get(position).getEmpid();
-                        Bundle bundle = getArguments();
-                        String task_id = bundle.getString("task_id");
-                        String project_id = bundle.getString("project_id");
-                        RetrofitInstance.apiService().assignTask(task_id, project_id, empid).enqueue(new Callback<MsgReponseBody>() {
 
-                            @Override
-                            public void onResponse(Call<MsgReponseBody> call, Response<MsgReponseBody> response) {
+                        RetrofitInstance.apiService().
+                                assignTask(projecttaskBean.getTaskid(), projecttaskBean.getProjectid(), empid).
+                                enqueue(new Callback<MsgReponseBody>() {
 
-                                Log.i(TAG, "Task Assign Status" + response.body().getMsg());
+                                    @Override
+                                    public void onResponse
+                                            (Call<MsgReponseBody> call, Response<MsgReponseBody> response) {
 
-                            }
+                                        Log.i(TAG, "Task Assign Status" + response.body().getMsg());
 
-                            @Override
-                            public void onFailure(Call<MsgReponseBody> call, Throwable t) {
-                                Log.i(TAG, "Task Assign Failure" + t.getMessage());
-                            }
-                        });
-                        getDialog().dismiss();
+                                    }
 
+                                    @Override
+                                    public void onFailure(Call<MsgReponseBody> call, Throwable t) {
+                                        Log.i(TAG, "Task Assign Failure" + t.getMessage());
+                                    }
+                                });
+
+                        dismiss();
                     }
                 });
             }
@@ -102,7 +135,11 @@ public class EmployeeListFragmentDialog extends android.support.v4.app.DialogFra
         return view;
     }
 
-    public void setListener(OnCompleteListener listener){
+    private void getData() {
+        projecttaskBean = (GeneralTask.ProjecttaskBean) getArguments().getParcelable(Global.TASK_NODE);
+    }
+
+    public void setListener(OnCompleteListener listener) {
         Log.i(TAG, "setListener: ");
         this.mListener = listener;
     }

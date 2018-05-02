@@ -29,8 +29,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import b12app.vyom.com.flowit.R;
-import b12app.vyom.com.flowit.adapter.SubTaskAdapter;
-import b12app.vyom.com.flowit.adapter.TaskAdapter;
 import b12app.vyom.com.flowit.model.GeneralSubTask;
 import b12app.vyom.com.flowit.tabfragment.project.SubTaskFragmentContract;
 import butterknife.BindView;
@@ -52,7 +50,6 @@ public class FragmentSubTask extends Fragment implements SubTaskFragmentContract
     private Unbinder unbinder;
     private List<GeneralSubTask.ProjectsubtaskBean> list;
     private  SubTaskFragmentContract.IPresenter iPresenter;
-    private Disposable disposable;
 
     @Nullable
     @Override
@@ -72,9 +69,6 @@ public class FragmentSubTask extends Fragment implements SubTaskFragmentContract
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-        if (!disposable.isDisposed()){
-            disposable.dispose();
-        }
     }
 
     @Override
@@ -86,7 +80,7 @@ public class FragmentSubTask extends Fragment implements SubTaskFragmentContract
     public void initRecyclerView(GeneralSubTask.ProjectsubtaskBean subtask) {
         subtask_recyclerview.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
-        list = new ArrayList<GeneralSubTask.ProjectsubtaskBean>();
+        list = new ArrayList<>();
 
 
         final JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "http://rjtmobile.com/aamir/pms/android-app/pms_project_sub_task_list.php?", null, new Response.Listener<JSONObject>() {
@@ -120,7 +114,7 @@ public class FragmentSubTask extends Fragment implements SubTaskFragmentContract
                 }
 
 
-                subtask_recyclerview.setAdapter(new SubTaskAdapter(getContext(), list));
+//                subtask_recyclerview.setAdapter(new SubTaskAdapter(getContext(), list));
 
 
 

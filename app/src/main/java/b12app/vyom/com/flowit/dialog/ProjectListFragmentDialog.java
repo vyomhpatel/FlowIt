@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -23,36 +24,37 @@ import retrofit2.Response;
 
 public class ProjectListFragmentDialog extends DialogFragment {
 
-   private ListView projectList;
-   private ApiService apiService;
+
+    private ListView projectList;
+    private ApiService apiService;
     private OnCompleteListener mListener;
 
-    public static interface OnCompleteListener {
-        public abstract void onComplete(String project_id,String project_name);
+    public interface OnCompleteListener {
+        void onComplete(String project_id, String project_name);
     }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try {
-            this.mListener = (OnCompleteListener)context;
-        }
-        catch (final ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement OnCompleteListener");
-        }
-    }
+//
+//    @Override
+//    public void onAttach(Context context) {
+//        super.onAttach(context);
+//        try {
+//            this.mListener = (OnCompleteListener) context;
+//        } catch (final ClassCastException e) {
+//            throw new ClassCastException(context.toString() + " must implement OnCompleteListener");
+//        }
+//    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.project_list_fragment,container,false);
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        View view = inflater.inflate(R.layout.project_list_fragment, container, false);
         apiService = RetrofitInstance.getRetrofitInstance().create(ApiService.class);
         projectList = view.findViewById(R.id.projectList);
         Call<Project> projectCall = apiService.getProjects();
         projectCall.enqueue(new Callback<Project>() {
             @Override
             public void onResponse(Call<Project> call, final Response<Project> response) {
-
 
 
                 ProjectListAdapter projectListAdapter = new ProjectListAdapter(response.body().getProjects(), getActivity());
@@ -63,7 +65,7 @@ public class ProjectListFragmentDialog extends DialogFragment {
 
                         String project_name = response.body().getProjects().get(position).getProjectname();
                         String project_id = response.body().getProjects().get(position).getId();
-                        mListener.onComplete(project_id,project_name);
+                        mListener.onComplete(project_id, project_name);
                         getDialog().dismiss();
 
                     }
@@ -78,5 +80,9 @@ public class ProjectListFragmentDialog extends DialogFragment {
 
 
         return view;
+    }
+
+    public void setListener(OnCompleteListener onCompleteListener){
+        this.mListener = onCompleteListener;
     }
 }

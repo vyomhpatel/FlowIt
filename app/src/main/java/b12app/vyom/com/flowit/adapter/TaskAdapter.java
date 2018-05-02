@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
  * @Description FlowIt
  */
 
-public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.mViewHolder> {
+public class TaskAdapter extends RecyclerView.Adapter {
 
     private Context context;
     private List<GeneralTask.ProjecttaskBean> dataList;
@@ -37,46 +37,44 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.mViewHolder> {
 
 
     @Override
-    public TaskAdapter.mViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        mViewHolder mVH;
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         if (viewType == -1) {//if empty
 
             View v = LayoutInflater.from(context).inflate(R.layout.item_empty, parent, false);
 
-            mVH = new mViewHolder(v);
+            return new emptyViewHolder(v);
 
         } else {
 
             View v = LayoutInflater.from(context).inflate(R.layout.item_task, parent, false);
 
-            mVH = new mViewHolder(v);
+            return new mViewHolder(v);
         }
 
-        return mVH;
     }
 
     @Override
-    public void onBindViewHolder(TaskAdapter.mViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (dataList.size() > 0) {
 
-            holder.nameTv.setText(dataList.get(position).getTaskname());
-            holder.timeTv.setText(dataList.get(position).getEndstart());
-            holder.itemView.setTag(position);
-            switch (dataList.get(position).getTaskstatus()){
-                case "1":
-                    holder.statusTv.setText("Initial");
-//                    holder.statusTv.setCompoundDrawablesRelative(context.getResources().getDrawable(R.drawable.initial),null,null,null);
-                    break;
-                case "2":
-                    holder.statusTv.setText("In Progress");
-//                    holder.statusTv.setCompoundDrawablesRelative(context.getResources().getDrawable(R.drawable.in_progress),null,null,null);
-                    break;
-                case "3":
-//                    holder.statusTv.setCompoundDrawablesRelative(context.getResources().getDrawable(R.drawable.task_complete),null,null,null);
-                    holder.statusTv.setText("Complete");
-                    break;
+            if (holder instanceof mViewHolder){
+                ((mViewHolder) holder).nameTv.setText(dataList.get(position).getTaskname());
+                ((mViewHolder) holder).timeTv.setText(dataList.get(position).getEndstart());
+                ((mViewHolder) holder).itemView.setTag(position);
+                switch (dataList.get(position).getTaskstatus()){
+                    case "1":
+                        ((mViewHolder) holder).statusTv.setText("Initial");
+                        break;
+                    case "2":
+                        ((mViewHolder) holder).statusTv.setText("In Progress");
+                        break;
+                    case "3":
+                        ((mViewHolder) holder).statusTv.setText("Complete");
+                        break;
+                }
             }
+
         }
     }
 
@@ -94,6 +92,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.mViewHolder> {
         }
 
         return super.getItemViewType(position);
+    }
+
+
+    class emptyViewHolder extends RecyclerView.ViewHolder{
+
+        public emptyViewHolder(View itemView) {
+            super(itemView);
+        }
     }
 
     class mViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

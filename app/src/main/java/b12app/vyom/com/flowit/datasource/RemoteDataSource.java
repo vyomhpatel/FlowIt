@@ -22,6 +22,7 @@ import b12app.vyom.com.flowit.model.Employee;
 import b12app.vyom.com.flowit.model.GeneralTask;
 import b12app.vyom.com.flowit.model.MsgReponseBody;
 import b12app.vyom.com.flowit.model.Project;
+import b12app.vyom.com.flowit.model.UserAssignment;
 import b12app.vyom.com.flowit.networkutils.ApiService;
 import b12app.vyom.com.flowit.networkutils.RetrofitInstance;
 import io.reactivex.Observer;
@@ -37,23 +38,24 @@ public class RemoteDataSource implements IDataSource {
     private Disposable disposable;
 
     private List<GeneralTask.ProjecttaskBean> taskBeanList;
+    private List<UserAssignment.UserAssignmentBean> userAssignmentList;
 
-    private static RemoteDataSource instance ;
+    private static RemoteDataSource instance;
     private static final String TAG = "RemoteDataSource";
 
-    private RemoteDataSource(){
+    private RemoteDataSource() {
 
     }
 
-    public static RemoteDataSource getInstance(){
+    public static RemoteDataSource getInstance() {
         if (instance == null) {
-            synchronized (RemoteDataSource.class){
+            synchronized (RemoteDataSource.class) {
                 if (instance == null) {
-                    instance = new RemoteDataSource() ;
+                    instance = new RemoteDataSource();
                 }
             }
         }
-        return instance ;
+        return instance;
     }
 
     @Override
@@ -70,7 +72,7 @@ public class RemoteDataSource implements IDataSource {
 
                 try {
                     JSONArray projecttask = response.getJSONArray("project task");
-                    for(int i = 0; i<projecttask.length();i++){
+                    for (int i = 0; i < projecttask.length(); i++) {
 
                         JSONObject task = projecttask.getJSONObject(i);
                         String taskid = task.getString("taskid");
@@ -81,7 +83,7 @@ public class RemoteDataSource implements IDataSource {
                         String startdate = task.getString("startdate");
                         String endstart = task.getString("endstart");
                         GeneralTask.ProjecttaskBean projecttaskBean = new GeneralTask.ProjecttaskBean(
-                                taskid,projectid,taskname,taskstatus,taskdesc,startdate,endstart);
+                                taskid, projectid, taskname, taskstatus, taskdesc, startdate, endstart);
                         taskBeanList.add(projecttaskBean);
 
                     }
@@ -155,6 +157,12 @@ public class RemoteDataSource implements IDataSource {
     public void getTaskMemberList(DatabaseReference myRef, DbCallback dbCallback, GeneralTask.ProjecttaskBean taskNode) {
 
     }
+
+    @Override
+    public void queryTaskListByUser(DatabaseReference databaseReference, String userId, DbCallback dbCallback) {
+
+    }
+
 
     @Override
     public Disposable queryProjectList(final NetworkCallback networkCallback) {

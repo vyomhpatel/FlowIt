@@ -6,12 +6,15 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -22,9 +25,8 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
-import java.util.List;
-
 import b12app.vyom.com.flowit.R;
+import b12app.vyom.com.flowit.home.Global;
 import b12app.vyom.com.flowit.home.HomeActivity;
 import b12app.vyom.com.flowit.model.User;
 import b12app.vyom.com.flowit.networkutils.ApiService;
@@ -37,14 +39,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-//import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-//import static b12app.vyom.com.flowit.networkutils.RetrofitInstance.BASE_URL;
-
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+
     //SHA1: 68:55:9C:36:9B:80:F6:FA:F2:C6:84:D2:2F:88:EA:91:57:09:35:81
- //   SHA256: 74:B7:05:7D:1D:EC:55:37:AE:C9:67:FD:9B:60:BD:30:9A:08:93:A5:0E:8D:CE:74:3B:31:4E:D9:2B:01:9D:49
+    //SHA256: 74:B7:05:7D:1D:EC:55:37:AE:C9:67:FD:9B:60:BD:30:9A:08:93:A5:0E:8D:CE:74:3B:31:4E:D9:2B:01:9D:49
     @BindView(R.id.btn_signup)
     Button btn_signup;
 
@@ -52,24 +52,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     Button btnlogin;
 
     @BindView(R.id.emailTxtLogin)
-    TextView emailTxt;
+    EditText emailTxt;
 
     @BindView(R.id.passwordTxtLogin)
-     TextView pwTxt;
+    EditText pwTxt;
 
-   // @BindView(R.id.sign_in_button)
-    com.google.android.gms.common.SignInButton googlesignin;
+    SignInButton googlesignin;
 
     Retrofit retrofit;
-
 
     public static final String BASE_URL = "http://rjtmobile.com/aamir/pms/android-app/";
 
 
-
-
-    private static final int RC_SIGN_IN = 007 ;
-    private static final String TAG = "sign on test" ;
+    private static final int RC_SIGN_IN = 007;
+    private static final String TAG = "LoginActivity";
     private GoogleSignInClient mGoogleSignInClient;
     private RelativeLayout container;
 
@@ -81,16 +77,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         ButterKnife.bind(this);
 
-
         container = findViewById(R.id.relativeLt);
 
         retrofit = new retrofit2.Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
-//                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
-
-
 
 
         // Configure sign-in to request the user's ID, email address, and basic
@@ -105,55 +97,58 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
         googlesignin.setSize(SignInButton.SIZE_STANDARD);
+
         googlesignin.setOnClickListener(this);
         signOut();
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-//        updateUI(account);
     }
 
     @OnClick(R.id.btn_signup)
-    public void onViewClicked()
-    {
+    public void onViewClicked() {
         Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
         startActivity(intent);
     }
 
     @OnClick(R.id.btnlogin)
-    public void loginClicked()
-    {
+    public void loginClicked() {
+        if (!TextUtils.isEmpty(emailTxt.getText().toString()) || !TextUtils.isEmpty(pwTxt.getText().toString())) {
+            RetrofitInstance.apiService().getUser(emailTxt.getText().toString(), pwTxt.getText().toString())
+                    .enqueue(new Callback<User>() {
+                        @Override
+                        public void onResponse(Call<User> call, Response<User> response) {
 
-        ApiService apiService = RetrofitInstance.getRetrofitInstance().create(ApiService.class);
-        Call<User> userCall = apiService.getUser(emailTxt.getText().toString(),pwTxt.getText().toString());
+                            if (response.body().getMsg().equals(getString(R.string.login_succ))) {
 
-        userCall.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                //Log.i("test", ""+response.body());
-               User user = response.body();
-               String username = response.body().getUserfirstname();
-               Log.i("test", "username is "+response.body().getUserfirstname());
+                                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
 
-               Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                startActivity(intent);
-            }
+                                Bundle bundle = new Bundle();
+                                bundle.putParcelable(Global.USER, response.body());
+                                intent.putExtras(bundle);
 
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                Log.i("","Login fail");
-            }
-        });
+                                startActivity(intent);
+                                finish();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<User> call, Throwable t) {
+                            Log.i(TAG, "onFailure: " + t.getMessage());
+                        }
+                    });
+        } else {
+            Toast.makeText(this, R.string.login_alert, Toast.LENGTH_SHORT).show();
+        }
 
     }
 
 
-    public void signIn(){
-        Log.i("mytest","into signIn()");
+    public void signIn() {
+        Log.i(TAG, "signIn: ");
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
@@ -184,30 +179,30 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    private void updateUI(@Nullable GoogleSignInAccount account) {
+    private void updateUI(@Nullable final GoogleSignInAccount account) {
         if (account != null) {
 
+            Log.i(TAG, "updateUI: " + "\n display name: " + account.getDisplayName() + "" +
+                    "\n email: " + account.getEmail() + "" +
+                    "n" + account.getFamilyName()
+                    + "\n " + account.zzabc());
 
-//            Intent i = new Intent(LoginActivity.this, HomeActivity.class);
-//            startActivity(i);
-            Log.i(TAG, "updateUI: "+"\n display name: "+account.getDisplayName()+"" +
-                    "\n email: "+account.getEmail()+"" +
-                    "n"+account.getFamilyName()
-                    +"\n "+account.zzabc());
 
-            Snackbar.make(container,"Display Name: "+account.getDisplayName() +
-                    "\n Email: "+account.getEmail()+"" +
-                    "\n Family Name: "+account.getFamilyName(),Snackbar.LENGTH_SHORT).setAction("Ok", new View.OnClickListener() {
+            Snackbar.make(container, getString(R.string.google_signin) + " " + account.getGivenName(), Snackbar.LENGTH_SHORT).setAction(Global.SNACK_OK, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-            Intent i = new Intent(LoginActivity.this, HomeActivity.class);
-            startActivity(i);
+                    User user = new User(null, Global.FLAG_MANAGER, account.getGivenName(), account.getFamilyName(), account.getEmail(), null);
+                    Intent i = new Intent(LoginActivity.this, HomeActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable(Global.USER, user);
+                    i.putExtras(bundle);
+                    startActivity(i);
                 }
             }).show();
 
 
         } else {
-            Snackbar.make(container,"Login fail", Snackbar.LENGTH_SHORT).setAction("Ok", new View.OnClickListener() {
+            Snackbar.make(container, R.string.login_fail, Snackbar.LENGTH_SHORT).setAction(Global.SNACK_OK, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
@@ -220,7 +215,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
 
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.sign_in_button:
                 signIn();
                 break;
@@ -228,7 +223,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    public void signOut(){
+    public void signOut() {
         mGoogleSignInClient.signOut()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
@@ -239,7 +234,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     }
                 });
     }
-
 
 
 }

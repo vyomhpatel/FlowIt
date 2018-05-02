@@ -1,6 +1,9 @@
 package b12app.vyom.com.flowit.model;
 
-public class User {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class User implements Parcelable {
 
 
     /**
@@ -27,6 +30,27 @@ public class User {
         this.useremail = useremail;
         this.appapikey = appapikey;
     }
+
+    protected User(Parcel in) {
+        msg = in.readString();
+        userid = in.readString();
+        userfirstname = in.readString();
+        userlastname = in.readString();
+        useremail = in.readString();
+        appapikey = in.readString();
+    }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 
     public String getMsg() {
         return msg;
@@ -74,5 +98,20 @@ public class User {
 
     public void setAppapikey(String appapikey) {
         this.appapikey = appapikey;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(msg);
+        dest.writeString(userid);
+        dest.writeString(userfirstname);
+        dest.writeString(userlastname);
+        dest.writeString(useremail);
+        dest.writeString(appapikey);
     }
 }

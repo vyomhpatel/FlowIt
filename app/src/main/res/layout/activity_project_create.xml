@@ -1,106 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:id="@+id/container_project_create"
-    android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <include
-        layout="@layout/layout_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-
-    <EditText
-        android:id="@+id/edt_project_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@null"
-        android:hint="@string/title"
-        android:padding="@dimen/medium_dimen" />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@null"
-        android:id="@+id/etProjectDescription"
-        android:paddingBottom="@dimen/medium_dimen"
-        android:paddingEnd="@dimen/medium_dimen"
-        android:paddingStart="@dimen/medium_dimen"
-        android:paddingTop="@dimen/normal_dimen"
-        android:hint="@string/tap_to_add_description" />
 
     <LinearLayout
+        android:id="@+id/detail_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/normal_dimen"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="wrap_content"
+        <include
+            android:id="@+id/layout_tb"
+            layout="@layout/layout_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+        <EditText
+            android:id="@+id/edt_project_name"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/medium_dimen"
-            android:src="@drawable/ic_members" />
+            android:background="@null"
+            android:maxLines="4"
+            android:hint="@string/title"
+            android:padding="@dimen/medium_dimen" />
 
-
-        <b12app.vyom.com.utils.MyFlowlayout
-            android:id="@+id/layout_flow"
-            android:layout_width="0dp"
+        <EditText
+            android:id="@+id/etProjectDescription"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            app:pileWidth="10dp" />
+            android:background="@null"
+            android:hint="@string/tap_to_add_description"
+            android:maxLines="4"
+            android:paddingBottom="@dimen/medium_dimen"
+            android:paddingEnd="@dimen/medium_dimen"
+            android:paddingStart="@dimen/medium_dimen"
+            android:paddingTop="@dimen/normal_dimen" />
 
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="2"
-        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/normal_dimen"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/medium_dimen"
+                android:src="@drawable/ic_members" />
+
+
+            <b12app.vyom.com.utils.MyFlowlayout
+                android:id="@+id/layout_flow"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                app:pileWidth="10dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <TextView
+                android:id="@+id/tv_start_date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawablePadding="@dimen/medium_dimen"
+                android:drawableStart="@drawable/ic_date"
+                android:gravity="center_vertical"
+                android:hint="@string/set_start_date"
+                android:paddingBottom="@dimen/medium_dimen"
+                android:paddingStart="@dimen/medium_dimen"
+                android:paddingTop="@dimen/normal_dimen" />
+
+            <TextView
+                android:id="@+id/tv_end_date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawablePadding="@dimen/medium_dimen"
+                android:drawableStart="@drawable/ic_date"
+                android:gravity="center_vertical"
+                android:hint="@string/set_end_date"
+                android:paddingBottom="@dimen/medium_dimen"
+                android:paddingStart="@dimen/medium_dimen"
+                android:paddingTop="@dimen/normal_dimen" />
+
+        </LinearLayout>
+
         <TextView
-            android:id="@+id/tv_start_date"
-            android:layout_width="0dp"
+            android:id="@+id/tv_workflow"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:drawablePadding="@dimen/medium_dimen"
-            android:drawableStart="@drawable/ic_date"
+            android:drawableStart="@drawable/ic_workflow"
             android:gravity="center_vertical"
             android:paddingBottom="@dimen/medium_dimen"
             android:paddingStart="@dimen/medium_dimen"
             android:paddingTop="@dimen/normal_dimen"
-            android:text="@string/set_start_date" />
-        <TextView
-            android:id="@+id/tv_end_date"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:drawablePadding="@dimen/medium_dimen"
-            android:drawableStart="@drawable/ic_date"
-            android:gravity="center_vertical"
-            android:paddingBottom="@dimen/medium_dimen"
-            android:paddingStart="@dimen/medium_dimen"
-            android:paddingTop="@dimen/normal_dimen"
-            android:text="@string/set_end_date" />
+            android:text="@string/workflow_default_workflow" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
     </LinearLayout>
-    <TextView
-        android:id="@+id/tv_workflow"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:drawablePadding="@dimen/medium_dimen"
-        android:drawableStart="@drawable/ic_workflow"
-        android:gravity="center_vertical"
-        android:paddingBottom="@dimen/medium_dimen"
-        android:paddingStart="@dimen/medium_dimen"
-        android:paddingTop="@dimen/normal_dimen"
-        android:text="@string/workflow_default_workflow" />
-
-    <View
-        android:layout_width="1dp"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_create_project"
@@ -110,15 +124,16 @@
         android:layout_margin="10dp"
         android:clickable="true"
         android:focusable="true"
+        android:onClick="createProject"
         android:src="@drawable/ic_correct"
         app:backgroundTint="@color/gay4"
         app:backgroundTintMode="src_atop"
         app:borderWidth="3dp"
         app:elevation="5dp"
-        android:onClick="createProject"
         app:fabSize="normal"
+        app:layout_anchor="@id/detail_ll"
+        app:layout_anchorGravity="bottom|right|end"
         app:rippleColor="@android:color/holo_blue_light"
         app:useCompatPadding="true" />
 
-
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

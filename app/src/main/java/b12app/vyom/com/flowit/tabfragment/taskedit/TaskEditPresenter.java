@@ -96,7 +96,7 @@ public class TaskEditPresenter implements TaskEditContract.IPresenter {
 
     @Override
     public void addTaskMember(int position, List<Employee.EmployeesBean> list, GeneralTask.ProjecttaskBean taskNode) {
-        FbHelper.getInstance().addTaskTeamMember(myRef, list.get(position), taskNode.getProjectid(), taskNode.getTaskid());
+        FbHelper.getInstance().addTaskTeamMember(myRef, list.get(position), taskNode.getProjectid(), taskNode);
     }
 
 }

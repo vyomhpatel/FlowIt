@@ -1,5 +1,6 @@
 package b12app.vyom.com.flowit.home;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,10 +10,15 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
+import com.dropbox.client2.DropboxAPI;
+import com.dropbox.client2.android.AndroidAuthSession;
+import com.dropbox.client2.session.AppKeyPair;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionHelper;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout;
@@ -28,10 +34,13 @@ import javax.inject.Inject;
 import b12app.vyom.com.flowit.R;
 import b12app.vyom.com.flowit.daggerUtils.AppComponent;
 import b12app.vyom.com.flowit.datasource.DataManager;
+import b12app.vyom.com.flowit.fcmutils.FlowItInstanceIdService;
+import b12app.vyom.com.flowit.model.User;
 import b12app.vyom.com.flowit.projectcreate.ProjectCreateActivity;
-import b12app.vyom.com.flowit.tabfragment.FragmentDashboard;
+import b12app.vyom.com.flowit.subtaskcreate.SubTaskCreateActivity;
 import b12app.vyom.com.flowit.tabfragment.FragmentInbox;
 import b12app.vyom.com.flowit.tabfragment.FragmentProject;
+import b12app.vyom.com.flowit.tabfragment.FragmentSubTask;
 import b12app.vyom.com.flowit.tabfragment.FragmentTask;
 import b12app.vyom.com.flowit.tabfragment.project.ProjectFgtPresenter;
 import b12app.vyom.com.flowit.tabfragment.task.TaskFgtPresenter;
@@ -39,6 +48,11 @@ import b12app.vyom.com.flowit.task.TaskCreateActivity;
 import b12app.vyom.com.utils.ActivityUtil;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static b12app.vyom.com.flowit.home.Global.FLAG_MANAGER;
+import static b12app.vyom.com.flowit.home.Global.MANAGER;
+import static b12app.vyom.com.flowit.home.Global.USER;
+import static b12app.vyom.com.flowit.home.Global.USER_ID;
 
 public class HomeActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener {
     @BindView(R.id.bottom_tab_layout)
@@ -62,14 +76,13 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     @Inject
     DataManager mDataManager;
 
+    private TextView userNameTv, titleTv;
+
+    private User user;
 
     //presenter
     private ProjectFgtPresenter projectFgtPresenter;
     private TaskFgtPresenter taskFgtPresenter;
-
-    private Integer[] bottomTabIcon = {R.drawable.ic_testing};
-    private Integer[] bottomIconPress = {R.drawable.ic_testing, R.drawable.ic_testing,
-            R.drawable.ic_testing, R.drawable.ic_testing};
 
     private RapidFloatingActionHelper rfabHelper;
 
@@ -83,12 +96,14 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
         setSupportActionBar(toolbar);
 
-        initFloat();
+        //refresh token
+        FlowItInstanceIdService.getInstance().onTokenRefresh();
 
         initDraw(toolbar);
 
         initBottomNavView();
     }
+
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -96,67 +111,147 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     private void initBottomNavView() {
-        botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_testing).setText("Inbox"));
-        botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_tab_project).setText("Project"));
-        botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_tab_task).setText("Task"));
-//        botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_testing).setText("Timeline"));
-        botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_tab_subtask).setText("SubTask"));
 
-        //default tab selected
-        setDefaultTab();
+        if (Global.userType.equals(MANAGER)) {
+            botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_testing).setText("Inbox"));
+            botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_tab_project).setText("Project"));
+            botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_tab_task).setText("Task"));
+            botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_tab_subtask).setText("SubTask"));
 
-        botNavView.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                switch (tab.getPosition()) {
-                    case 0:
-                        ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), new FragmentInbox(), "inboxFgt");
-                        showMainFloatBtn();
-                        break;
-                    case 1:
-                        //fragment
-                        FragmentProject fragmentProject = new FragmentProject();
-                        //presenter
-                        projectFgtPresenter = new ProjectFgtPresenter(mDataManager, fragmentProject);
-                        //add fragment
-                        ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), fragmentProject, "browseFgt");
-                        showMainFloatBtn();
-                        break;
-                    case 2:
-                        //fragment
-                        FragmentTask fragmentTask = new FragmentTask();
-                        //presenter
-                        taskFgtPresenter = new TaskFgtPresenter(mDataManager, fragmentTask);
-                        ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), fragmentTask, "taskFgt");
-                        showMainFloatBtn();
-                        break;
-                    case 3:
-                        ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), new FragmentDashboard(), "dashFgt");
-                        showMainFloatBtn();
-                        break;
+            //default tab selected
+            setDefaultTab();
+
+            botNavView.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(USER_ID, MANAGER);
+
+                    switch (tab.getPosition()) {
+                        case 0:
+                            FragmentInbox fragmentInbox = new FragmentInbox();
+                            bundle.putString(USER_ID, user.getUserid());
+                            fragmentInbox.setArguments(bundle);
+                            ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), fragmentInbox, "inboxFgt");
+                            showMainFloatBtn();
+                            break;
+                        case 1:
+                            //fragment
+                            FragmentProject fragmentProject = new FragmentProject();
+                            //presenter
+                            fragmentProject.setArguments(bundle);
+                            projectFgtPresenter = new ProjectFgtPresenter(mDataManager, fragmentProject);
+                            //add fragment
+                            ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), fragmentProject, "browseFgt");
+                            showMainFloatBtn();
+                            break;
+                        case 2:
+                            //fragment
+                            FragmentTask fragmentTask = new FragmentTask();
+                            fragmentTask.setArguments(bundle);
+                            //presenter
+                            taskFgtPresenter = new TaskFgtPresenter(mDataManager, fragmentTask);
+                            ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), fragmentTask, "taskFgt");
+                            showMainFloatBtn();
+                            break;
+                        case 3:
+                            ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), new FragmentSubTask(), "dashFgt");
+                            showMainFloatBtn();
+                            break;
+                    }
                 }
-            }
 
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
 
-            }
+                }
 
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
 
-            }
-        });
+                }
+            });
+
+            initFloat();
+
+        } else {
+            dismissMainFloatBtn();
+
+            botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_testing).setText("Inbox"));
+            botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_tab_task).setText("Task"));
+            botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_tab_subtask).setText("SubTask"));
+
+            //default tab selected
+            setDefaultTab();
+
+            botNavView.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(USER_ID, user.getUserid());
+
+                    switch (tab.getPosition()) {
+                        case 0:
+                            FragmentInbox fragmentInbox = new FragmentInbox();
+                            bundle.putString(USER_ID, user.getUserid());
+                            fragmentInbox.setArguments(bundle);
+                            fragmentInbox.setArguments(bundle);
+                            ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), fragmentInbox, "inboxFgt");
+                            break;
+                        case 1:
+                            //fragment
+                            FragmentTask fragmentTask = new FragmentTask();
+                            fragmentTask.setArguments(bundle);
+                            //presenter
+                            taskFgtPresenter = new TaskFgtPresenter(mDataManager, fragmentTask);
+                            ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), fragmentTask, "taskFgt");
+                            break;
+                        case 2:
+                            FragmentSubTask fragmentSubTask = new FragmentSubTask();
+                            fragmentSubTask.setArguments(bundle);
+                            ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), new FragmentSubTask(), "dashFgt");
+                            break;
+                    }
+                }
+
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+
+                }
+
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+
+                }
+            });
+
+        }
 
     }
 
     private void setDefaultTab() {
-        botNavView.getTabAt(1).select();
-        //fragment
-        FragmentProject fragmentProject = new FragmentProject();
-        //presenter
-        projectFgtPresenter = new ProjectFgtPresenter(mDataManager, fragmentProject);
-        ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(),fragmentProject, "browseFgt");
+        if (Global.userType.equals(MANAGER)) {
+            botNavView.getTabAt(1).select();
+            //fragment
+            FragmentProject fragmentProject = new FragmentProject();
+            Bundle bundle = new Bundle();
+            bundle.putString(USER_ID, MANAGER);
+            fragmentProject.setArguments(bundle);
+            //presenter
+            projectFgtPresenter = new ProjectFgtPresenter(mDataManager, fragmentProject);
+            ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), fragmentProject, "projectFgt");
+        } else {
+            botNavView.getTabAt(1).select();
+            //fragment
+            FragmentTask fragmentTask = new FragmentTask();
+            Bundle bundle = new Bundle();
+            bundle.putString(USER_ID, user.getUserid());
+            fragmentTask.setArguments(bundle);
+            //presenter
+            taskFgtPresenter = new TaskFgtPresenter(mDataManager, fragmentTask);
+            ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), fragmentTask, "taskFgt");
+        }
+
     }
 
     private void initFloat() {
@@ -191,21 +286,12 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                 .setWrapper(2)
         );
 
-        items.add(new RFACLabelItem<Integer>()
-                .setLabel("New Team")
-                .setResId(R.drawable.ic_testing)
-                .setIconNormalColor(0xff056f00)
-                .setIconPressedColor(0xff0d5302)
-                .setLabelColor(0xff056f00)
-                .setWrapper(3)
-        );
 
         rfaContent
                 .setItems(items)
                 .setIconShadowRadius(RFABTextUtil.dip2px(this, 5))
                 .setIconShadowColor(0xff888888)
-                .setIconShadowDy(RFABTextUtil.dip2px(this, 5))
-        ;
+                .setIconShadowDy(RFABTextUtil.dip2px(this, 5));
 
         rfabHelper = new RapidFloatingActionHelper(
                 this,
@@ -216,10 +302,28 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     private void initDraw(Toolbar toolbar) {
+        if (getIntent().getExtras()!= null){
+            user = getIntent().getExtras().getParcelable(USER);
+        }
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+
+        // header
+        View header = leftDrawer.getHeaderView(0);
+        userNameTv = header.findViewById(R.id.header_name);
+        titleTv = header.findViewById(R.id.tv_title);
+
+        userNameTv.setText(user.getUserfirstname() + " " + user.getUserlastname());
+        if (!user.getUserid().equals(FLAG_MANAGER)) {
+            titleTv.setText(USER);
+            Global.userType = USER;
+        } else {
+            titleTv.setText(MANAGER);
+            Global.userType = MANAGER;
+        }
 
         leftDrawer.setNavigationItemSelectedListener(this);
     }
@@ -255,16 +359,21 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-        switch (item.getItemId()) {
-            case R.id.nav_settings:
-                break;
-            case R.id.nav_help:
-                break;
-        }
+//        switch (item.getItemId()) {
+//            case R.id.nav_settings:
+//                break;
+//            case R.id.nav_help:
+//                break;
+//        }
 
         drawerLayout.closeDrawer(GravityCompat.START);
 
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -285,15 +394,17 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         } else if (position == 1) {
             startActivity(new Intent(HomeActivity.this, TaskCreateActivity.class));
 
+        } else if (position == 2) {
+            startActivity(new Intent(HomeActivity.this, SubTaskCreateActivity.class));
         }
         rfabHelper.toggleContent();
     }
 
-    public void dismissMainFloatBtn(){
+    public void dismissMainFloatBtn() {
         rfaButton.setVisibility(View.GONE);
     }
 
-    public void showMainFloatBtn(){
+    public void showMainFloatBtn() {
         rfaButton.setVisibility(View.VISIBLE);
     }
 }

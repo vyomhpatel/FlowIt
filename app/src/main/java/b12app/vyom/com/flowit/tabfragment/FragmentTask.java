@@ -35,10 +35,10 @@ import butterknife.Unbinder;
 public class FragmentTask extends Fragment implements TaskFgtContract.IView, TaskAdapter.OnItemClickListener {
     @BindView(R.id.rv_task)
     RecyclerView recyclerView;
+
     private Unbinder unbinder;
     private TaskFgtContract.IPresenter taskFgtPresenter;
     private List<GeneralTask.ProjecttaskBean> taskBeanList;
-
 
     @Nullable
     @Override
@@ -46,17 +46,11 @@ public class FragmentTask extends Fragment implements TaskFgtContract.IView, Tas
         View v = inflater.inflate(R.layout.fragment_task, container, false);
         unbinder = ButterKnife.bind(this, v);
 
-        taskFgtPresenter.getTaskList(getActivity());
+        taskFgtPresenter.getTaskList(getActivity(), getArguments());
 
         return v;
     }
 
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
 
     @Override
     public void setPresenter(TaskFgtContract.IPresenter presenter) {
@@ -89,4 +83,5 @@ public class FragmentTask extends Fragment implements TaskFgtContract.IView, Tas
         taskFgtPresenter.rvItemClick(v, position, taskBeanList, getActivity());
 
     }
+
 }

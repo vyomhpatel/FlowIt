@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:drawableTop="@drawable/ic_empty_box"
         android:gravity="center"
-        android:textColor="@color/gray1"
+        android:textColor="@android:color/black"
         android:drawablePadding="@dimen/small_padding"
         android:text="@string/feng_no_project_find"/>
 

@@ -26,6 +26,8 @@ public interface IDataSource {
 
     void getTaskMemberList(DatabaseReference myRef, DbCallback dbCallback, GeneralTask.ProjecttaskBean taskNode);
 
+    void queryTaskListByUser(DatabaseReference databaseReference, String userId, DbCallback dbCallback);
+
     interface DbCallback {
 
         void onSuccess(Object response);

@@ -33,6 +33,7 @@ import b12app.vyom.com.flowit.datasource.DataManager;
 import b12app.vyom.com.flowit.dialog.EmployeeListFragmentDialog;
 import b12app.vyom.com.flowit.dialog.MemberDialog;
 import b12app.vyom.com.flowit.dialog.TeamDialog;
+import b12app.vyom.com.flowit.home.Global;
 import b12app.vyom.com.flowit.model.Employee;
 import b12app.vyom.com.flowit.model.GeneralTask;
 import b12app.vyom.com.flowit.networkutils.ApiService;
@@ -173,7 +174,9 @@ public class FragmentTaskEdit extends Fragment implements TaskEditContract.IView
         FLAG_EDIT_MODE = flagEditMode;
         if (flagEditMode) {
             enableEdit(flagEditMode);
-            addMemberBtn.setVisibility(View.VISIBLE);
+            if (Global.userType.equals(Global.MANAGER)) {
+                addMemberBtn.setVisibility(View.VISIBLE);
+            }
             editFloatBtn.setImageResource(R.drawable.ic_correct);
         } else {
             enableEdit(flagEditMode);
@@ -217,27 +220,26 @@ public class FragmentTaskEdit extends Fragment implements TaskEditContract.IView
                 break;
 
             case R.id.ll_task_member:
-                if (memberList == null || memberList.size() < 1 ) {
-                    Toast.makeText(getContext(), "No team member yet", Toast.LENGTH_SHORT).show();
+                if (memberList == null || memberList.size() < 1) {
+                    Toast.makeText(getContext(), R.string.no_member, Toast.LENGTH_SHORT).show();
                 } else {
                     MemberDialog memberDialog = MemberDialog.newInstance(memberList);
                     memberDialog.showDialog(getActivity().getSupportFragmentManager(), "memberDlg");
                 }
                 break;
+
             case R.id.imgbtn_add_member_to_task:
 
                 EmployeeListFragmentDialog employeeListFragmentDialog = new EmployeeListFragmentDialog();
                 Bundle bundle = new Bundle();
-                bundle.putString("task_id", taskNode.getTaskid());
-                bundle.putString("project_id", taskNode.getProjectid());
+                bundle.putParcelable(Global.TASK_NODE, taskNode);
                 employeeListFragmentDialog.setArguments(bundle);
-                employeeListFragmentDialog.show(getFragmentManager(), "emp dialog");
+                employeeListFragmentDialog.show(getFragmentManager(), "empDlg");
 
                 employeeListFragmentDialog.setListener(this);
                 break;
         }
     }
-
 
 
     @Override

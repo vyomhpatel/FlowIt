@@ -5,14 +5,23 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import b12app.vyom.com.flowit.R;
 import b12app.vyom.com.flowit.datasource.DataManager;
 import b12app.vyom.com.flowit.datasource.IDataSource;
+import b12app.vyom.com.flowit.home.Global;
 import b12app.vyom.com.flowit.model.GeneralTask;
+import b12app.vyom.com.flowit.model.UserAssignment;
 import b12app.vyom.com.flowit.tabfragment.FragmentTaskEdit;
 import b12app.vyom.com.utils.ActivityUtil;
+
+import static b12app.vyom.com.flowit.home.Global.MANAGER;
+import static b12app.vyom.com.flowit.home.Global.USER_ID;
 
 /**
  * @Package b12app.vyom.com.flowit.tabfragment.task
@@ -25,6 +34,7 @@ import b12app.vyom.com.utils.ActivityUtil;
 public class TaskFgtPresenter implements TaskFgtContract.IPresenter {
     private TaskFgtContract.IView fragmentView;
     private DataManager mDataManager;
+    private DatabaseReference databaseReference;
     private static final String TAG = "TaskFgtPresenter";
 
     public TaskFgtPresenter(DataManager dataManager, TaskFgtContract.IView fragmentTask) {
@@ -43,20 +53,60 @@ public class TaskFgtPresenter implements TaskFgtContract.IPresenter {
     }
 
     @Override
-    public void getTaskList(FragmentActivity activity) {
-        mDataManager.queryTaskList(activity, new IDataSource.NetworkCallback() {
-            @Override
-            public void onSuccess(Object response) {
-                List<GeneralTask.ProjecttaskBean> taskBeanList = (List<GeneralTask.ProjecttaskBean>)response;
+    public void getTaskList(final FragmentActivity activity, Bundle arguments) {
+        databaseReference = FirebaseDatabase.getInstance().getReference(Global.TABLE_TASK_TEAM);
+        String userId = arguments.getString(USER_ID);
+        if (!userId.equals(MANAGER)){
+            mDataManager.queryTaskListByUser(databaseReference, userId, new IDataSource.DbCallback() {
+                @Override
+                public void onSuccess(Object response) {
+                    final List<UserAssignment.UserAssignmentBean> list = (List<UserAssignment.UserAssignmentBean>)response;
+                    final List<GeneralTask.ProjecttaskBean> resultList = new ArrayList<>();
+                    Log.i(TAG, "onSuccess: " + list.size());
 
-                fragmentView.initRecyclerView(taskBeanList);
-            }
+                    if (list == null || list.size() < 1){
 
-            @Override
-            public void onFailure(Throwable throwable) {
-                Log.i(TAG, throwable.getLocalizedMessage());
-            }
-        });
+                        fragmentView.initRecyclerView(new ArrayList<GeneralTask.ProjecttaskBean>());
+
+                    }else {
+
+                        for (UserAssignment.UserAssignmentBean assignmentBean : list){
+                            resultList.add(new GeneralTask.ProjecttaskBean(assignmentBean.getTaskid(),
+                                    assignmentBean.getProjectid(),
+                                    assignmentBean.getTaskName(),
+                                    assignmentBean.getTaskStatus(),
+                                    assignmentBean.getTaskDesc(),
+                                    assignmentBean.getStartdate(),
+                                    assignmentBean.getEnddate()));
+                        }
+
+                        fragmentView.initRecyclerView(resultList);
+
+                    }
+                }
+
+                @Override
+                public void onFailure(String msg) {
+
+                }
+
+            });
+
+        }else {
+            mDataManager.queryTaskList(activity, new IDataSource.NetworkCallback() {
+                @Override
+                public void onSuccess(Object response) {
+                    List<GeneralTask.ProjecttaskBean> taskBeanList = (List<GeneralTask.ProjecttaskBean>)response;
+
+                    fragmentView.initRecyclerView(taskBeanList);
+                }
+
+                @Override
+                public void onFailure(Throwable throwable) {
+                    Log.i(TAG, throwable.getLocalizedMessage());
+                }
+            });
+        }
     }
 
     @Override

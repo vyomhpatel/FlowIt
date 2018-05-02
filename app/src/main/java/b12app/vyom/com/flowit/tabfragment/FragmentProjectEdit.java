@@ -113,10 +113,9 @@ public class FragmentProjectEdit extends Fragment implements ProjectEditContract
     }
 
 
-
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onDestroy() {
+        super.onDestroy();
         unbinder.unbind();
     }
 
@@ -237,7 +236,7 @@ public class FragmentProjectEdit extends Fragment implements ProjectEditContract
                 break;
 
             case R.id.ll_member:
-                if (memberList.size() < 1 || memberList == null) {
+                if (memberList == null || memberList.size() < 1) {
                     Toast.makeText(getContext(), "No team member yet", Toast.LENGTH_SHORT).show();
                 } else {
                     MemberDialog memberDialog = MemberDialog.newInstance(memberList);

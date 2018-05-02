@@ -9,12 +9,13 @@ import android.widget.VideoView;
 
 import b12app.vyom.com.flowit.R;
 import b12app.vyom.com.flowit.home.HomeActivity;
+import b12app.vyom.com.flowit.login.LoginActivity;
 
 public class StartUpPresenter implements StartUpContract.IPresenter {
     Context context;
     StartUpContract.IView iView;
 
-    public StartUpPresenter( StartUp startUp) {
+    public StartUpPresenter(StartUp startUp) {
 
         this.iView = startUp;
         this.context = startUp;
@@ -28,16 +29,16 @@ public class StartUpPresenter implements StartUpContract.IPresenter {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(context,HomeActivity.class);
+                Intent intent = new Intent(context, LoginActivity.class);
                 context.startActivity(intent);
             }
-        },6200);
+        }, 1000);
 
     }
 
     @Override
     public void startNextActivity(View view) {
-        Intent intent = new Intent(context,HomeActivity.class);
+        Intent intent = new Intent(context, HomeActivity.class);
         context.startActivity(intent);
     }
 

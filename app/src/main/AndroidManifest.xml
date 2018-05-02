@@ -5,37 +5,74 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".daggerUtils.AppApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".home.HomeActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".register.SignupActivity" />
-        <activity android:name=".login.LoginActivity">
+        <activity android:name=".startup.StartUp">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".login.LoginActivity" />
+
+        <activity android:name=".register.SignupActivity" />
+
+
+        <activity
+            android:name=".home.HomeActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".projectcreate.ProjectCreateActivity"
             android:theme="@style/ProjectTheme" />
         <activity
             android:name=".task.TaskCreateActivity"
             android:theme="@style/TaskTheme" />
-        <activity android:name=".subtaskcreate.SubTaskCreateActivity"></activity>
+
+        <activity
+            android:name="com.dropbox.client2.android.AuthActivity"
+            android:configChanges="orientation|keyboard"
+            android:launchMode="singleTask"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            <intent-filter>
+                <!-- Change this to be db- followed by your app key -->
+                <data android:scheme="db-af6srcasuldm639" />
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!--fcm-->
+        <service android:name=".fcmutils.FlowItInstanceIdService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".fcmutils.FlowItMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <receiver android:name=".AppWidget" >
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/app_widget_config" />
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="click" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

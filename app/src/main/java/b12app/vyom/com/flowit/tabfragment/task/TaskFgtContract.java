@@ -1,5 +1,6 @@
 package b12app.vyom.com.flowit.tabfragment.task;
 
+import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
@@ -8,7 +9,6 @@ import java.util.List;
 import b12app.vyom.com.flowit.home.BasePresenter;
 import b12app.vyom.com.flowit.home.BaseView;
 import b12app.vyom.com.flowit.model.GeneralTask;
-import b12app.vyom.com.flowit.model.Project;
 
 
 /**
@@ -30,7 +30,7 @@ public interface TaskFgtContract {
 
     interface IPresenter extends BasePresenter {
 
-        void getTaskList(FragmentActivity activity);
+        void getTaskList(FragmentActivity activity, Bundle arguments);
 
         void rvItemClick(View v, int position, List<GeneralTask.ProjecttaskBean> project, FragmentActivity activity);
 

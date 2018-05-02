@@ -65,6 +65,11 @@ public class DataManager implements IDataSource {
     }
 
     @Override
+    public void queryTaskListByUser(DatabaseReference databaseReference, String userId, DbCallback dbCallback) {
+        localDataSource.queryTaskListByUser(databaseReference, userId, dbCallback);
+    }
+
+    @Override
     public Disposable queryProjectList(final NetworkCallback networkCallback) {
 
         return remoteDataSource.queryProjectList(networkCallback);

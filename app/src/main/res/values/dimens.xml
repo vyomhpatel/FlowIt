@@ -16,4 +16,5 @@
     <dimen name="task_txt_size">20sp</dimen>
     <dimen name="date_txt_size">10sp</dimen>
     <dimen name="twof_dimen">25dp</dimen>
+    <dimen name="xlarge_dimen">50dp</dimen>
 </resources>

@@ -38,14 +38,7 @@ import b12app.vyom.com.flowit.model.GeneralTask;
 import b12app.vyom.com.flowit.model.MyProjectTask;
 import b12app.vyom.com.flowit.model.Project;
 import b12app.vyom.com.flowit.networkutils.ApiService;
-import b12app.vyom.com.flowit.networkutils.RetrofitInstance;
-import b12app.vyom.com.flowit.task.ProjectListFragmentDialog;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+
 
 /**
  * Created by jinliyu on 4/27/18.
