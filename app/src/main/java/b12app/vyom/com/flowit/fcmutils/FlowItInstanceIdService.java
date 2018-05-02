@@ -11,17 +11,12 @@ public class FlowItInstanceIdService extends FirebaseInstanceIdService {
     private static FlowItInstanceIdService instance = null;
 
     //a private constructor so no instances can be made outside this class
-    private FlowItInstanceIdService() {}
+
     private String refreshedToken;
 
     //Everytime you need an instance, call this
     //synchronized to make the call thread-safe
-    public static synchronized FlowItInstanceIdService getInstance() {
-        if(instance == null)
-            instance = new FlowItInstanceIdService();
 
-        return instance;
-    }
 
     @Override
     public void onTokenRefresh() {

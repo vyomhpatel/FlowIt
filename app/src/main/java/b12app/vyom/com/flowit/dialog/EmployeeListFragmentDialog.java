@@ -10,6 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,8 +23,13 @@ import b12app.vyom.com.flowit.adapter.EmployeeListAdapter;
 import b12app.vyom.com.flowit.fcmutils.FlowItInstanceIdService;
 import b12app.vyom.com.flowit.fcmutils.FlowItMessagingService;
 import b12app.vyom.com.flowit.model.Employee;
+import b12app.vyom.com.flowit.model.FcmResponse;
 import b12app.vyom.com.flowit.model.GeneralTask;
+import b12app.vyom.com.flowit.model.MsgReponseBody;
+import b12app.vyom.com.flowit.model.Sender;
 import b12app.vyom.com.flowit.networkutils.ApiService;
+import b12app.vyom.com.flowit.networkutils.FCMApiService;
+import b12app.vyom.com.flowit.networkutils.FCMRetrofitClient;
 import b12app.vyom.com.flowit.networkutils.RetrofitInstance;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -63,25 +71,42 @@ public class EmployeeListFragmentDialog extends android.support.v4.app.DialogFra
                         Bundle bundle = getArguments();
                         String task_id = bundle.getString("task_id");
                         String project_id = bundle.getString("project_id");
-                        apiService.assignTask(task_id, project_id, empid).enqueue(new Callback<JSONObject>() {
+                        apiService.assignTask(task_id, project_id, empid).enqueue(new Callback<MsgReponseBody>() {
 
                             @Override
-                            public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
-
-                                try {
-                                    Log.i(TAG, "Task Assign Status" + response.body().toString());
-                                    JSONArray jsonArray = response.body().getJSONArray("msg");
-                                    FlowItInstanceIdService.getInstance().onTokenRefresh();
+                            public void onResponse(Call<MsgReponseBody> call, Response<MsgReponseBody> response) {
 
 
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
+                                    Log.i(TAG, "Task Assign Status" + response.body().getMsg());
+
+
+                                    String current_token = FirebaseInstanceId.getInstance().getToken();
+                                    Sender.NotificationBean notificationBean = new Sender.NotificationBean("You have been assigned to do","Task Assignment");
+                                    Sender sender = new Sender(notificationBean,current_token);
+                                    FCMApiService fcmApiService = FCMRetrofitClient.getRetrofit().create(FCMApiService.class);
+                                    fcmApiService.sendNotification(sender).enqueue(new Callback<FcmResponse>() {
+                                        @Override
+                                        public void onResponse(Call<FcmResponse> call, Response<FcmResponse> response) {
+                                            Log.i(TAG, "fcm response: "+response.message());
+//                                            if(response.body().getSuccess()==1){
+//                                                Toast.makeText(getActivity(),"Message delivered",Toast.LENGTH_SHORT).show();
+//                                            }
+//                                            else {
+//                                                Toast.makeText(getActivity(),"Message lost",Toast.LENGTH_SHORT).show();
+//                                            }
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<FcmResponse> call, Throwable t) {
+                                                Toast.makeText(getActivity(),"error"+t.getMessage(),Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+
 
                             }
 
                             @Override
-                            public void onFailure(Call<JSONObject> call, Throwable t) {
+                            public void onFailure(Call<MsgReponseBody> call, Throwable t) {
                                 Log.i(TAG, "Task Assign Failure" + t.getMessage());
                             }
                         });
