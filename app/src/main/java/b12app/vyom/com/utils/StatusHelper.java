@@ -22,6 +22,13 @@ public class StatusHelper {
         int COMPLETED = 3;
     }
 
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface TaskStatusDef {
+        int INITAL = 1;
+        int INPROGRESS = 2;
+        int COMPLETE = 3;
+    }
+
     public static String getStatus(@StatusDef int status) {
         switch (status) {
             case StatusDef.START_NEW_PROJECT:
@@ -30,6 +37,18 @@ public class StatusHelper {
                 return "Not complete";
             case StatusDef.COMPLETED:
                 return "Completed";
+        }
+        return null;
+    }
+
+    public static String getTaskStatus(@TaskStatusDef int status) {
+        switch (status) {
+            case TaskStatusDef.INITAL:
+                return "Initial";
+            case TaskStatusDef.INPROGRESS:
+                return "In Progress";
+            case TaskStatusDef.COMPLETE:
+                return "Complete";
         }
         return null;
     }

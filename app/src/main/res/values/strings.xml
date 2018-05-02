@@ -31,6 +31,7 @@
     <string name="task_id">Task Id</string>
     <string name="add_to_task">Add to task</string>
     <string name="add_subtask_description">Add subtask description</string>
+    <string name="subtask_id">subtask id</string>
 
     <string-array name="priority">
         <item>Default</item>

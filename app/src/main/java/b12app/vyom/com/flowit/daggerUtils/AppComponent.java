@@ -6,6 +6,7 @@ import javax.inject.Singleton;
 import b12app.vyom.com.flowit.home.HomeActivity;
 import b12app.vyom.com.flowit.tabfragment.FragmentProject;
 import b12app.vyom.com.flowit.tabfragment.FragmentProjectEdit;
+import b12app.vyom.com.flowit.tabfragment.FragmentSubTaskEdit;
 import b12app.vyom.com.flowit.tabfragment.FragmentTaskEdit;
 import b12app.vyom.com.flowit.task.TaskCreateActivity;
 import dagger.Component;
@@ -30,6 +31,8 @@ public interface AppComponent {
     void inject(FragmentTaskEdit fragmentTaskEdit);
 
     void inject(TaskCreateActivity taskCreateActivity);
+
+    void inject(FragmentSubTaskEdit subTaskEdit);
 
 
     // void inject(MyFragment fragment);

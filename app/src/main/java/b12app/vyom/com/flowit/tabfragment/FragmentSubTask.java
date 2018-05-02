@@ -8,10 +8,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -31,8 +29,10 @@ import java.util.List;
 import b12app.vyom.com.flowit.R;
 import b12app.vyom.com.flowit.adapter.SubTaskAdapter;
 import b12app.vyom.com.flowit.adapter.TaskAdapter;
+import b12app.vyom.com.flowit.home.HomeActivity;
 import b12app.vyom.com.flowit.model.GeneralSubTask;
-import b12app.vyom.com.flowit.tabfragment.project.SubTaskFragmentContract;
+import b12app.vyom.com.flowit.subtaskcreate.SubTaskContract;
+import b12app.vyom.com.flowit.tabfragment.subtask.SubTaskFragmentContract;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -48,11 +48,11 @@ import io.reactivex.disposables.Disposable;
 
 public class FragmentSubTask extends Fragment implements SubTaskFragmentContract.IView, SubTaskAdapter.OnItemClickListener {
     @BindView(R.id.rv_subtask)
-    RecyclerView subtask_recyclerview;
+    RecyclerView recyclerview;
     private Unbinder unbinder;
-    private List<GeneralSubTask.ProjectsubtaskBean> list;
-    private  SubTaskFragmentContract.IPresenter iPresenter;
-    private Disposable disposable;
+    private SubTaskFragmentContract.IPresenter subtaskFgtPresenter;
+    private List<GeneralSubTask.ProjectsubtaskBean> subtaskBeanList;
+
 
     @Nullable
     @Override
@@ -62,90 +62,99 @@ public class FragmentSubTask extends Fragment implements SubTaskFragmentContract
         unbinder = ButterKnife.bind(this, v);
 
 
-
+        subtaskFgtPresenter.getSubtaskList(getActivity());
 
         return v;
     }
-
-
 
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-        if (!disposable.isDisposed()){
-            disposable.dispose();
-        }
+
     }
 
     @Override
     public void setPresenter(SubTaskFragmentContract.IPresenter presenter) {
-            iPresenter = presenter;
+        subtaskFgtPresenter = presenter;
     }
 
     @Override
-    public void initRecyclerView(GeneralSubTask.ProjectsubtaskBean subtask) {
-        subtask_recyclerview.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+    public void initRecyclerView(List<GeneralSubTask.ProjectsubtaskBean> subtasklist) {
+        this.subtaskBeanList = subtasklist;
 
-        list = new ArrayList<GeneralSubTask.ProjectsubtaskBean>();
+        recyclerview.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
+        SubTaskAdapter subtaskAdapter = new SubTaskAdapter(getActivity(), subtasklist);
 
-        final JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "http://rjtmobile.com/aamir/pms/android-app/pms_project_sub_task_list.php?", null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
+        recyclerview.setAdapter(subtaskAdapter);
 
-                Log.i("test","into onResponse");
-                try {
-                    JSONArray subtasks = response.getJSONArray("project sub task");
-                    for(int i = 0; i < subtasks.length(); i ++)
-                    {
-                        JSONObject subtaskget = subtasks.getJSONObject(i);
-                        String subtaskid = subtaskget.getString("subtaskid");
-                        String taskid = subtaskget.getString("taskid");
-                        String projectid = subtaskget.getString("projectid");
-                        String subtaskname = subtaskget.getString("subtaskname");
-                        String subtaskstatus = subtaskget.getString("subtaskstatus");
-                        String subtaskdesc = subtaskget.getString("subtaskdesc");
-                        String startdate = subtaskget.getString("startdate");
-                        String endstart = subtaskget.getString("endstart");
+        subtaskAdapter.setMItemClickListener(this);
 
-                        GeneralSubTask.ProjectsubtaskBean subtask = new GeneralSubTask.ProjectsubtaskBean(subtaskid,taskid,projectid,subtaskname,subtaskstatus
-                                ,subtaskdesc, startdate, endstart);
-                        Log.i("output",subtask.getSubtaskname());
-                        list.add(subtask);
-
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-
-                subtask_recyclerview.setAdapter(new SubTaskAdapter(getContext(), list));
-
-
-
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-
-        Volley.newRequestQueue(getContext()).add(request);
+//        subtask_recyclerview.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+//
+//        subtaskBeanList = new ArrayList<GeneralSubTask.ProjectsubtaskBean>();
+//
+//
+//        final JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "http://rjtmobile.com/aamir/pms/android-app/pms_project_sub_task_list.php?", null, new Response.Listener<JSONObject>() {
+//            @Override
+//            public void onResponse(JSONObject response) {
+//
+//                Log.i("test","into onResponse");
+//                try {
+//                    JSONArray subtasks = response.getJSONArray("project sub task");
+//                    for(int i = 0; i < subtasks.length(); i ++)
+//                    {
+//                        JSONObject subtaskget = subtasks.getJSONObject(i);
+//                        String subtaskid = subtaskget.getString("subtaskid");
+//                        String taskid = subtaskget.getString("taskid");
+//                        String projectid = subtaskget.getString("projectid");
+//                        String subtaskname = subtaskget.getString("subtaskname");
+//                        String subtaskstatus = subtaskget.getString("subtaskstatus");
+//                        String subtaskdesc = subtaskget.getString("subtaskdesc");
+//                        String startdate = subtaskget.getString("startdate");
+//                        String endstart = subtaskget.getString("endstart");
+//
+//                        GeneralSubTask.ProjectsubtaskBean subtask = new GeneralSubTask.ProjectsubtaskBean(subtaskid,taskid,projectid,subtaskname,subtaskstatus
+//                                ,subtaskdesc, startdate, endstart);
+//                        Log.i("output",subtask.getSubtaskname());
+//                        list.add(subtask);
+//
+//                    }
+//
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//
+//
+//                subtask_recyclerview.setAdapter(new SubTaskAdapter(getContext(), list));
+//
+//
+//
+//
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//
+//            }
+//        });
+//
+//        Volley.newRequestQueue(getContext()).add(request);
 
     }
 
     @Override
     public void hideMainFloatBtn() {
-
+        HomeActivity activity = (HomeActivity) getActivity();
+        activity.dismissMainFloatBtn();
     }
 
     @Override
     public void onItemClick(View v, int position) {
+        Log.i("click", "Clicked!!!!!");
+        subtaskFgtPresenter.rvItemClick(v, position, subtaskBeanList, getActivity());
 
     }
 }

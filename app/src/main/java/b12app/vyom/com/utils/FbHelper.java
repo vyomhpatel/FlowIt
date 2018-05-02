@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import b12app.vyom.com.flowit.model.Employee;
+import b12app.vyom.com.flowit.model.FbSubTaskUserModel;
+import b12app.vyom.com.flowit.model.GeneralSubTask;
 
 /**
  * @Package b12app.vyom.com.utils
@@ -77,6 +79,50 @@ public class FbHelper {
         }
 
         return memberList;
+    }
+
+    public List<Employee.EmployeesBean> getSubTaskTeam(DataSnapshot dataSnapshot, GeneralSubTask.ProjectsubtaskBean subTaskNode) {
+        List<Employee.EmployeesBean> memberList = new ArrayList<>();
+
+        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+            if (subTaskNode.getSubtaskid().equals(ds.getValue(FbSubTaskUserModel.class).getSubtaskid())) {
+                Employee.EmployeesBean currentEmp = new Employee.EmployeesBean(
+                        ds.getValue(FbSubTaskUserModel.class).getEmpid(),
+                        ds.getValue(FbSubTaskUserModel.class).getEmpfirstname(),
+                        ds.getValue(FbSubTaskUserModel.class).getEmplastname(),
+                        ds.getValue(FbSubTaskUserModel.class).getEmpemail(),
+                        ds.getValue(FbSubTaskUserModel.class).getEmpmobile(),
+                        ds.getValue(FbSubTaskUserModel.class).getEmpdesignation(),
+                        ds.getValue(FbSubTaskUserModel.class).getDateofjoining());
+
+                memberList.add(currentEmp);
+            }
+        }
+
+        return memberList;
+    }
+
+    public void addSubTaskTeam(Employee.EmployeesBean employeesBean, GeneralSubTask.ProjectsubtaskBean subTaskBean) {
+        DatabaseReference myRef  =  FbHelper.getInstance().getReference("SubTaskTeam");
+
+        //add subtask team member
+        //if already have member, it will wipe out content and reset
+        //if not, add new project team
+        myRef.child(employeesBean.getEmpid()).setValue(null);
+        myRef.child(employeesBean.getEmpid()).child("empid").setValue(employeesBean.getEmpid());
+        myRef.child(employeesBean.getEmpid()).child("empfirstname").setValue(employeesBean.getEmpfirstname());
+        myRef.child(employeesBean.getEmpid()).child("emplastname").setValue(employeesBean.getEmplastname());
+        myRef.child(employeesBean.getEmpid()).child("empemail").setValue(employeesBean.getEmpemail());
+        myRef.child(employeesBean.getEmpid()).child("empmobile").setValue(employeesBean.getEmpmobile());
+        myRef.child(employeesBean.getEmpid()).child("empdesignation").setValue(employeesBean.getEmpdesignation());
+        myRef.child(employeesBean.getEmpid()).child("dateofjoining").setValue(employeesBean.getDateofjoining());
+        myRef.child(employeesBean.getEmpid()).child("taskid").setValue(subTaskBean.getTaskid());
+        myRef.child(employeesBean.getEmpid()).child("subtaskid").setValue(subTaskBean.getSubtaskid());
+        myRef.child(employeesBean.getEmpid()).child("subtaskname").setValue(subTaskBean.getSubtaskname());
+        myRef.child(employeesBean.getEmpid()).child("subtaskstatus").setValue(subTaskBean.getSubtaskstatus());
+        myRef.child(employeesBean.getEmpid()).child("subtaskdesc").setValue(subTaskBean.getSubtaskdesc());
+        myRef.child(employeesBean.getEmpid()).child("subtaskenddate").setValue(subTaskBean.getEndstart());
+        myRef.child(employeesBean.getEmpid()).child("projectid").setValue(subTaskBean.getProjectid());
     }
 
 }

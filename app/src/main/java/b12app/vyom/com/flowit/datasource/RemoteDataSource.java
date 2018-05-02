@@ -9,6 +9,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.firebase.database.DatabaseReference;
+import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,6 +20,7 @@ import java.util.List;
 
 
 import b12app.vyom.com.flowit.model.Employee;
+import b12app.vyom.com.flowit.model.GeneralSubTask;
 import b12app.vyom.com.flowit.model.GeneralTask;
 import b12app.vyom.com.flowit.model.MsgReponseBody;
 import b12app.vyom.com.flowit.model.Project;
@@ -37,23 +39,66 @@ public class RemoteDataSource implements IDataSource {
     private Disposable disposable;
 
     private List<GeneralTask.ProjecttaskBean> taskBeanList;
+    private List<GeneralSubTask.ProjectsubtaskBean> subtaskBeanList;
 
-    private static RemoteDataSource instance ;
+    private static RemoteDataSource instance;
     private static final String TAG = "RemoteDataSource";
 
-    private RemoteDataSource(){
+    private RemoteDataSource() {
 
     }
 
-    public static RemoteDataSource getInstance(){
+    public static RemoteDataSource getInstance() {
         if (instance == null) {
-            synchronized (RemoteDataSource.class){
+            synchronized (RemoteDataSource.class) {
                 if (instance == null) {
-                    instance = new RemoteDataSource() ;
+                    instance = new RemoteDataSource();
                 }
             }
         }
-        return instance ;
+        return instance;
+    }
+
+    @Override
+    public void querySubTaskList(FragmentActivity activity, final NetworkCallback networkCallback) {
+        String url = "http://rjtmobile.com/aamir/pms/android-app/pms_project_sub_task_list.php?";
+        subtaskBeanList = new ArrayList<>();
+        final RequestQueue requestQueue = Volley.newRequestQueue(activity);
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new com.android.volley.Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONArray gotsubtask = response.getJSONArray("project sub task");
+                    for (int i = 0; i < gotsubtask.length(); i++) {
+                        JSONObject subtask = gotsubtask.getJSONObject(i);
+                        String subtaskid = subtask.getString("subtaskid");
+                        String taskid = subtask.getString("taskid");
+                        String projectid = subtask.getString("projectid");
+                        String subtaskname = subtask.getString("subtaskname");
+                        String subtaskstatus = subtask.getString("subtaskstatus");
+                        String subtaskdesc = subtask.getString("subtaskdesc");
+                        String startdate = subtask.getString("startdate");
+                        String enddate = subtask.getString("endstart");
+                        GeneralSubTask.ProjectsubtaskBean subtaskbean = new GeneralSubTask.ProjectsubtaskBean(subtaskid,
+                                taskid, projectid, subtaskname, subtaskstatus, subtaskdesc, startdate, enddate);
+                        subtaskBeanList.add(subtaskbean);
+
+
+                    }
+                    networkCallback.onSuccess(subtaskBeanList);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new com.android.volley.Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        requestQueue.add(request);
+
     }
 
     @Override
@@ -70,7 +115,7 @@ public class RemoteDataSource implements IDataSource {
 
                 try {
                     JSONArray projecttask = response.getJSONArray("project task");
-                    for(int i = 0; i<projecttask.length();i++){
+                    for (int i = 0; i < projecttask.length(); i++) {
 
                         JSONObject task = projecttask.getJSONObject(i);
                         String taskid = task.getString("taskid");
@@ -81,7 +126,7 @@ public class RemoteDataSource implements IDataSource {
                         String startdate = task.getString("startdate");
                         String endstart = task.getString("endstart");
                         GeneralTask.ProjecttaskBean projecttaskBean = new GeneralTask.ProjecttaskBean(
-                                taskid,projectid,taskname,taskstatus,taskdesc,startdate,endstart);
+                                taskid, projectid, taskname, taskstatus, taskdesc, startdate, endstart);
                         taskBeanList.add(projecttaskBean);
 
                     }
@@ -142,6 +187,31 @@ public class RemoteDataSource implements IDataSource {
                     @Override
                     public void onResponse(Call<MsgReponseBody> call, Response<MsgReponseBody> response) {
                         Log.i(TAG, "task edit status: " + response.body());
+                        networkCallback.onSuccess(response.body().getMsg());
+                    }
+
+                    @Override
+                    public void onFailure(Call<MsgReponseBody> call, Throwable t) {
+                        networkCallback.onFailure(t);
+                    }
+                });
+    }
+
+
+    @Override
+    public void updateSubTask(String userId, GeneralSubTask.ProjectsubtaskBean subtaskNode, final NetworkCallback networkCallback) {
+
+        userId = "34";
+
+        Log.i("测试123", subtaskNode.getTaskid() + subtaskNode.getSubtaskid()+subtaskNode.getProjectid()
+                +userId + subtaskNode.getSubtaskstatus());
+
+        RetrofitInstance.apiService().updateSubTaskStatus(subtaskNode.getTaskid(), subtaskNode.getSubtaskid(), subtaskNode.getProjectid(), userId, subtaskNode.getSubtaskstatus())
+                .enqueue(new Callback<MsgReponseBody>() {
+                    @Override
+                    public void onResponse(Call<MsgReponseBody> call, Response<MsgReponseBody> response) {
+                        Log.i(TAG, "subUpdate test: " + response.body().getMsg());
+                        Log.i("测试123", "onResponse: " + call.toString());
                         networkCallback.onSuccess(response.body().getMsg());
                     }
 

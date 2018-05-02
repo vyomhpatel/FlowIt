@@ -26,12 +26,12 @@ public interface ApiService {
 
     @POST("pms_reg.php")
     Call<String> postUser(@Query("first_name") String first_name,
-                        @Query("last_name") String last_name,
-                        @Query("email") String email,
-                        @Query("mobile") String mobile,
-                        @Query("password") String password,
-                        @Query("company_size") String company_size,
-                        @Query("your_role") String your_role);
+                          @Query("last_name") String last_name,
+                          @Query("email") String email,
+                          @Query("mobile") String mobile,
+                          @Query("password") String password,
+                          @Query("company_size") String company_size,
+                          @Query("your_role") String your_role);
 
     @GET("pms_login.php")
     Call<User> getUser(@Query("useremail") String mobileNumber,
@@ -85,15 +85,15 @@ public interface ApiService {
     Observable<GeneralTask> getTaskObservableList();
 
     @POST("pms_assign_task_project.php")
-    Call<JSONObject>assignTask(@Query("taskid") String taskid,
-                               @Query("project_id") String project_id,
-                               @Query("team_member_userid") String team_member_userid);
+    Call<JSONObject> assignTask(@Query("taskid") String taskid,
+                                @Query("project_id") String project_id,
+                                @Query("team_member_userid") String team_member_userid);
 
     @POST("pms_edit_task_status.php")
-    Call<MsgReponseBody>updateTaskStatus(@Query("taskid") String taskid,
-                                                      @Query("project_id") String project_id,
-                                                      @Query("userid") String userid,
-                                                      @Query("task_status") String task_status);
+    Call<MsgReponseBody> updateTaskStatus(@Query("taskid") String taskid,
+                                          @Query("project_id") String project_id,
+                                          @Query("userid") String userid,
+                                          @Query("task_status") String task_status);
 
 
     //-------------------------------------SUB-TASK -----------------------------------------
@@ -110,6 +110,19 @@ public interface ApiService {
     @GET("pms_project_sub_task_list.php")
     Observable<GeneralSubTask.ProjectsubtaskBean> listSubTask();
 
+    @POST("pms_edit_sub_task_status.php")
+    Call<MsgReponseBody> updateSubTaskStatus(@Query("taskid") String task_id,
+                                             @Query("subtaskid") String subtask_id,
+                                             @Query("project_id") String project_id,
+                                             @Query("userid") String userid,
+                                             @Query("subtask_status") String subtask_status);
+
+    @POST("pms_assign_sub_task_project.php")
+    Call<MsgReponseBody> assignSubTask(@Query("taskid") String taskid,
+                                   @Query("subtaskid") String subtaskid,
+                                   @Query("project_id") String project_id,
+                                   @Query("team_member_userid") String team_member_userid);
+
 
     /******************************************************* Observable Api ********************************************************/
     @GET("pms_projects.php")
@@ -119,22 +132,23 @@ public interface ApiService {
     //-------------------------------------USER TASK -----------------------------------------
 
     @GET("pms_view_task_deatil.php")
-    Call<GeneralTask.ProjecttaskBean>getTaskDetails(@Query("taskid") String taskid,
-                                                    @Query("project_id") String project_id);
+    Call<GeneralTask.ProjecttaskBean> getTaskDetails(@Query("taskid") String taskid,
+                                                     @Query("project_id") String project_id);
 
     @GET("pms_team_task.php")
-    Call<TaskMembers>getTaskMembers(@Query("taskid") String taskid,
-                                    @Query("projectid") String projectid);
+    Call<TaskMembers> getTaskMembers(@Query("taskid") String taskid,
+                                     @Query("projectid") String projectid);
 
     //-------------------------------------USER SUB-TASK -----------------------------------------
 
     @GET("/pms_view_sub_task_deatil.php")
-    Call<GeneralSubTask.ProjectsubtaskBean>getSubTaskDetails(@Query("taskid") String taskid,
-                                                             @Query("subtask_id") String subtask_id,
-                                                             @Query("project_id") String project_id);
+    Call<GeneralSubTask.ProjectsubtaskBean> getSubTaskDetails(@Query("taskid") String taskid,
+                                                              @Query("subtask_id") String subtask_id,
+                                                              @Query("project_id") String project_id);
+
     @GET("pms_team_sub_task.php")
-    Call<SubTaskMember>getSubTaskMembers(@Query("taskid") String taskid,
-                                         @Query("subtaskid") String subtaskid,
-                                         @Query("projectid") String projectid);
+    Call<SubTaskMember> getSubTaskMembers(@Query("taskid") String taskid,
+                                          @Query("subtaskid") String subtaskid,
+                                          @Query("projectid") String projectid);
 
 }

@@ -7,6 +7,7 @@ import com.google.firebase.database.DatabaseReference;
 import java.util.List;
 
 import b12app.vyom.com.flowit.model.Employee;
+import b12app.vyom.com.flowit.model.GeneralSubTask;
 import b12app.vyom.com.flowit.model.GeneralTask;
 import b12app.vyom.com.flowit.model.Project;
 import io.reactivex.disposables.Disposable;
@@ -32,6 +33,11 @@ public class DataManager implements IDataSource {
         INSTANCE = null;
     }
 
+
+    @Override
+    public void querySubTaskList(FragmentActivity activity, NetworkCallback networkCallback) {
+        remoteDataSource.querySubTaskList(activity, networkCallback);
+    }
 
     @Override
     public void queryTaskList(FragmentActivity activity, NetworkCallback networkCallback) {
@@ -71,6 +77,12 @@ public class DataManager implements IDataSource {
     public void updateTask(GeneralTask.ProjecttaskBean taskNode, NetworkCallback networkCallback) {
         remoteDataSource.updateTask(taskNode, networkCallback);
     }
+
+    @Override
+    public void updateSubTask(String userId, GeneralSubTask.ProjectsubtaskBean subtaskNode, NetworkCallback networkCallback) {
+        remoteDataSource.updateSubTask(userId, subtaskNode, networkCallback);
+    }
+
 
     @Override
     public Disposable queryProjectList(final NetworkCallback networkCallback) {

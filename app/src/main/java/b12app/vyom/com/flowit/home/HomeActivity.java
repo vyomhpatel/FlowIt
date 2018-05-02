@@ -36,11 +36,13 @@ import b12app.vyom.com.flowit.networkutils.ApiService;
 import b12app.vyom.com.flowit.networkutils.RetrofitInstance;
 import b12app.vyom.com.flowit.projectcreate.ProjectCreateActivity;
 import b12app.vyom.com.flowit.subtaskcreate.SubTaskCreateActivity;
+import b12app.vyom.com.flowit.subtaskcreate.SubTaskPresenter;
 import b12app.vyom.com.flowit.tabfragment.FragmentInbox;
 import b12app.vyom.com.flowit.tabfragment.FragmentProject;
 import b12app.vyom.com.flowit.tabfragment.FragmentSubTask;
 import b12app.vyom.com.flowit.tabfragment.FragmentTask;
 import b12app.vyom.com.flowit.tabfragment.project.ProjectFgtPresenter;
+import b12app.vyom.com.flowit.tabfragment.subtask.SubTaskFragmentPresenter;
 import b12app.vyom.com.flowit.tabfragment.task.TaskFgtPresenter;
 import b12app.vyom.com.flowit.task.TaskCreateActivity;
 import b12app.vyom.com.utils.ActivityUtil;
@@ -78,6 +80,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     //presenter
     private ProjectFgtPresenter projectFgtPresenter;
     private TaskFgtPresenter taskFgtPresenter;
+    private SubTaskFragmentPresenter subTaskFgtPresenter;
 
     TextView usernameTv, emailTv;
 
@@ -164,7 +167,10 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                         showMainFloatBtn();
                         break;
                     case 3:
-                        ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), new FragmentSubTask(), "dashFgt");
+                        FragmentSubTask fragmentSubTask = new FragmentSubTask();
+
+                        subTaskFgtPresenter = new SubTaskFragmentPresenter(mDataManager, fragmentSubTask);
+                        ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), fragmentSubTask, "dashFgt");
                         showMainFloatBtn();
                         break;
                 }

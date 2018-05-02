@@ -2,6 +2,7 @@ package b12app.vyom.com.flowit.task;
 
 import android.app.DatePickerDialog;
 import android.app.FragmentManager;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -49,7 +50,7 @@ public class TaskCreateActivity extends BaseActivity implements TaskCreateContra
     @Inject DataManager dataManager;
 
     @BindView(R.id.task_create_container)
-    LinearLayout task_create_container;
+    CoordinatorLayout task_create_container;
 
 
     @BindView(R.id.layout_flow_task)

@@ -2,6 +2,7 @@ package b12app.vyom.com.flowit.subtaskcreate;
 
 import android.app.DialogFragment;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -49,6 +50,7 @@ public class TaskListFragmentDialog extends DialogFragment {
 
     private ApiService apiService;
     private TaskListFragmentDialog.OnCompleteListener mListener;
+    SharedPreferences sharedPreferences;
 //    private Unbinder unbinder;
 //    @BindView(R.id.taskList)
 
@@ -79,6 +81,7 @@ public class TaskListFragmentDialog extends DialogFragment {
 //        apiService = RetrofitInstance.getRetrofitInstance().create(ApiService.class);
 
         alltasks = new ArrayList<GeneralTask.ProjecttaskBean>() ;
+
 
         JsonObjectRequest request  = new JsonObjectRequest(
                 Request.Method.GET,
@@ -123,6 +126,9 @@ public class TaskListFragmentDialog extends DialogFragment {
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         String task_name = alltasks.get(position).getTaskname();
                         String task_id = alltasks.get(position).getTaskid();
+
+
+
                         mListener.onComplete(task_id, task_name);
                         getDialog().dismiss();
                     }

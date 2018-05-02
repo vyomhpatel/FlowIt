@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import b12app.vyom.com.flowit.model.Employee;
+import b12app.vyom.com.flowit.model.GeneralSubTask;
 import b12app.vyom.com.flowit.model.GeneralTask;
 import b12app.vyom.com.flowit.model.Project;
 import b12app.vyom.com.utils.FbHelper;
@@ -36,6 +37,11 @@ public class LocalDataSource implements IDataSource {
         return instance;
     }
 
+
+    @Override
+    public void querySubTaskList(FragmentActivity activity, NetworkCallback networkCallback) {
+
+    }
 
     @Override
     public void queryTaskList(FragmentActivity activity, NetworkCallback networkCallback) {
@@ -76,6 +82,13 @@ public class LocalDataSource implements IDataSource {
     public void updateTask(GeneralTask.ProjecttaskBean taskNode, NetworkCallback networkCallback) {
 
     }
+
+    @Override
+    public void updateSubTask(String userId, GeneralSubTask.ProjectsubtaskBean subtaskNode, NetworkCallback networkCallback) {
+
+    }
+
+
 
     @Override
     public Disposable queryProjectList(NetworkCallback networkCallback) {

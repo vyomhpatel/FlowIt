@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -68,6 +69,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @BindView(R.id.passwordTxtLogin)
      TextView pwTxt;
 
+    @BindView(R.id.checkBox)
+    CheckBox checkBox;
+
    // @BindView(R.id.sign_in_button)
     com.google.android.gms.common.SignInButton googlesignin;
 
@@ -101,6 +105,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         sharedPreferences = getSharedPreferences("local_user", Context.MODE_PRIVATE);
 
 
+
          //Configure sign-in to request the user's ID, email address, and basic
          //profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -115,6 +120,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         googlesignin.setSize(SignInButton.SIZE_STANDARD);
         googlesignin.setOnClickListener(this);
         signOut();
+
+//        String ischecked = sharedPreferences.getString("ischecked","");
+//        if(ischecked.equals("true")){
+//            emailTxt.setText(sharedPreferences.getString("email",""));
+//            pwTxt.setText(sharedPreferences.getString("pass",""));
+//        }
+
 
     }
 
@@ -138,6 +150,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             String email  = emailTxt.getText().toString();
             String pass = pwTxt.getText().toString();
 
+
+//        if(checkBox.isChecked()){
+//            sharedPreferences.edit().putString("ischecked","true").commit();
+//            sharedPreferences.edit().putString("email",email).commit();
+//            sharedPreferences.edit().putString("pass",pass).commit();
+//
+//        }
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "http://rjtmobile.com/aamir/pms/android-app/pms_login.php?email=" + email + "&password=" + pass
                 , null, new com.android.volley.Response.Listener<JSONObject>() {

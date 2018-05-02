@@ -8,6 +8,7 @@ import b12app.vyom.com.flowit.model.GeneralSubTask;
 import b12app.vyom.com.flowit.model.GeneralTask;
 import b12app.vyom.com.flowit.networkutils.ApiService;
 import b12app.vyom.com.flowit.networkutils.RetrofitInstance;
+import b12app.vyom.com.flowit.tabfragment.subtask.SubTaskFragmentContract;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -50,7 +51,7 @@ public class SubTaskPresenter implements SubTaskContract.IPresenter {
             @Override
             public void onResponse(Call<GeneralSubTask> call, Response<GeneralSubTask> response) {
                 Log.i("test", "on create task response: "+response);
-                subtaskCreateView.displaySnackbar();
+//                subtaskCreateView.displaySnackbar();
             }
 
             @Override
