@@ -70,7 +70,8 @@ public class EmployeeListFragmentDialog extends android.support.v4.app.DialogFra
                         mListener.onComplete(position, response.body().getEmployees());
 
                         //FCM notification
-                        String current_token = FirebaseInstanceId.getInstance().getToken();
+//                        String current_token = FirebaseInstanceId.getInstance().getToken();
+                        String current_token = "f3fMgS7ELNc:APA91bGNUNBrlAdJhnqVnw_7ZVeBkWN3n59rOraEHKiJuRpbV3I6yj5p678Tj5ZnENgiqCVCvQQpEIbF7kPz1N6Pao3q5tH-y-Neu-1smraf4R2VvvBGfuD3IZrW4aHI5dfrW2yZ4WM0";
                         Sender.NotificationBean notificationBean = new Sender.NotificationBean(getString(R.string.new_task_assign) +
                                 projecttaskBean.getTaskid() + ". " + projecttaskBean.getTaskname(),
                                 getString(R.string.fcm_title));
@@ -136,7 +137,7 @@ public class EmployeeListFragmentDialog extends android.support.v4.app.DialogFra
     }
 
     private void getData() {
-        projecttaskBean = (GeneralTask.ProjecttaskBean) getArguments().getParcelable(Global.TASK_NODE);
+        projecttaskBean = getArguments().getParcelable(Global.TASK_NODE);
     }
 
     public void setListener(OnCompleteListener listener) {

@@ -45,6 +45,10 @@ import butterknife.ButterKnife;
 public class ProjectCreateActivity extends BaseActivity implements View.OnClickListener, ProjectCreateContract.IView {
 
     private static final String TAG = "project create";
+    public static final String DATE = "date: ";
+    public static final String DB_AUTH_LOG = "DbAuthLog";
+    public static final String ERROR_AUTHENTICATING = "Error authenticating";
+    public static final String PROJECTSTATUS = "1";
 
     private Calendar calendar;
     private int year, month, day;
@@ -91,7 +95,7 @@ public class ProjectCreateActivity extends BaseActivity implements View.OnClickL
         setContentView(R.layout.activity_project_create);
         ButterKnife.bind(this);
 
-        dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        dateFormatter = new SimpleDateFormat(Global.YYYY_MM_DD, Locale.US);
 
         //initializing data manager
         iPresenterProject = new ProjectCreatePresenter(dataManager, ProjectCreateActivity.this);
@@ -167,13 +171,13 @@ public class ProjectCreateActivity extends BaseActivity implements View.OnClickL
     public void createProject(View view) {
         if (TextUtils.isEmpty(edt_project_name.getText().toString()) || TextUtils.isEmpty(etProjectDescription.getText().toString())
                 || TextUtils.isEmpty(dateStartString) || TextUtils.isEmpty(dateEndString)) {
-            Toast.makeText(this, "Text field can not be null", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, Global.TEXT_FIELD_CAN_NOT_BE_NULL, Toast.LENGTH_SHORT).show();
         }
 
-//            Project.ProjectsBean project = new Project.ProjectsBean(edt_project_name.getText().toString(), "1", etProjectDescription.getText().toString(),
-//                    dateStartString, dateEndString);
-//        iPresenterProject.onProjectCreateButtonClick(view, project);
-        Log.i(TAG, "date: " + dateStartString + " " + dateEndString);
+            Project.ProjectsBean project = new Project.ProjectsBean(edt_project_name.getText().toString(), PROJECTSTATUS, etProjectDescription.getText().toString(),
+                    dateStartString, dateEndString);
+        iPresenterProject.onProjectCreateButtonClick(view, project);
+        Log.i(TAG, DATE + dateStartString + " " + dateEndString);
     }
 
     @Override
@@ -186,7 +190,7 @@ public class ProjectCreateActivity extends BaseActivity implements View.OnClickL
                 toDatePickerDialog.show();
                 break;
             case R.id.layout_flow:
-                Snackbar.make(container_project_create, "Members can't be added while creating project", Snackbar.LENGTH_SHORT).setAction("Ok", new View.OnClickListener() {
+                Snackbar.make(container_project_create, Global.MEMBERS_CAN_T_BE_ADDED_WHILE_CREATING_PROJECT, Snackbar.LENGTH_SHORT).setAction(Global.OK, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                     }
@@ -202,7 +206,7 @@ public class ProjectCreateActivity extends BaseActivity implements View.OnClickL
 
     @Override
     public void displaySnackbar() {
-        Snackbar.make(container_project_create, "Project Created Successfully!", Snackbar.LENGTH_SHORT).setActionTextColor(getResources().getColor(R.color.colorAccent)).setAction("Ok", new View.OnClickListener() {
+        Snackbar.make(container_project_create, Global.PROJECT_CREATED_SUCCESSFULLY, Snackbar.LENGTH_SHORT).setActionTextColor(getResources().getColor(R.color.colorAccent)).setAction("Ok", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
             }
@@ -240,7 +244,7 @@ public class ProjectCreateActivity extends BaseActivity implements View.OnClickL
 
                     String accessToken = mDBApi.getSession().getOAuth2AccessToken();
                 } catch (IllegalStateException e) {
-                    Log.i("DbAuthLog", "Error authenticating", e);
+                    Log.i(DB_AUTH_LOG, ERROR_AUTHENTICATING, e);
                 }
             }
         }

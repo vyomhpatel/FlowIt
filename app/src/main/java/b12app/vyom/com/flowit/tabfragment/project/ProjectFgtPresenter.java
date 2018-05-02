@@ -8,6 +8,7 @@ import android.view.View;
 import b12app.vyom.com.flowit.R;
 import b12app.vyom.com.flowit.datasource.DataManager;
 import b12app.vyom.com.flowit.datasource.IDataSource;
+import b12app.vyom.com.flowit.home.Global;
 import b12app.vyom.com.flowit.model.Project;
 import b12app.vyom.com.flowit.tabfragment.FragmentProjectEdit;
 import b12app.vyom.com.utils.ActivityUtil;
@@ -22,6 +23,7 @@ import io.reactivex.disposables.Disposable;
  */
 
 public class ProjectFgtPresenter implements ProjectFgtContract.IPresenter {
+    public static final String EDIT_FGT = " editFgt";
     private ProjectFgtContract.IView fragmentView;
     private DataManager mDataManager;
     private Disposable disposable;
@@ -45,7 +47,7 @@ public class ProjectFgtPresenter implements ProjectFgtContract.IPresenter {
 
     @Override
     public Disposable getProjectList() {
-        Log.i(TAG, "getProjectList: ");
+        Log.i(TAG, Global.GET_PROJECT_LIST);
 
         disposable = mDataManager.queryProjectList(new IDataSource.NetworkCallback() {
             @Override
@@ -70,11 +72,10 @@ public class ProjectFgtPresenter implements ProjectFgtContract.IPresenter {
         FragmentProjectEdit fragmentProjectEdit = new FragmentProjectEdit();
         Bundle bundle = new Bundle();
         //project info
-        bundle.putParcelable("projectnode", project.getProjects().get(position));
+        bundle.putParcelable(Global.PROJECTNODE, project.getProjects().get(position));
 
         fragmentProjectEdit.setArguments(bundle);
-        ActivityUtil.addFragmentToActivity(R.id.fl_float_container, activity.getSupportFragmentManager(), fragmentProjectEdit, " editFgt");
-
+        ActivityUtil.addFragmentToActivity(R.id.fl_float_container, activity.getSupportFragmentManager(), fragmentProjectEdit, EDIT_FGT);
         fragmentView.hideMainFloatBtn();
     }
 }

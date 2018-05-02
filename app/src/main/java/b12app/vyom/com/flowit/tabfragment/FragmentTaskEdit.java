@@ -193,12 +193,6 @@ public class FragmentTaskEdit extends Fragment implements TaskEditContract.IView
     @Override
     public void showToast(String msg) {
         Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
-//        Snackbar.make(taskEditContainer, msg, Snackbar.LENGTH_SHORT).setAction("Ok", new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
     }
 
     @Override
@@ -224,7 +218,7 @@ public class FragmentTaskEdit extends Fragment implements TaskEditContract.IView
                     Toast.makeText(getContext(), R.string.no_member, Toast.LENGTH_SHORT).show();
                 } else {
                     MemberDialog memberDialog = MemberDialog.newInstance(memberList);
-                    memberDialog.showDialog(getActivity().getSupportFragmentManager(), "memberDlg");
+                    memberDialog.showDialog(getActivity().getSupportFragmentManager(), Global.MEMBER_DLG);
                 }
                 break;
 
@@ -234,7 +228,7 @@ public class FragmentTaskEdit extends Fragment implements TaskEditContract.IView
                 Bundle bundle = new Bundle();
                 bundle.putParcelable(Global.TASK_NODE, taskNode);
                 employeeListFragmentDialog.setArguments(bundle);
-                employeeListFragmentDialog.show(getFragmentManager(), "empDlg");
+                employeeListFragmentDialog.show(getFragmentManager(), Global.EMP_DLG);
 
                 employeeListFragmentDialog.setListener(this);
                 break;

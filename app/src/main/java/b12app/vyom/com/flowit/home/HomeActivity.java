@@ -55,6 +55,18 @@ import static b12app.vyom.com.flowit.home.Global.USER;
 import static b12app.vyom.com.flowit.home.Global.USER_ID;
 
 public class HomeActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener {
+    public static final String INBOX = "Inbox";
+    public static final String TASK = "Task";
+    public static final String SUB_TASK = "SubTask";
+    public static final String INBOX_FGT = "inboxFgt";
+    public static final String TASK_FGT = "taskFgt";
+    public static final String PROJECT_FGT = "projectFgt";
+    public static final String TASK_FGT1 = "taskFgt";
+    public static final String STATEMENT_WITH_EMPTY_BODY = "StatementWithEmptyBody";
+    public static final String PROJECT = "Project";
+    public static final String BROWSE_FGT = "browseFgt";
+    public static final String DASH_FGT = "dashFgt";
+
     @BindView(R.id.bottom_tab_layout)
     TabLayout botNavView;
 
@@ -113,10 +125,10 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     private void initBottomNavView() {
 
         if (Global.userType.equals(MANAGER)) {
-            botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_testing).setText("Inbox"));
-            botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_tab_project).setText("Project"));
-            botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_tab_task).setText("Task"));
-            botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_tab_subtask).setText("SubTask"));
+            botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_testing).setText(INBOX));
+            botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_tab_project).setText(PROJECT));
+            botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_tab_task).setText(TASK));
+            botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_tab_subtask).setText(SUB_TASK));
 
             //default tab selected
             setDefaultTab();
@@ -132,7 +144,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                             FragmentInbox fragmentInbox = new FragmentInbox();
                             bundle.putString(USER_ID, user.getUserid());
                             fragmentInbox.setArguments(bundle);
-                            ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), fragmentInbox, "inboxFgt");
+                            ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), fragmentInbox, INBOX_FGT);
                             showMainFloatBtn();
                             break;
                         case 1:
@@ -142,7 +154,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                             fragmentProject.setArguments(bundle);
                             projectFgtPresenter = new ProjectFgtPresenter(mDataManager, fragmentProject);
                             //add fragment
-                            ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), fragmentProject, "browseFgt");
+                            ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), fragmentProject, BROWSE_FGT);
                             showMainFloatBtn();
                             break;
                         case 2:
@@ -151,11 +163,11 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                             fragmentTask.setArguments(bundle);
                             //presenter
                             taskFgtPresenter = new TaskFgtPresenter(mDataManager, fragmentTask);
-                            ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), fragmentTask, "taskFgt");
+                            ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), fragmentTask, TASK_FGT);
                             showMainFloatBtn();
                             break;
                         case 3:
-                            ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), new FragmentSubTask(), "dashFgt");
+                            ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), new FragmentSubTask(), DASH_FGT);
                             showMainFloatBtn();
                             break;
                     }
@@ -177,9 +189,9 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         } else {
             dismissMainFloatBtn();
 
-            botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_testing).setText("Inbox"));
-            botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_tab_task).setText("Task"));
-            botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_tab_subtask).setText("SubTask"));
+            botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_testing).setText(INBOX));
+            botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_tab_task).setText(TASK));
+            botNavView.addTab(botNavView.newTab().setIcon(R.drawable.ic_tab_subtask).setText(SUB_TASK));
 
             //default tab selected
             setDefaultTab();
@@ -196,7 +208,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                             bundle.putString(USER_ID, user.getUserid());
                             fragmentInbox.setArguments(bundle);
                             fragmentInbox.setArguments(bundle);
-                            ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), fragmentInbox, "inboxFgt");
+                            ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), fragmentInbox, INBOX_FGT);
                             break;
                         case 1:
                             //fragment
@@ -204,12 +216,12 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                             fragmentTask.setArguments(bundle);
                             //presenter
                             taskFgtPresenter = new TaskFgtPresenter(mDataManager, fragmentTask);
-                            ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), fragmentTask, "taskFgt");
+                            ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), fragmentTask, TASK_FGT);
                             break;
                         case 2:
                             FragmentSubTask fragmentSubTask = new FragmentSubTask();
                             fragmentSubTask.setArguments(bundle);
-                            ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), new FragmentSubTask(), "dashFgt");
+                            ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), new FragmentSubTask(), DASH_FGT);
                             break;
                     }
                 }
@@ -239,7 +251,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
             fragmentProject.setArguments(bundle);
             //presenter
             projectFgtPresenter = new ProjectFgtPresenter(mDataManager, fragmentProject);
-            ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), fragmentProject, "projectFgt");
+            ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), fragmentProject, PROJECT_FGT);
         } else {
             botNavView.getTabAt(1).select();
             //fragment
@@ -249,7 +261,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
             fragmentTask.setArguments(bundle);
             //presenter
             taskFgtPresenter = new TaskFgtPresenter(mDataManager, fragmentTask);
-            ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), fragmentTask, "taskFgt");
+            ActivityUtil.addFragmentToActivity(R.id.fl_float_container, getSupportFragmentManager(), fragmentTask, TASK_FGT1);
         }
 
     }
@@ -279,7 +291,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         );
 
         items.add(new RFACLabelItem<Integer>()
-                .setLabel("New Sub Task")
+                .setLabel(Global.NEW_SUB_TASK)
                 .setResId(R.drawable.ic_tab_subtask)
                 .setIconNormalColor(0xffd84315)
                 .setIconPressedColor(0xffbf360c)
@@ -355,7 +367,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         return true;
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
+    @SuppressWarnings(STATEMENT_WITH_EMPTY_BODY)
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 

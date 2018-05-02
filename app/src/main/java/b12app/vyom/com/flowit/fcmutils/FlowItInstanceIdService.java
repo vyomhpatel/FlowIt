@@ -5,8 +5,11 @@ import android.util.Log;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
+
 public class FlowItInstanceIdService extends FirebaseInstanceIdService {
-    private static final String TAG = "id service tag";
+    public static final String ID_SERVICE_TAG = "id service tag";
+    private static final String TAG = ID_SERVICE_TAG;
+    public static final String REFRESHED_TOKEN测试 = "Refreshed token测试: ";
 
     private static FlowItInstanceIdService instance = null;
 
@@ -30,7 +33,7 @@ public class FlowItInstanceIdService extends FirebaseInstanceIdService {
     public void onTokenRefresh() {
         // Get updated InstanceID token.
         refreshedToken = FirebaseInstanceId.getInstance().getToken();
-        Log.d(TAG, "Refreshed token测试: " + refreshedToken);
+        Log.d(TAG, REFRESHED_TOKEN测试 + refreshedToken);
 
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the

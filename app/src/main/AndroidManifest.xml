@@ -64,7 +64,7 @@
             </intent-filter>
         </service>
 
-        <receiver android:name=".AppWidget" >
+        <receiver android:name="b12app.vyom.com.utils.AppWidget" >
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/app_widget_config" />

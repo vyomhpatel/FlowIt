@@ -3,6 +3,7 @@ package b12app.vyom.com.flowit.adapter;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,12 +30,12 @@ public class TaskAdapter extends RecyclerView.Adapter {
     private Context context;
     private List<GeneralTask.ProjecttaskBean> dataList;
     private TaskAdapter.OnItemClickListener onItemClickListener;
+    private static final String TAG = "TaskAdapter";
 
     public TaskAdapter(Context context, List<GeneralTask.ProjecttaskBean> generalTask) {
         this.context = context;
         this.dataList = generalTask;
     }
-
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -57,7 +58,7 @@ public class TaskAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (dataList.size() > 0) {
-
+        Log.i(TAG, "onBindViewHolder: ");
             if (holder instanceof mViewHolder){
                 ((mViewHolder) holder).nameTv.setText(dataList.get(position).getTaskname());
                 ((mViewHolder) holder).timeTv.setText(dataList.get(position).getEndstart());

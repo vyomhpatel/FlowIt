@@ -24,6 +24,7 @@ import java.util.List;
 
 import b12app.vyom.com.flowit.R;
 import b12app.vyom.com.flowit.adapter.EmployeeRvAdapter;
+import b12app.vyom.com.flowit.home.Global;
 import b12app.vyom.com.flowit.model.Employee;
 import b12app.vyom.com.flowit.networkutils.ApiService;
 import b12app.vyom.com.flowit.networkutils.RetrofitInstance;
@@ -35,6 +36,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class TeamDialog extends DialogFragment {
+    public static final String 测试_123 = "测试123";
+    public static final String LIST = "list";
     @BindView(R.id.rv_empployee)
     RecyclerView employeeRv;
 
@@ -60,7 +63,7 @@ public class TeamDialog extends DialogFragment {
 
     public static TeamDialog newInstance(List<Employee.EmployeesBean> memberList) {
         Bundle args = new Bundle();
-        args.putParcelableArrayList("list", (ArrayList<? extends Parcelable>) memberList);
+        args.putParcelableArrayList(LIST, (ArrayList<? extends Parcelable>) memberList);
         TeamDialog dialogTeam = new TeamDialog();
         dialogTeam.setArguments(args);
         return dialogTeam;
@@ -80,7 +83,7 @@ public class TeamDialog extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        getDialog().setTitle("Create Team");
+        getDialog().setTitle(Global.CREATE_TEAM);
         getDialog().setCanceledOnTouchOutside(true);
         //dialog rootView
         View v = inflater.inflate(R.layout.dialog_team_create, container, false);
@@ -100,12 +103,12 @@ public class TeamDialog extends DialogFragment {
                 for (int i = 0; i < employees.size(); i++){
                     if (employeeRvAdapter.getPickedEmployee().get(i)){
                         employeeIdList.add(employees.get(i));
-                        Log.i("multiple", i + "");
+                        Log.i(Global.MULTIPLE, i + "");
                     }
 
                 }
 
-                Log.i("测试123", employeeIdList.size() + "");
+                Log.i(测试_123, employeeIdList.size() + "");
                 mListener.onComplete(employeeIdList);
                 dismiss();
             }
@@ -120,7 +123,7 @@ public class TeamDialog extends DialogFragment {
     }
 
     private void fetchData() {
-        memberList = getArguments().getParcelableArrayList("list");
+        memberList = getArguments().getParcelableArrayList(LIST);
 
         apiService = RetrofitInstance.getRetrofitInstance().create(ApiService.class);
 

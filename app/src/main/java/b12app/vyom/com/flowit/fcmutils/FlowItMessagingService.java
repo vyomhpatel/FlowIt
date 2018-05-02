@@ -12,6 +12,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import b12app.vyom.com.flowit.R;
+import b12app.vyom.com.flowit.home.Global;
 import b12app.vyom.com.flowit.home.HomeActivity;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
@@ -27,10 +28,10 @@ public class FlowItMessagingService extends FirebaseMessagingService {
 
         // TODO(developer): Handle FCM messages here.
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
-        Log.d(TAG, "From: " + remoteMessage.getFrom());
-        Log.d(TAG, "From: " + remoteMessage.getNotification().getTitle());
-        Log.d(TAG, "From: " + remoteMessage.getSentTime());
-        Log.d(TAG, "Message data payload: " + remoteMessage.getData());
+        Log.d(TAG, Global.FROM + remoteMessage.getFrom());
+        Log.d(TAG, Global.FROM + remoteMessage.getNotification().getTitle());
+        Log.d(TAG, Global.FROM + remoteMessage.getSentTime());
+        Log.d(TAG, Global.MESSAGE_DATA_PAYLOAD + remoteMessage.getData());
 
         showNotification(remoteMessage.getNotification());
 

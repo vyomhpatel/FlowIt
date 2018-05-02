@@ -43,6 +43,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
+    public static final String ON_FAILURE = "onFailure: ";
+    public static final String SIGN_IN = "signIn: ";
     //SHA1: 68:55:9C:36:9B:80:F6:FA:F2:C6:84:D2:2F:88:EA:91:57:09:35:81
     //SHA256: 74:B7:05:7D:1D:EC:55:37:AE:C9:67:FD:9B:60:BD:30:9A:08:93:A5:0E:8D:CE:74:3B:31:4E:D9:2B:01:9D:49
     @BindView(R.id.btn_signup)
@@ -61,11 +63,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     Retrofit retrofit;
 
-    public static final String BASE_URL = "http://rjtmobile.com/aamir/pms/android-app/";
+    public static final String BASE_URL = Global.HTTP_RJTMOBILE_COM_AAMIR_PMS_ANDROID_APP;
 
 
     private static final int RC_SIGN_IN = 007;
-    private static final String TAG = "LoginActivity";
+
+    private static final String TAG = Global.LOGIN_ACTIVITY;
     private GoogleSignInClient mGoogleSignInClient;
     private RelativeLayout container;
 
@@ -137,7 +140,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                         @Override
                         public void onFailure(Call<User> call, Throwable t) {
-                            Log.i(TAG, "onFailure: " + t.getMessage());
+                            Log.i(TAG, ON_FAILURE + t.getMessage());
                         }
                     });
         } else {
@@ -148,7 +151,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
     public void signIn() {
-        Log.i(TAG, "signIn: ");
+        Log.i(TAG, SIGN_IN);
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
@@ -174,7 +177,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
+            Log.w(TAG, Global.SIGN_IN_RESULT_FAILED_CODE + e.getStatusCode());
             updateUI(null);
         }
     }
@@ -182,8 +185,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void updateUI(@Nullable final GoogleSignInAccount account) {
         if (account != null) {
 
-            Log.i(TAG, "updateUI: " + "\n display name: " + account.getDisplayName() + "" +
-                    "\n email: " + account.getEmail() + "" +
+            Log.i(TAG, Global.UPDATE_UI + Global.DISPLAY_NAME + account.getDisplayName() + "" +
+                    Global.EMAIL + account.getEmail() + "" +
                     "n" + account.getFamilyName()
                     + "\n " + account.zzabc());
 

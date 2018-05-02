@@ -31,6 +31,7 @@ import b12app.vyom.com.flowit.datasource.DataManager;
 
 import b12app.vyom.com.flowit.dialog.MemberDialog;
 import b12app.vyom.com.flowit.dialog.TeamDialog;
+import b12app.vyom.com.flowit.home.Global;
 import b12app.vyom.com.flowit.model.Employee;
 import b12app.vyom.com.flowit.model.Project;
 import b12app.vyom.com.flowit.tabfragment.projectedit.ProjectEditContract;
@@ -229,7 +230,7 @@ public class FragmentProjectEdit extends Fragment implements ProjectEditContract
 
             case R.id.imgbtn_add_member:
                 TeamDialog dialog = TeamDialog.newInstance(memberList);
-                dialog.showDialog(getActivity().getSupportFragmentManager(), "employeeDlg");
+                dialog.showDialog(getActivity().getSupportFragmentManager(), Global.EMPLOYEE_DLG);
                 //dialog click listener
                 dialog.setListener(this);
 
@@ -237,10 +238,10 @@ public class FragmentProjectEdit extends Fragment implements ProjectEditContract
 
             case R.id.ll_member:
                 if (memberList == null || memberList.size() < 1) {
-                    Toast.makeText(getContext(), "No team member yet", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), Global.NO_TEAM_MEMBER_YET, Toast.LENGTH_SHORT).show();
                 } else {
                     MemberDialog memberDialog = MemberDialog.newInstance(memberList);
-                    memberDialog.showDialog(getActivity().getSupportFragmentManager(), "memberDlg");
+                    memberDialog.showDialog(getActivity().getSupportFragmentManager(), Global.MEMBER_DLG);
                 }
 
                 break;

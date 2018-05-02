@@ -1,5 +1,7 @@
 package b12app.vyom.com.flowit.tabfragment.taskedit;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,8 +15,10 @@ import java.util.List;
 import b12app.vyom.com.flowit.datasource.DataManager;
 import b12app.vyom.com.flowit.datasource.IDataSource;
 import b12app.vyom.com.flowit.home.Global;
+import b12app.vyom.com.flowit.home.HomeActivity;
 import b12app.vyom.com.flowit.model.Employee;
 import b12app.vyom.com.flowit.model.GeneralTask;
+import b12app.vyom.com.flowit.tabfragment.FragmentTaskEdit;
 import b12app.vyom.com.utils.FbHelper;
 
 public class TaskEditPresenter implements TaskEditContract.IPresenter {
@@ -22,10 +26,12 @@ public class TaskEditPresenter implements TaskEditContract.IPresenter {
     private TaskEditContract.IView fragmentView;
     private DataManager mDataManager;
     private DatabaseReference myRef;
+    private Context context;
 
-    public TaskEditPresenter(DataManager dataManager, TaskEditContract.IView taskEdtFgt) {
+    public TaskEditPresenter(DataManager dataManager, FragmentTaskEdit taskEdtFgt) {
         this.mDataManager = dataManager;
         fragmentView = taskEdtFgt;
+        context = taskEdtFgt.getActivity();
     }
 
     @Override
@@ -63,8 +69,10 @@ public class TaskEditPresenter implements TaskEditContract.IPresenter {
                 List<String> msgRes = (List<String>)response;
 
                 fragmentView.showToast(msgRes.get(0));
-
+                Intent intent = new Intent(context, HomeActivity.class);
+                context.startActivity(intent);
                 Log.i(TAG, "updateTask: " + msgRes.get(0));
+
 
             }
 

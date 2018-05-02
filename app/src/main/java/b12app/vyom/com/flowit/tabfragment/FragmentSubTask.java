@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import b12app.vyom.com.flowit.R;
+import b12app.vyom.com.flowit.home.Global;
 import b12app.vyom.com.flowit.model.GeneralSubTask;
 import b12app.vyom.com.flowit.tabfragment.project.SubTaskFragmentContract;
 import butterknife.BindView;
@@ -45,6 +46,8 @@ import io.reactivex.disposables.Disposable;
  */
 
 public class FragmentSubTask extends Fragment implements SubTaskFragmentContract.IView {
+    public static final String INTO_ON_RESPONSE = "into onResponse";
+    public static final String TEST = "test";
     @BindView(R.id.rv_subtask)
     RecyclerView subtask_recyclerview;
     private Unbinder unbinder;
@@ -83,28 +86,28 @@ public class FragmentSubTask extends Fragment implements SubTaskFragmentContract
         list = new ArrayList<>();
 
 
-        final JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "http://rjtmobile.com/aamir/pms/android-app/pms_project_sub_task_list.php?", null, new Response.Listener<JSONObject>() {
+        final JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, Global.HTTP_RJTMOBILE_COM_AAMIR_PMS_ANDROID_APP_PMS_PROJECT_SUB_TASK_LIST_PHP, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 
-                Log.i("test","into onResponse");
+                Log.i(TEST, INTO_ON_RESPONSE);
                 try {
-                    JSONArray subtasks = response.getJSONArray("project sub task");
+                    JSONArray subtasks = response.getJSONArray(Global.PROJECT_SUB_TASK);
                     for(int i = 0; i < subtasks.length(); i ++)
                     {
                         JSONObject subtaskget = subtasks.getJSONObject(i);
-                        String subtaskid = subtaskget.getString("subtaskid");
-                        String taskid = subtaskget.getString("taskid");
-                        String projectid = subtaskget.getString("projectid");
-                        String subtaskname = subtaskget.getString("subtaskname");
-                        String subtaskstatus = subtaskget.getString("subtaskstatus");
-                        String subtaskdesc = subtaskget.getString("subtaskdesc");
-                        String startdate = subtaskget.getString("startdate");
-                        String endstart = subtaskget.getString("endstart");
+                        String subtaskid = subtaskget.getString(Global.SUBTASKID);
+                        String taskid = subtaskget.getString(Global.TASKID);
+                        String projectid = subtaskget.getString(Global.PROJECTID);
+                        String subtaskname = subtaskget.getString(Global.SUBTASKNAME);
+                        String subtaskstatus = subtaskget.getString(Global.SUBTASKSTATUS);
+                        String subtaskdesc = subtaskget.getString(Global.SUBTASKDESC);
+                        String startdate = subtaskget.getString(Global.STARTDATE);
+                        String endstart = subtaskget.getString(Global.ENDSTART);
 
                         GeneralSubTask.ProjectsubtaskBean subtask = new GeneralSubTask.ProjectsubtaskBean(subtaskid,taskid,projectid,subtaskname,subtaskstatus
                                 ,subtaskdesc, startdate, endstart);
-                        Log.i("output",subtask.getSubtaskname());
+                        Log.i(Global.OUTPUT,subtask.getSubtaskname());
                         list.add(subtask);
 
                     }

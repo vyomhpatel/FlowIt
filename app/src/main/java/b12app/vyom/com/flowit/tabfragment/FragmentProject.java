@@ -37,6 +37,13 @@ public class FragmentProject extends Fragment implements ProjectFgtContract.IVie
     private Project project;
 
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //presenter network call
+        disposable = projectFragmentPresenter.getProjectList();
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -44,8 +51,7 @@ public class FragmentProject extends Fragment implements ProjectFgtContract.IVie
         //butter knife inject
         unbinder = ButterKnife.bind(this, v);
 
-        //presenter network call
-        disposable = projectFragmentPresenter.getProjectList();
+
 
         return v;
     }

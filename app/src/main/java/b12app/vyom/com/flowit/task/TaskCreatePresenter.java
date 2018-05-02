@@ -1,9 +1,11 @@
 package b12app.vyom.com.flowit.task;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.View;
 
 import b12app.vyom.com.flowit.datasource.DataManager;
+import b12app.vyom.com.flowit.home.Global;
 import b12app.vyom.com.flowit.model.GeneralTask;
 import b12app.vyom.com.flowit.networkutils.ApiService;
 import b12app.vyom.com.flowit.networkutils.RetrofitInstance;
@@ -17,11 +19,13 @@ public class TaskCreatePresenter implements TaskCreateContract.IPresenter {
     private DataManager mdataManager;
     private ApiService apiService;
     private String TAG = TaskCreateActivity.class.getSimpleName();
+    private Context context;
 
     public TaskCreatePresenter(DataManager dataManager, TaskCreateActivity taskCreateActivity) {
         mdataManager = dataManager;
         taskCreateView = taskCreateActivity;
         apiService = RetrofitInstance.getRetrofitInstance().create(ApiService.class);
+        context = taskCreateActivity;
     }
 
     @Override
@@ -44,7 +48,7 @@ public class TaskCreatePresenter implements TaskCreateContract.IPresenter {
         call.enqueue(new Callback<GeneralTask>() {
             @Override
             public void onResponse(Call<GeneralTask> call, Response<GeneralTask> response) {
-                Log.i(TAG, "on create task response: "+response);
+                Log.i(TAG, Global.ON_CREATE_TASK_RESPONSE +response);
                 taskCreateView.displaySnackbar();
             }
 
