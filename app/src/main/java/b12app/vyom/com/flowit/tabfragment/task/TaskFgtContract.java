@@ -9,6 +9,7 @@ import java.util.List;
 import b12app.vyom.com.flowit.home.BasePresenter;
 import b12app.vyom.com.flowit.home.BaseView;
 import b12app.vyom.com.flowit.model.GeneralTask;
+import b12app.vyom.com.flowit.model.User;
 
 
 /**
@@ -30,7 +31,7 @@ public interface TaskFgtContract {
 
     interface IPresenter extends BasePresenter {
 
-        void getTaskList(FragmentActivity activity, Bundle arguments);
+        void getTaskList(FragmentActivity activity, User user);
 
         void rvItemClick(View v, int position, List<GeneralTask.ProjecttaskBean> project, FragmentActivity activity);
 

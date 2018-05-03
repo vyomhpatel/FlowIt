@@ -36,7 +36,7 @@ public class ProjectCreatePresenter implements ProjectCreateContract.IPresenter 
         dataManager = dataManager;
         projectCreateView = fragment;
         context = fragment;
-        apiService  = RetrofitInstance.getRetrofitInstance().create(ApiService.class);
+        apiService = RetrofitInstance.getRetrofitInstance().create(ApiService.class);
     }
 
     @Override
@@ -48,13 +48,14 @@ public class ProjectCreatePresenter implements ProjectCreateContract.IPresenter 
     @Override
     public void onProjectCreateButtonClick(View view, final Project.ProjectsBean projectsBean) {
 
-        Call<Project.ProjectsBean> call=apiService.postProject(projectsBean.getProjectname(),projectsBean.getProjectstatus(),projectsBean.getProjectdesc()
-        ,projectsBean.getStartdate(),projectsBean.getEndstart());
+        Call<Project.ProjectsBean> call = apiService.postProject(projectsBean.getProjectname(), projectsBean.getProjectstatus(), projectsBean.getProjectdesc()
+                , projectsBean.getStartdate(), projectsBean.getEndstart());
 
         call.enqueue(new Callback<Project.ProjectsBean>() {
             @Override
             public void onResponse(Call<Project.ProjectsBean> call, Response<Project.ProjectsBean> response) {
-                Log.i(TAG, Global.ON_RESPONSE + ": " +response);
+
+                Log.i(TAG, Global.ON_RESPONSE + ": " + response);
 
 
                 projectCreateView.displaySnackbar();
@@ -62,18 +63,17 @@ public class ProjectCreatePresenter implements ProjectCreateContract.IPresenter 
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-
-
                         Intent intent = new Intent(context, HomeActivity.class);
                         context.startActivity(intent);
+
                     }
-                },500);
+                }, 500);
 
             }
 
             @Override
             public void onFailure(Call<Project.ProjectsBean> call, Throwable t) {
-                Log.i(TAG, Global.ON_FAILURE_PROJECT_CREATION +t);
+                Log.i(TAG, Global.ON_FAILURE_PROJECT_CREATION + t);
             }
         });
     }

@@ -42,7 +42,6 @@ public class ProjectFgtPresenter implements ProjectFgtContract.IPresenter {
 
     @Override
     public void start() {
-
     }
 
     @Override

@@ -1,6 +1,7 @@
 package b12app.vyom.com.flowit.tabfragment;
 
 import android.app.DatePickerDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -43,6 +44,7 @@ import b12app.vyom.com.flowit.tabfragment.taskedit.TaskEditPresenter;
 import b12app.vyom.com.utils.CircleImageView;
 import b12app.vyom.com.utils.FbHelper;
 import b12app.vyom.com.utils.MyFlowlayout;
+import b12app.vyom.com.utils.SpHelper;
 import b12app.vyom.com.utils.StatusHelper;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -82,6 +84,9 @@ public class FragmentTaskEdit extends Fragment implements TaskEditContract.IView
 
     @Inject
     DataManager mDataManager;
+
+    @Inject
+    SharedPreferences sp;
 
     private List<Employee.EmployeesBean> memberList;
 
@@ -174,7 +179,7 @@ public class FragmentTaskEdit extends Fragment implements TaskEditContract.IView
         FLAG_EDIT_MODE = flagEditMode;
         if (flagEditMode) {
             enableEdit(flagEditMode);
-            if (Global.userType.equals(Global.MANAGER)) {
+            if (SpHelper.getUserType(sp).equals(Global.MANAGER)) {
                 addMemberBtn.setVisibility(View.VISIBLE);
             }
             editFloatBtn.setImageResource(R.drawable.ic_correct);

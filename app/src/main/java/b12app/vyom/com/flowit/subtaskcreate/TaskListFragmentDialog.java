@@ -2,9 +2,7 @@ package b12app.vyom.com.flowit.subtaskcreate;
 
 import android.app.DialogFragment;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,9 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.JsonObject;
@@ -25,19 +21,12 @@ import com.google.gson.JsonObject;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 import b12app.vyom.com.flowit.R;
-import b12app.vyom.com.flowit.adapter.ProjectListAdapter;
 import b12app.vyom.com.flowit.adapter.TaskListAdapter;
 import b12app.vyom.com.flowit.model.GeneralTask;
-import b12app.vyom.com.flowit.model.MyProjectTask;
-import b12app.vyom.com.flowit.model.Project;
 import b12app.vyom.com.flowit.networkutils.ApiService;
 
 
@@ -49,17 +38,14 @@ public class TaskListFragmentDialog extends DialogFragment {
 
     List<GeneralTask.ProjecttaskBean> alltasks;
 
-    private ApiService apiService;
     private TaskListFragmentDialog.OnCompleteListener mListener;
-    SharedPreferences sharedPreferences;
-//    private Unbinder unbinder;
-//    @BindView(R.id.taskList)
+
 
     ListView taskList;
 
 
-    public static interface OnCompleteListener {
-        public abstract void onComplete(String project_id, String task_id, String task_name);
+    public  interface OnCompleteListener {
+        void onComplete(String project_id, String task_id, String task_name);
     }
 
     @Override
@@ -176,12 +162,6 @@ public class TaskListFragmentDialog extends DialogFragment {
 
         return view;
     }
-//
-//    @Override
-//    public void onDestroyView() {
-//        super.onDestroyView();
-//        unbinder.unbind();
-//    }
 
 
 }

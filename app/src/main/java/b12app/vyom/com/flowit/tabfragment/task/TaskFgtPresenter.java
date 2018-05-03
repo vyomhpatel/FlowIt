@@ -16,10 +16,12 @@ import b12app.vyom.com.flowit.datasource.DataManager;
 import b12app.vyom.com.flowit.datasource.IDataSource;
 import b12app.vyom.com.flowit.home.Global;
 import b12app.vyom.com.flowit.model.GeneralTask;
+import b12app.vyom.com.flowit.model.User;
 import b12app.vyom.com.flowit.model.UserAssignment;
 import b12app.vyom.com.flowit.tabfragment.FragmentTaskEdit;
 import b12app.vyom.com.utils.ActivityUtil;
 
+import static b12app.vyom.com.flowit.home.Global.FLAG_MANAGER;
 import static b12app.vyom.com.flowit.home.Global.MANAGER;
 import static b12app.vyom.com.flowit.home.Global.USER_ID;
 
@@ -53,10 +55,10 @@ public class TaskFgtPresenter implements TaskFgtContract.IPresenter {
     }
 
     @Override
-    public void getTaskList(final FragmentActivity activity, Bundle arguments) {
+    public void getTaskList(final FragmentActivity activity, User user) {
         databaseReference = FirebaseDatabase.getInstance().getReference(Global.TABLE_TASK_TEAM);
-        String userId = arguments.getString(USER_ID);
-        if (!userId.equals(MANAGER)){
+        String userId = user.getUserid();
+        if (!userId.equals(FLAG_MANAGER)){
             mDataManager.queryTaskListByUser(databaseReference, userId, new IDataSource.DbCallback() {
                 @Override
                 public void onSuccess(Object response) {

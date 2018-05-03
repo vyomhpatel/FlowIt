@@ -61,7 +61,6 @@ public class Global {
     public static final String MEMBER_DLG = "memberDlg";
     public static final String EMP_DLG = "empDlg";
 
-    public static String userType = "";
 
     public final static String APP_KEY = "af6srcasuldm639";
     public final static String APP_SECRET = "u6d51t5on87db6n";

@@ -73,4 +73,7 @@
 
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+    <string name="logout">Logout</string>
+    <string name="pick_file">Please choose a file</string>
+    <string name="no_file_picker">No file picker find</string>
 </resources>

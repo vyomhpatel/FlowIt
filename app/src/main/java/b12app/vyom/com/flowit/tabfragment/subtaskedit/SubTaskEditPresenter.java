@@ -30,11 +30,8 @@ import b12app.vyom.com.utils.FbHelper;
 public class SubTaskEditPresenter implements SubTaskEditContract.IPresenter {
     public static String TAG = "task edit presenter";
     private SubTaskEditContract.IView fragmentView;
-    private FragmentSubTaskEdit fragmentTaskEdit;
     private DataManager mDataManager;
     private Context context;
-    private SharedPreferences sharedPreferences;
-    private String userId;
     private DatabaseReference myRef;
 
 
@@ -42,15 +39,12 @@ public class SubTaskEditPresenter implements SubTaskEditContract.IPresenter {
         this.mDataManager = dataManager;
         fragmentView = subtaskEditFrag;
         context = subtaskEditFrag.getActivity();
-        sharedPreferences = context.getSharedPreferences("local_user", Context.MODE_PRIVATE);
-        userId = sharedPreferences.getString("userid", "");
     }
 
     @Override
     public void start() {
 
     }
-
 
     @Override
     public void getData(Bundle arguments) {
@@ -88,13 +82,11 @@ public class SubTaskEditPresenter implements SubTaskEditContract.IPresenter {
     }
 
     @Override
-    public void updateSubTask(GeneralSubTask.ProjectsubtaskBean subtaskNode) {
+    public void updateSubTask(GeneralSubTask.ProjectsubtaskBean subtaskNode, String userId) {
         mDataManager.updateSubTask(userId, subtaskNode, new IDataSource.NetworkCallback() {
             @Override
             public void onSuccess(Object response) {
-
 //                fragmentView.showToast(response.toString());
-
             }
 
             @Override

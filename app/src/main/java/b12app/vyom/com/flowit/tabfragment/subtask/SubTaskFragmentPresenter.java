@@ -1,5 +1,6 @@
 package b12app.vyom.com.flowit.tabfragment.subtask;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -11,15 +12,19 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import b12app.vyom.com.flowit.R;
 import b12app.vyom.com.flowit.datasource.DataManager;
 import b12app.vyom.com.flowit.datasource.IDataSource;
 import b12app.vyom.com.flowit.home.Global;
 import b12app.vyom.com.flowit.model.GeneralSubTask;
 import b12app.vyom.com.flowit.model.GeneralTask;
+import b12app.vyom.com.flowit.model.User;
 import b12app.vyom.com.flowit.model.UserAssignment;
 import b12app.vyom.com.flowit.tabfragment.FragmentSubTaskEdit;
 import b12app.vyom.com.utils.ActivityUtil;
+import b12app.vyom.com.utils.SpHelper;
 
 
 /**
@@ -54,12 +59,12 @@ public class SubTaskFragmentPresenter implements SubTaskFragmentContract.IPresen
     }
 
     @Override
-    public void getSubtaskList(FragmentActivity activity, Bundle arguments) {
+    public void getSubtaskList(FragmentActivity activity, User user) {
         databaseReference = FirebaseDatabase.getInstance().getReference(Global.TABLE_SUBTASK_TEAM);
 
-        String userId = arguments.getString(Global.USER_ID);
+        String userId = user.getUserid();
 
-        if (!userId.equals(Global.MANAGER)){
+        if (!userId.equals(Global.FLAG_MANAGER)){
             mDataManager.querySubTaskListByName(databaseReference, userId, new IDataSource.DbCallback() {
                 @Override
                 public void onSuccess(Object response) {

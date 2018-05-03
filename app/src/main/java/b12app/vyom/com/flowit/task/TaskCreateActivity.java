@@ -5,7 +5,6 @@ import android.app.FragmentManager;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -15,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dropbox.client2.DropboxAPI;
@@ -32,18 +30,14 @@ import javax.inject.Inject;
 import b12app.vyom.com.flowit.R;
 import b12app.vyom.com.flowit.daggerUtils.AppComponent;
 import b12app.vyom.com.flowit.datasource.DataManager;
-import b12app.vyom.com.flowit.datasource.RemoteDataSource;
 import b12app.vyom.com.flowit.dialog.ProjectListFragmentDialog;
 import b12app.vyom.com.flowit.home.BaseActivity;
 import b12app.vyom.com.flowit.home.Global;
 import b12app.vyom.com.flowit.model.GeneralTask;
-import b12app.vyom.com.flowit.projectcreate.ProjectCreateActivity;
-import b12app.vyom.com.flowit.tabfragment.task.TaskContract;
 import b12app.vyom.com.utils.CircleImageView;
 import b12app.vyom.com.utils.MyFlowlayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import dagger.Component;
 
 public class TaskCreateActivity extends BaseActivity implements TaskCreateContract.IView, View.OnClickListener, ProjectListFragmentDialog.OnCompleteListener {
     private String dateStartString, dateEndString;

@@ -1,6 +1,7 @@
 package b12app.vyom.com.flowit.login;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -25,13 +26,18 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import javax.inject.Inject;
+
 import b12app.vyom.com.flowit.R;
+import b12app.vyom.com.flowit.daggerUtils.AppComponent;
+import b12app.vyom.com.flowit.home.BaseActivity;
 import b12app.vyom.com.flowit.home.Global;
 import b12app.vyom.com.flowit.home.HomeActivity;
 import b12app.vyom.com.flowit.model.User;
 import b12app.vyom.com.flowit.networkutils.ApiService;
 import b12app.vyom.com.flowit.networkutils.RetrofitInstance;
 import b12app.vyom.com.flowit.register.SignupActivity;
+import b12app.vyom.com.utils.SpHelper;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -41,7 +47,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
     public static final String ON_FAILURE = "onFailure: ";
     public static final String SIGN_IN = "signIn: ";
@@ -59,12 +65,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @BindView(R.id.passwordTxtLogin)
     EditText pwTxt;
 
+    @Inject
+    SharedPreferences sharedPreferences;
+
     SignInButton googlesignin;
 
     Retrofit retrofit;
 
     public static final String BASE_URL = Global.HTTP_RJTMOBILE_COM_AAMIR_PMS_ANDROID_APP;
-
 
     private static final int RC_SIGN_IN = 007;
 
@@ -87,22 +95,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
 
-
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         googlesignin = findViewById(R.id.sign_in_button);
-
 
         googlesignin.setSize(SignInButton.SIZE_STANDARD);
 
         googlesignin.setOnClickListener(this);
         signOut();
+    }
+
+    @Override
+    protected void setupActivityComponent(AppComponent appComponent) {
+        appComponent.inject(LoginActivity.this);
     }
 
     @Override
@@ -126,14 +136,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         public void onResponse(Call<User> call, Response<User> response) {
 
                             if (response.body().getMsg().equals(getString(R.string.login_succ))) {
-
-                                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-
-                                Bundle bundle = new Bundle();
-                                bundle.putParcelable(Global.USER, response.body());
-                                intent.putExtras(bundle);
-
-                                startActivity(intent);
+                                User user = response.body();
+                                SpHelper.saveUserInfo(sharedPreferences, user);
+                                startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                                 finish();
                             }
                         }
@@ -194,12 +199,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Snackbar.make(container, getString(R.string.google_signin) + " " + account.getGivenName(), Snackbar.LENGTH_SHORT).setAction(Global.SNACK_OK, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    User user = new User(null, Global.FLAG_MANAGER, account.getGivenName(), account.getFamilyName(), account.getEmail(), null);
-                    Intent i = new Intent(LoginActivity.this, HomeActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelable(Global.USER, user);
-                    i.putExtras(bundle);
-                    startActivity(i);
+                    User user = new User("", Global.FLAG_MANAGER, account.getGivenName(), account.getFamilyName(), account.getEmail(), "");
+                    SpHelper.saveUserInfo(sharedPreferences, user);
+                    startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                    finish();
                 }
             }).show();
 

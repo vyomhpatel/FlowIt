@@ -1,6 +1,7 @@
 package b12app.vyom.com.flowit.tabfragment;
 
 import android.app.DatePickerDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -35,6 +36,7 @@ import b12app.vyom.com.flowit.tabfragment.subtaskedit.SubTaskEditContract;
 import b12app.vyom.com.flowit.tabfragment.subtaskedit.SubTaskEditPresenter;
 import b12app.vyom.com.utils.CircleImageView;
 import b12app.vyom.com.utils.MyFlowlayout;
+import b12app.vyom.com.utils.SpHelper;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -78,6 +80,8 @@ public class FragmentSubTaskEdit extends Fragment implements SubTaskEditContract
     @Inject
     DataManager mDataManager;
 
+    @Inject
+    SharedPreferences sp;
 
     private DatePickerDialog toDatePickerDialog;
 
@@ -180,7 +184,7 @@ public class FragmentSubTaskEdit extends Fragment implements SubTaskEditContract
             addMemberBtn.setVisibility(View.GONE);
             editFloatBtn.setImageResource(R.drawable.ic_edit);
 
-            subtaskEdtPresenter.updateSubTask(subtaskNode);
+            subtaskEdtPresenter.updateSubTask(subtaskNode, SpHelper.getUserId(sp));
         }
     }
 

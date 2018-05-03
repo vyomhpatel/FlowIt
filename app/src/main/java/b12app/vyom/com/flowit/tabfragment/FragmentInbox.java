@@ -1,5 +1,6 @@
 package b12app.vyom.com.flowit.tabfragment;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,13 +20,17 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import b12app.vyom.com.flowit.R;
 import b12app.vyom.com.flowit.adapter.InboxListAdapter;
+import b12app.vyom.com.flowit.daggerUtils.AppApplication;
 import b12app.vyom.com.flowit.datasource.IDataSource;
 import b12app.vyom.com.flowit.home.Global;
 import b12app.vyom.com.flowit.model.Employee;
 import b12app.vyom.com.flowit.model.InboxModel;
 import b12app.vyom.com.utils.FbHelper;
+import b12app.vyom.com.utils.SpHelper;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -42,6 +47,9 @@ public class FragmentInbox extends Fragment {
     @BindView(R.id.rv_inbox)
     RecyclerView inboxRv;
 
+    @Inject
+    SharedPreferences sp;
+
     private DatabaseReference myRef;
 
     Unbinder unbinder;
@@ -54,6 +62,7 @@ public class FragmentInbox extends Fragment {
         View v = inflater.inflate(R.layout.fragment_inbox, container, false);
         unbinder = ButterKnife.bind(this, v);
 
+        AppApplication.get(getContext()).getAppComponent().inject(this);
 
         initFireBase();
 
@@ -70,7 +79,7 @@ public class FragmentInbox extends Fragment {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
 
-                initRecyclerView(FbHelper.getInstance().getUserInbox(dataSnapshot, getArguments().getString(Global.USER_ID)));
+                initRecyclerView(FbHelper.getInstance().getUserInbox(dataSnapshot, SpHelper.getUserId(sp)));
             }
 
             @Override

@@ -39,7 +39,7 @@ public interface SubTaskEditContract {
 
         void editFloatBtnClick(View v, boolean flagEditMode, TextView nameEdt, Spinner statusSpr, TextView descEdt, GeneralSubTask.ProjectsubtaskBean subtaskNode);
 
-        void updateSubTask(GeneralSubTask.ProjectsubtaskBean subtaskNode);
+        void updateSubTask(GeneralSubTask.ProjectsubtaskBean subtaskNode, String userId);
 
         void initFireDb(GeneralSubTask.ProjectsubtaskBean subtaskNode);
     }

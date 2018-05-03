@@ -1,6 +1,12 @@
 package b12app.vyom.com.flowit.projectcreate;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -21,9 +27,21 @@ import android.widget.Toast;
 
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
+import com.dropbox.client2.exception.DropboxException;
 import com.dropbox.client2.session.AppKeyPair;
+import com.dropbox.core.DbxException;
+import com.dropbox.core.android.Auth;
+import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.files.WriteMode;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -36,8 +54,10 @@ import b12app.vyom.com.flowit.datasource.DataManager;
 import b12app.vyom.com.flowit.home.BaseActivity;
 import b12app.vyom.com.flowit.home.Global;
 import b12app.vyom.com.flowit.home.HomeActivity;
+import b12app.vyom.com.flowit.login.LoginActivity;
 import b12app.vyom.com.flowit.model.Project;
 import b12app.vyom.com.utils.CircleImageView;
+import b12app.vyom.com.utils.DropboxUtils;
 import b12app.vyom.com.utils.MyFlowlayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,6 +69,8 @@ public class ProjectCreateActivity extends BaseActivity implements View.OnClickL
     public static final String DB_AUTH_LOG = "DbAuthLog";
     public static final String ERROR_AUTHENTICATING = "Error authenticating";
     public static final String PROJECTSTATUS = "1";
+    public static final int FILE_SELECT_CODE = 100;
+    private String accessToken;
 
     private String dateStartString, dateEndString;
     private DatePickerDialog fromDatePickerDialog;
@@ -100,6 +122,8 @@ public class ProjectCreateActivity extends BaseActivity implements View.OnClickL
 
         initToolBar();
 
+        initDropBox();
+
         initFlow();
 
         setDateTimeField();
@@ -108,6 +132,11 @@ public class ProjectCreateActivity extends BaseActivity implements View.OnClickL
         tv_end_date.setOnClickListener(this);
         myFlowlayout.setOnClickListener(this);
 
+    }
+
+    private void initDropBox() {
+        //start authorization
+        Auth.startOAuth2Authentication(getApplicationContext(), Global.APP_KEY);
     }
 
     @Override
@@ -172,8 +201,8 @@ public class ProjectCreateActivity extends BaseActivity implements View.OnClickL
             Toast.makeText(this, Global.TEXT_FIELD_CAN_NOT_BE_NULL, Toast.LENGTH_SHORT).show();
         }
 
-            Project.ProjectsBean project = new Project.ProjectsBean(edt_project_name.getText().toString(), PROJECTSTATUS, etProjectDescription.getText().toString(),
-                    dateStartString, dateEndString);
+        Project.ProjectsBean project = new Project.ProjectsBean(edt_project_name.getText().toString(), PROJECTSTATUS, etProjectDescription.getText().toString(),
+                dateStartString, dateEndString);
         iPresenterProject.onProjectCreateButtonClick(view, project);
         Log.i(TAG, DATE + dateStartString + " " + dateEndString);
     }
@@ -211,6 +240,35 @@ public class ProjectCreateActivity extends BaseActivity implements View.OnClickL
         }).show();
     }
 
+    private void showFileChooser() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        try {
+            startActivityForResult(Intent.createChooser(intent, getString(R.string.pick_file)),
+                    FILE_SELECT_CODE);
+        } catch (android.content.ActivityNotFoundException ex) {
+            // Potentially direct the user to the Market with a Dialog
+            Toast.makeText(this, R.string.no_file_picker, Toast.LENGTH_SHORT)
+                    .show();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && requestCode == FILE_SELECT_CODE) {
+            // Get the Uri of the selected file
+            Uri uri = data.getData();
+
+            //generate real file from absolute path
+            File file = new File(DropboxUtils.getFileAbsolutePath(this, uri));
+
+            //start upload file
+             new UploadTask(DropboxUtils.getClient(accessToken), file, getBaseContext()).execute();
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -220,12 +278,8 @@ public class ProjectCreateActivity extends BaseActivity implements View.OnClickL
             case R.id.menu_attach:
                 // In the class declaration section:
                 // And later in some initialization function:
-                AppKeyPair appKeys = new AppKeyPair(Global.APP_KEY, Global.APP_SECRET);
-                AndroidAuthSession session = new AndroidAuthSession(appKeys);
-                mDBApi = new DropboxAPI<>(session);
+                showFileChooser();
 
-                // MyActivity below should be your activity class name
-                mDBApi.getSession().startOAuth2Authentication(ProjectCreateActivity.this);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -234,17 +288,54 @@ public class ProjectCreateActivity extends BaseActivity implements View.OnClickL
     @Override
     protected void onResume() {
         super.onResume();
-        if (mDBApi != null) {
-            if (mDBApi.getSession().authenticationSuccessful()) {
-                try {
-                    // Required to complete auth, sets the access token on the session
-                    mDBApi.getSession().finishAuthentication();
 
-                    String accessToken = mDBApi.getSession().getOAuth2AccessToken();
-                } catch (IllegalStateException e) {
-                    Log.i(DB_AUTH_LOG, ERROR_AUTHENTICATING, e);
-                }
-            }
+        accessToken = Auth.getOAuth2Token(); //generate Access Token
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    public class UploadTask extends AsyncTask {
+
+        private DbxClientV2 dbxClient;
+        private File file;
+        private Context context;
+
+        UploadTask(DbxClientV2 dbxClient, File file, Context context) {
+            this.dbxClient = dbxClient;
+            this.file = file;
+            this.context = context;
         }
+
+        @Override
+        protected Object doInBackground(Object[] params) {
+            try {
+                // Upload to Dropbox
+                InputStream inputStream = new FileInputStream(file);
+                dbxClient.files().uploadBuilder("/" + file.getName()) //Path in the user's Dropbox to save the file.
+                        .withMode(WriteMode.OVERWRITE) //always overwrite existing file
+                        .uploadAndFinish(inputStream);
+                Log.d("Upload Status", "Success");
+            } catch (DbxException | IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+                Toast.makeText(context, "File uploaded successfully", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(ProjectCreateActivity.this, HomeActivity.class));
+        finish();
     }
 }

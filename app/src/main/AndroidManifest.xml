@@ -3,6 +3,8 @@
     package="b12app.vyom.com.flowit">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:name=".daggerUtils.AppApplication"
@@ -41,14 +43,16 @@
             android:name=".subtaskcreate.SubTaskCreateActivity"
             android:theme="@style/TaskTheme" />
 
+        <!-- Dropbox AuthActivity -->
         <activity
-            android:name="com.dropbox.client2.android.AuthActivity"
+            android:name="com.dropbox.core.android.AuthActivity"
             android:configChanges="orientation|keyboard"
-            android:launchMode="singleTask"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            android:launchMode="singleTask">
             <intent-filter>
-                <!-- Change this to be db- followed by your app key -->
+
+                <!-- Insert your app key after “db-  ...” -->
                 <data android:scheme="db-af6srcasuldm639" />
+
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.BROWSABLE" />
@@ -68,15 +72,16 @@
             </intent-filter>
         </service>
 
-        <receiver android:name="b12app.vyom.com.utils.AppWidget">
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/app_widget_config" />
+        <receiver android:name="b12app.vyom.com.utils.FlowIAppWidget" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="click" />
             </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/flow_iapp_widget_info" />
         </receiver>
+
     </application>
 
 </manifest>

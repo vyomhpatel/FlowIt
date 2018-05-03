@@ -4,6 +4,7 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.google.firebase.database.DataSnapshot;
@@ -27,13 +28,13 @@ public class FlowIAppWidget extends AppWidgetProvider {
     private ComponentName thisWidget;
     private RemoteViews views;
     private static String taskName;
+    private static String TAG="tag widget";
 
 
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
+    private void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
 
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.flow_iapp_widget);
-
 
         myRef = FbHelper.getInstance().getReference(Global.TABLE_INBOX);
         // Read from the database
@@ -43,6 +44,7 @@ public class FlowIAppWidget extends AppWidgetProvider {
 
                 inboxModelList = FbHelper.getInstance().getUserInbox(dataSnapshot, "34");
                 taskName = inboxModelList.get(0).getTaskName();
+                Log.i(TAG, "onDataChange: "+inboxModelList.get(0).getTaskName());
 
             }
 
@@ -51,7 +53,6 @@ public class FlowIAppWidget extends AppWidgetProvider {
 
             }
         });
-
         views.setTextViewText(R.id.appwidget_text, taskName);
 
 

@@ -1,5 +1,6 @@
 package b12app.vyom.com.flowit.tabfragment;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,13 +14,17 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import b12app.vyom.com.flowit.R;
 import b12app.vyom.com.flowit.adapter.TaskAdapter;
+import b12app.vyom.com.flowit.daggerUtils.AppApplication;
 import b12app.vyom.com.flowit.home.HomeActivity;
 import b12app.vyom.com.flowit.model.GeneralTask;
 import b12app.vyom.com.flowit.tabfragment.project.ProjectFgtContract;
 import b12app.vyom.com.flowit.tabfragment.task.TaskFgtContract;
 import b12app.vyom.com.utils.ActivityUtil;
+import b12app.vyom.com.utils.SpHelper;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -36,6 +41,9 @@ public class FragmentTask extends Fragment implements TaskFgtContract.IView, Tas
     @BindView(R.id.rv_task)
     RecyclerView recyclerView;
 
+    @Inject
+    SharedPreferences sp;
+
     private Unbinder unbinder;
     private TaskFgtContract.IPresenter taskFgtPresenter;
     private List<GeneralTask.ProjecttaskBean> taskBeanList;
@@ -46,7 +54,9 @@ public class FragmentTask extends Fragment implements TaskFgtContract.IView, Tas
         View v = inflater.inflate(R.layout.fragment_task, container, false);
         unbinder = ButterKnife.bind(this, v);
 
-        taskFgtPresenter.getTaskList(getActivity(), getArguments());
+        AppApplication.get(getContext()).getAppComponent().inject(this);
+
+        taskFgtPresenter.getTaskList(getActivity(), SpHelper.getUserInfo(sp));
 
         return v;
     }

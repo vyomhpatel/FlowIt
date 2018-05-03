@@ -1,6 +1,7 @@
 package b12app.vyom.com.flowit.tabfragment;
 
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,11 +13,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import b12app.vyom.com.flowit.R;
 import b12app.vyom.com.flowit.adapter.SubTaskAdapter;
+import b12app.vyom.com.flowit.daggerUtils.AppApplication;
 import b12app.vyom.com.flowit.home.HomeActivity;
 import b12app.vyom.com.flowit.model.GeneralSubTask;
 import b12app.vyom.com.flowit.tabfragment.subtask.SubTaskFragmentContract;
+import b12app.vyom.com.utils.SpHelper;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -36,6 +41,9 @@ public class FragmentSubTask extends Fragment implements SubTaskFragmentContract
     private SubTaskFragmentContract.IPresenter subtaskFgtPresenter;
     private List<GeneralSubTask.ProjectsubtaskBean> subtaskBeanList;
 
+    @Inject
+    SharedPreferences sp;
+
 
     @Nullable
     @Override
@@ -44,7 +52,9 @@ public class FragmentSubTask extends Fragment implements SubTaskFragmentContract
 
         unbinder = ButterKnife.bind(this, v);
 
-        subtaskFgtPresenter.getSubtaskList(getActivity(), getArguments());
+        AppApplication.get(getContext()).getAppComponent().inject(this);
+
+        subtaskFgtPresenter.getSubtaskList(getActivity(), SpHelper.getUserInfo(sp));
 
         return v;
     }

@@ -9,6 +9,7 @@ import java.util.List;
 import b12app.vyom.com.flowit.home.BasePresenter;
 import b12app.vyom.com.flowit.home.BaseView;
 import b12app.vyom.com.flowit.model.GeneralSubTask;
+import b12app.vyom.com.flowit.model.User;
 
 public interface SubTaskFragmentContract {
 
@@ -21,7 +22,7 @@ public interface SubTaskFragmentContract {
 
     interface IPresenter extends BasePresenter {
 
-        void getSubtaskList(FragmentActivity activity, Bundle arguments);
+        void getSubtaskList(FragmentActivity activity, User user);
 
         void rvItemClick(View v, int position, List<GeneralSubTask.ProjectsubtaskBean> subtasks, FragmentActivity activity);
     }

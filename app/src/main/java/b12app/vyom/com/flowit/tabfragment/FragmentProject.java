@@ -51,8 +51,6 @@ public class FragmentProject extends Fragment implements ProjectFgtContract.IVie
         //butter knife inject
         unbinder = ButterKnife.bind(this, v);
 
-
-
         return v;
     }
 

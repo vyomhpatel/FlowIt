@@ -78,7 +78,6 @@ public class SubTaskAdapter extends RecyclerView.Adapter<SubTaskAdapter.myViewHo
             return -1;
 
         }
-
         return super.getItemViewType(position);
     }
 
@@ -111,8 +110,6 @@ public class SubTaskAdapter extends RecyclerView.Adapter<SubTaskAdapter.myViewHo
             }
         }
     }
-
-
 
     public void setMItemClickListener(SubTaskAdapter.OnItemClickListener onItemClickListener) {
         this.myItemClickListener = onItemClickListener;
