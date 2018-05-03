@@ -154,7 +154,8 @@ public class FbHelper {
     }
 
 
-    public void addTaskTeamMember(DatabaseReference myRef, Employee.EmployeesBean employeesBean, String projectId, GeneralTask.ProjecttaskBean projecttaskBean) {
+    public void addTaskTeamMember(Employee.EmployeesBean employeesBean, String projectId, GeneralTask.ProjecttaskBean projecttaskBean) {
+        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference(Global.TABLE_TASK_TEAM);
         //add team member
         //if already have member, it will wipe out content and reset
         //if not, add new project team
@@ -181,7 +182,7 @@ public class FbHelper {
         List<InboxModel> inboxModelList = new ArrayList<>();
 
         for (DataSnapshot ds : dataSnapshot.getChildren()) {
-            if (ds.getKey().equals(userId)){
+            if (ds.getKey().equals(userId)) {
                 InboxModel currentEmp = new InboxModel(
                         ds.getValue(InboxModel.class).getUserId(),
                         ds.getValue(InboxModel.class).getTaskName(),
@@ -227,7 +228,7 @@ public class FbHelper {
     }
 
     public void addSubTaskTeam(Employee.EmployeesBean employeesBean, GeneralSubTask.ProjectsubtaskBean subTaskBean) {
-        DatabaseReference myRef  =  FbHelper.getInstance().getReference(Global.TABLE_SUBTASK_TEAM);
+        DatabaseReference myRef = FbHelper.getInstance().getReference(Global.TABLE_SUBTASK_TEAM);
 
         //add subtask team member
         //if already have member, it will wipe out content and reset

@@ -66,8 +66,6 @@ public class ProjectCreateActivity extends BaseActivity implements View.OnClickL
 
     private static final String TAG = "project create";
     public static final String DATE = "date: ";
-    public static final String DB_AUTH_LOG = "DbAuthLog";
-    public static final String ERROR_AUTHENTICATING = "Error authenticating";
     public static final String PROJECTSTATUS = "1";
     public static final int FILE_SELECT_CODE = 100;
     private String accessToken;
@@ -265,7 +263,7 @@ public class ProjectCreateActivity extends BaseActivity implements View.OnClickL
             File file = new File(DropboxUtils.getFileAbsolutePath(this, uri));
 
             //start upload file
-             new UploadTask(DropboxUtils.getClient(accessToken), file, getBaseContext()).execute();
+            new UploadTask(DropboxUtils.getClient(accessToken), file, getBaseContext()).execute();
         }
     }
 
@@ -328,7 +326,7 @@ public class ProjectCreateActivity extends BaseActivity implements View.OnClickL
         @Override
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
-                Toast.makeText(context, "File uploaded successfully", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.upload_success, Toast.LENGTH_SHORT).show();
         }
     }
 

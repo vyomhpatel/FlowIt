@@ -27,33 +27,18 @@ public class FlowIAppWidget extends AppWidgetProvider {
     private static List<InboxModel> inboxModelList;
     private ComponentName thisWidget;
     private RemoteViews views;
-    private static String taskName;
+    private static String taskName, taskDesc;
     private static String TAG="tag widget";
 
 
     private void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
 
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.flow_iapp_widget);
 
-        myRef = FbHelper.getInstance().getReference(Global.TABLE_INBOX);
-        // Read from the database
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+        views = new RemoteViews(context.getPackageName(), R.layout.flow_iapp_widget);
 
-                inboxModelList = FbHelper.getInstance().getUserInbox(dataSnapshot, "34");
-                taskName = inboxModelList.get(0).getTaskName();
-                Log.i(TAG, "onDataChange: "+inboxModelList.get(0).getTaskName());
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        views.setTextViewText(R.id.appwidget_text, taskName);
+        views.setTextViewText(R.id.tv_widget_title, taskName);
+        views.setTextViewText(R.id.tv_widget_description,taskDesc);
 
 
         CharSequence widgetText = context.getString(R.string.appwidget_text);
@@ -65,10 +50,37 @@ public class FlowIAppWidget extends AppWidgetProvider {
     }
 
     @Override
-    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+    public void onUpdate(final Context context, final AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
-        for (int appWidgetId : appWidgetIds) {
-            updateAppWidget(context, appWidgetManager, appWidgetId);
+        for (final int appWidgetId : appWidgetIds) {
+
+            myRef = FbHelper.getInstance().getReference(Global.TABLE_INBOX);
+            // Read from the database
+            myRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    inboxModelList = FbHelper.getInstance().getUserInbox(dataSnapshot, "34");
+                    if(inboxModelList.size() > 0){
+                        taskName = inboxModelList.get(0).getTaskName();
+                        taskDesc = inboxModelList.get(0).getTaskDesc();
+                        Log.i(TAG, "onDataChange: " + inboxModelList.get(0).getTaskName());
+
+                    }else{
+                        taskName = "Test Task";
+                        taskDesc = "Test Task Description";
+
+                    }
+
+                    updateAppWidget(context, appWidgetManager, appWidgetId);
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
         }
     }
 

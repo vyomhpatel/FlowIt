@@ -64,8 +64,8 @@ public class EmployeeListFragmentDialog extends android.support.v4.app.DialogFra
                 empList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                        final String employeId = response.body().getEmployees().get(position).getEmpid();
+                        final Employee.EmployeesBean employeesBean = response.body().getEmployees().get(position);
+                        final String employeId = employeesBean.getEmpid();
 
                         mListener.onComplete(position, response.body().getEmployees());
 
@@ -84,11 +84,13 @@ public class EmployeeListFragmentDialog extends android.support.v4.app.DialogFra
                                     @Override
                                     public void onResponse(Call<FcmResponse> call, Response<FcmResponse> response) {
                                         Log.i(TAG, "fcm response: " + response.body().getResults().get(0).getMessage_id());
-                                        //Fb database
+                                        //Fb database save inbox
                                         FbHelper.getInstance().addUserInbox(projecttaskBean.getTaskid(),
                                                 projecttaskBean.getTaskname(),
                                                 projecttaskBean.getTaskdesc(),
                                                 employeId);
+                                        //save task
+                                        FbHelper.getInstance().addTaskTeamMember(employeesBean, projecttaskBean.getProjectid(), projecttaskBean);
                                     }
 
                                     @Override
