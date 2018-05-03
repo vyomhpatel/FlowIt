@@ -71,10 +71,29 @@
         <item>User </item>
     </string-array>
 
+    <string-array name="technologies">
+        <item>Butter-knife</item>
+        <item>Dagger 2</item>
+        <item>Dropbox Cloud File Storage</item>
+        <item>Fab Floating Action Buttons</item>
+        <item>Firebase Cloud Messaging Service</item>
+        <item>Firebase Realtime Database </item>
+        <item>Google Single Sign On</item>
+        <item>Material Design</item>
+        <item>Model View Presenter Architecture</item>
+        <item>Rx Validators</item>
+        <item>Rx Java</item>
+        <item>Network Call: Retrofit</item>
+        <item>Network Call: Volley</item>
+        <item>Shared Preferences</item>
+    </string-array>
+
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
     <string name="logout">Logout</string>
     <string name="pick_file">Please choose a file</string>
     <string name="no_file_picker">No file picker find</string>
     <string name="upload_success">File uploaded successfully</string>
+    <string name="abous_us">App Info</string>
+    <string name="member_add">Member Added</string>
 </resources>

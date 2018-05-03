@@ -5,6 +5,7 @@ import android.view.View;
 
 import b12app.vyom.com.flowit.datasource.DataManager;
 import b12app.vyom.com.flowit.model.GeneralSubTask;
+import b12app.vyom.com.flowit.model.MsgReponseBody;
 import b12app.vyom.com.flowit.networkutils.ApiService;
 import b12app.vyom.com.flowit.networkutils.RetrofitInstance;
 import retrofit2.Call;
@@ -36,7 +37,7 @@ public class SubTaskPresenter implements SubTaskContract.IPresenter {
 
     @Override
     public void onSubTaskCreateButtonClick(View view, GeneralSubTask.ProjectsubtaskBean projectsubtaskBean) {
-        Call<GeneralSubTask> call = apiService.postSubTask(
+        Call<MsgReponseBody> call = apiService.postSubTask(
                 projectsubtaskBean.getProjectid(),
                 projectsubtaskBean.getTaskid(),
                 projectsubtaskBean.getSubtaskname(),
@@ -45,15 +46,15 @@ public class SubTaskPresenter implements SubTaskContract.IPresenter {
                 projectsubtaskBean.getStartdate(),
                 projectsubtaskBean.getEndstart());
 
-        call.enqueue(new Callback<GeneralSubTask>() {
+        call.enqueue(new Callback<MsgReponseBody>() {
             @Override
-            public void onResponse(Call<GeneralSubTask> call, Response<GeneralSubTask> response) {
-                Log.i("test", "on create task response: " + response);
-//                subtaskCreateView.displaySnackbar();
+            public void onResponse(Call<MsgReponseBody> call, Response<MsgReponseBody> response) {
+                Log.i("test", "on create task response: " + response.body().getMsg().get(0));
+                subtaskCreateView.displaySnackbar(response.body().getMsg().get(0));
             }
 
             @Override
-            public void onFailure(Call<GeneralSubTask> call, Throwable t) {
+            public void onFailure(Call<MsgReponseBody> call, Throwable t) {
 
             }
         });

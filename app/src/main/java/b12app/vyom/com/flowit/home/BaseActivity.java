@@ -25,9 +25,4 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected abstract void setupActivityComponent(AppComponent appComponent);
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        System.exit(0);
-    }
 }

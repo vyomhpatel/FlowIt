@@ -32,7 +32,7 @@ public class StartUpPresenter implements StartUpContract.IPresenter {
                 Intent intent = new Intent(context, LoginActivity.class);
                 context.startActivity(intent);
             }
-        }, 1000);
+        }, 4320);
 
     }
 

@@ -99,7 +99,7 @@ public interface ApiService {
     //-------------------------------------SUB-TASK -----------------------------------------
 
     @POST("pms_create_sub_task.php")
-    Call<GeneralSubTask> postSubTask(@Query("project_id") String project_id,
+    Call<MsgReponseBody> postSubTask(@Query("project_id") String project_id,
                                      @Query("task_id") String task_id,
                                      @Query("sub_task_name") String sub_task_name,
                                      @Query("sub_task_status") String sub_task_status,

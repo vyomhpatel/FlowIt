@@ -131,36 +131,15 @@ public class TaskListFragmentDialog extends DialogFragment {
         });
 
 
-//        Call<List<GeneralTask.ProjecttaskBean>> taskcall = apiService.getTaskList();
-//
-//
-//        taskcall.enqueue(new Callback<List<GeneralTask.ProjecttaskBean>>() {
-//
-//            @Override
-//            public void onResponse(Call<List<GeneralTask.ProjecttaskBean>> call, final Response<List<GeneralTask.ProjecttaskBean>> response) {
-//                TaskListAdapter taskListAdapter = new TaskListAdapter(response.body(), getActivity());
-//                taskList.setAdapter(taskListAdapter);
-//                taskList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                    @Override
-//                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                        String task_name = response.body().get(position).getTaskname();
-//                        String task_id = response.body().get(position).getTaskid();
-//                        mListener.onComplete(task_id, task_name);
-//                        getDialog().dismiss();
-//                    }
-//                });
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<GeneralTask.ProjecttaskBean>> call, Throwable t) {
-//
-//            }
-//        });
 
         Volley.newRequestQueue(getActivity()).add(request);
 
 
         return view;
+    }
+
+    public void setListener(TaskListFragmentDialog.OnCompleteListener onCompleteListener){
+        this.mListener = onCompleteListener;
     }
 
 

@@ -59,12 +59,14 @@ public class SubEmployeeListFragmentDialog extends android.support.v4.app.Dialog
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Employee.EmployeesBean employeesBean = response.body().getEmployees().get(position);
 
-                        String empfirstname = response.body().getEmployees().get(position).getEmpfirstname();
-                        String empid = response.body().getEmployees().get(position).getEmpid();
+                        String empfirstname = employeesBean.getEmpfirstname();
+                        String empid = employeesBean.getEmpid();
                         Bundle bundle = getArguments();
                         GeneralSubTask.ProjectsubtaskBean subtasknode = bundle.getParcelable("subtasknode");
                         //fb db
                         FbHelper.getInstance().addSubTaskTeam(employeesBean, subtasknode);
+                        Toast.makeText(getActivity(), R.string.member_add, Toast.LENGTH_SHORT).show();
+
                         apiService.assignSubTask(subtasknode.getTaskid(),
                                 subtasknode.getSubtaskid(),
                                 subtasknode.getProjectid(),
@@ -74,7 +76,7 @@ public class SubEmployeeListFragmentDialog extends android.support.v4.app.Dialog
                             public void onResponse(Call<MsgReponseBody> call, Response<MsgReponseBody> response) {
 
 //                                Toast.makeText(getActivity(), response.body().getMsg().get(0) + "", Toast.LENGTH_SHORT).show();
-                                Log.i(TAG, "Task Assign Status" + response.body().toString());
+//                                Log.i(TAG, "Task Assign Status" + response.body().toString());
 
                             }
 

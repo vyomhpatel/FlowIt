@@ -8,6 +8,10 @@
             android:id="@+id/nav_logout"
             android:icon="@drawable/settings_icon"
             android:title="@string/logout" />
+        <item
+            android:id="@+id/nav_about_us"
+            android:icon="@drawable/about_us_icon"
+            android:title="@string/abous_us" />
         <!--<item-->
             <!--android:id="@+id/nav_help"-->
             <!--android:icon="@drawable/help_icon"-->

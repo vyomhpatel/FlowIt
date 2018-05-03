@@ -19,6 +19,7 @@ import java.util.Locale;
 
 import b12app.vyom.com.flowit.datasource.DataManager;
 import b12app.vyom.com.flowit.datasource.IDataSource;
+import b12app.vyom.com.flowit.home.Global;
 import b12app.vyom.com.flowit.model.GeneralSubTask;
 import b12app.vyom.com.flowit.tabfragment.FragmentSubTaskEdit;
 import b12app.vyom.com.utils.FbHelper;
@@ -31,14 +32,12 @@ public class SubTaskEditPresenter implements SubTaskEditContract.IPresenter {
     public static String TAG = "task edit presenter";
     private SubTaskEditContract.IView fragmentView;
     private DataManager mDataManager;
-    private Context context;
     private DatabaseReference myRef;
 
 
     public SubTaskEditPresenter(DataManager dataManager, FragmentSubTaskEdit subtaskEditFrag) {
         this.mDataManager = dataManager;
         fragmentView = subtaskEditFrag;
-        context = subtaskEditFrag.getActivity();
     }
 
     @Override
@@ -67,26 +66,26 @@ public class SubTaskEditPresenter implements SubTaskEditContract.IPresenter {
             //start edit mode
             flagEditMode = true;
             v.setTag(flagEditMode);
+
             fragmentView.changeEditMode(flagEditMode, subtaskNode);
 
         } else {
             flagEditMode = false;
             v.setTag(flagEditMode);
-
             subtaskNode.setSubtaskstatus(String.valueOf(statusSpr.getSelectedItemPosition() + 1));
 
             fragmentView.changeEditMode(flagEditMode, subtaskNode);
-
-
         }
     }
 
     @Override
     public void updateSubTask(GeneralSubTask.ProjectsubtaskBean subtaskNode, String userId) {
+
+
         mDataManager.updateSubTask(userId, subtaskNode, new IDataSource.NetworkCallback() {
             @Override
             public void onSuccess(Object response) {
-//                fragmentView.showToast(response.toString());
+                fragmentView.showToast(response.toString());
             }
 
             @Override
@@ -98,7 +97,7 @@ public class SubTaskEditPresenter implements SubTaskEditContract.IPresenter {
 
     @Override
     public void initFireDb(final GeneralSubTask.ProjectsubtaskBean subtaskNode) {
-        myRef = FbHelper.getInstance().getReference("SubTaskTeam");
+        myRef = FbHelper.getInstance().getReference(Global.TABLE_SUBTASK_TEAM);
 
         myRef.addValueEventListener(new ValueEventListener() {
             @Override

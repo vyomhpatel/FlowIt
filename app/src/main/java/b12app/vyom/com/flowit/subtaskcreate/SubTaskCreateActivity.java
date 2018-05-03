@@ -2,18 +2,19 @@ package b12app.vyom.com.flowit.subtaskcreate;
 
 import android.app.DatePickerDialog;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -29,6 +30,7 @@ import b12app.vyom.com.flowit.daggerUtils.AppComponent;
 import b12app.vyom.com.flowit.datasource.DataManager;
 
 import b12app.vyom.com.flowit.home.BaseActivity;
+import b12app.vyom.com.flowit.home.HomeActivity;
 import b12app.vyom.com.flowit.model.GeneralSubTask;
 import b12app.vyom.com.utils.CircleImageView;
 import b12app.vyom.com.utils.MyFlowlayout;
@@ -68,6 +70,9 @@ public class SubTaskCreateActivity extends BaseActivity implements View.OnClickL
 
     @BindView(R.id.tb)
     Toolbar toolbar;
+
+    @BindView(R.id.spinner_priority)
+    Spinner prioritySp;
 
     @Inject
     DataManager dataManager;
@@ -153,10 +158,16 @@ public class SubTaskCreateActivity extends BaseActivity implements View.OnClickL
         getSupportActionBar().setTitle(R.string.create_subtask);
     }
 
+
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_attachment, menu);
-        return true;
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                startActivity(new Intent(SubTaskCreateActivity.this, HomeActivity.class));
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -178,6 +189,7 @@ public class SubTaskCreateActivity extends BaseActivity implements View.OnClickL
         FragmentManager manager = getFragmentManager();
         TaskListFragmentDialog dialog = new TaskListFragmentDialog();
         dialog.show(manager, "task list");
+        dialog.setListener(this);
     }
 
     @Override
@@ -186,11 +198,14 @@ public class SubTaskCreateActivity extends BaseActivity implements View.OnClickL
     }
 
     @Override
-    public void displaySnackbar() {
-        Snackbar.make(task_create_container, "Task Created Successfully!", Snackbar.LENGTH_SHORT).setAction("Ok", new View.OnClickListener() {
+    public void displaySnackbar(String msg) {
+        Snackbar.make(task_create_container, msg, Snackbar.LENGTH_LONG).setAction("Ok", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                startActivity(new Intent(SubTaskCreateActivity.this, HomeActivity.class));
+                finish();
             }
+
         }).setActionTextColor(getResources().getColor(R.color.colorAccent)).show();
     }
 
@@ -209,16 +224,22 @@ public class SubTaskCreateActivity extends BaseActivity implements View.OnClickL
         Snackbar.make(task_create_container, "Sub Task Created Successfully!", Snackbar.LENGTH_SHORT).setAction("Ok", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
             }
         }).setActionTextColor(getResources().getColor(R.color.sbRed)).show();
     }
 
 
     public void createsubTask(View view) {
-
-        GeneralSubTask.ProjectsubtaskBean subtask = new GeneralSubTask.ProjectsubtaskBean("1", received_task_id, project_id, edt_subtask_name.getText().toString()
-                , "0", edt_subtask_description.getText().toString(), dateStartString, dateEndString);
-        iPresenter.onSubTaskCreateButtonClick(view, subtask);
+        String status = String.valueOf(prioritySp.getSelectedItemPosition() + 1);
+        GeneralSubTask.ProjectsubtaskBean subTask = new GeneralSubTask.ProjectsubtaskBean(received_task_id, project_id, edt_subtask_name.getText().toString()
+                , status, edt_subtask_description.getText().toString(), dateStartString, dateEndString);
+        iPresenter.onSubTaskCreateButtonClick(view, subTask);
     }
 
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(SubTaskCreateActivity.this, HomeActivity.class));
+        finish();
+    }
 }

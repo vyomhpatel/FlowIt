@@ -2,12 +2,16 @@ package b12app.vyom.com.flowit.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import b12app.vyom.com.flowit.R;
@@ -36,7 +40,6 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.mViewHol
     public ProjectAdapter(Context context, Project project) {
         this.context = context;
         this.dataList = project.getProjects();
-
     }
 
 
@@ -65,10 +68,46 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.mViewHol
         if (dataList.size() > 0) {
 
             holder.nameTv.setText(dataList.get(position).getProjectname());
-            holder.startTv.setText(dataList.get(position).getStartdate());
             holder.endTv.setText(dataList.get(position).getEndstart());
 
-            holder.projectPgs.setProgress(50);
+            Calendar start = Calendar.getInstance();
+            Calendar end = Calendar.getInstance();
+            Calendar today = Calendar.getInstance();
+
+            try {
+                start.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(dataList.get(position).getStartdate()));
+                end.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(dataList.get(position).getEndstart()));
+
+                if (end.after(start)) {
+                    long total_difference = end.getTimeInMillis() - start.getTimeInMillis();
+                    long total_days = total_difference / (24 * 60 * 60 * 1000);
+                    long current_difference = end.getTimeInMillis() - today.getTimeInMillis();
+                    long remaining_days = current_difference / (24 * 60 * 60 * 1000);
+
+                    long past_days = total_days - remaining_days;
+
+                    if (today.after(end)) {
+
+                        holder.startTv.setText(dataList.get(position).getStartdate());
+                        holder.projectPgs.setProgress(100);
+
+                    } else if (today.before(start)) {
+                        Log.i("current difference", "remaining days: " + remaining_days);
+                        holder.startTv.setText(dataList.get(position).getStartdate());
+                        holder.projectPgs.setProgress(0);
+
+                    } else if (today.before(end) && today.after(start)) {
+                        int pgs = (int) ((past_days * 100) / total_days);
+
+                        holder.startTv.setText(dataList.get(position).getStartdate());
+                        holder.projectPgs.setProgress(pgs);
+
+                    }
+                }
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
 
             holder.itemView.setTag(position);
         }

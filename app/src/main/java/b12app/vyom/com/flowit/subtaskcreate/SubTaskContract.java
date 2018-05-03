@@ -14,7 +14,7 @@ public interface SubTaskContract {
 
 
     interface IView extends BaseView<SubTaskContract.IPresenter> {
-        void displaySnackbar();
+        void displaySnackbar(String s);
 
 
     }

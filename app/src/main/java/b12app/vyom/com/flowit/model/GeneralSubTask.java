@@ -38,6 +38,16 @@ public class GeneralSubTask {
             this.endstart = endstart;
         }
 
+        public ProjectsubtaskBean(String taskid, String projectid, String subtaskname, String subtaskstatus, String subtaskdesc, String startdate, String endstart) {
+            this.taskid = taskid;
+            this.projectid = projectid;
+            this.subtaskname = subtaskname;
+            this.subtaskstatus = subtaskstatus;
+            this.subtaskdesc = subtaskdesc;
+            this.startdate = startdate;
+            this.endstart = endstart;
+        }
+
         protected ProjectsubtaskBean(Parcel in) {
             subtaskid = in.readString();
             taskid = in.readString();

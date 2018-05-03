@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -35,6 +36,7 @@ import b12app.vyom.com.flowit.login.LoginActivity;
 import b12app.vyom.com.flowit.model.User;
 import b12app.vyom.com.flowit.projectcreate.ProjectCreateActivity;
 import b12app.vyom.com.flowit.subtaskcreate.SubTaskCreateActivity;
+import b12app.vyom.com.flowit.tabfragment.AbousUsFragment;
 import b12app.vyom.com.flowit.tabfragment.FragmentInbox;
 import b12app.vyom.com.flowit.tabfragment.FragmentProject;
 import b12app.vyom.com.flowit.tabfragment.FragmentSubTask;
@@ -324,11 +326,10 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     public void onBackPressed() {
-
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            System.exit(0);
         }
     }
 
@@ -358,6 +359,11 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                 startActivity(new Intent(HomeActivity.this, LoginActivity.class));
                 finish();
                 break;
+
+            case R.id.nav_about_us:
+                AbousUsFragment abousUsFragment = new AbousUsFragment();
+                FragmentManager  fragmentManager = getSupportFragmentManager();
+                ActivityUtil.addFragmentToActivity(R.id.fl_float_container,fragmentManager,abousUsFragment, "technologyFgt");
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);

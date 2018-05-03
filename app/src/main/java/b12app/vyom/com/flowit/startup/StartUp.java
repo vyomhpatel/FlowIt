@@ -15,8 +15,6 @@ public class StartUp extends AppCompatActivity implements StartUpContract.IView{
     @BindView(R.id.startUpVideo)
     VideoView startUpVideo;
 
-    @BindView(R.id.ivLogo)
-    ImageView ivLogo;
 
     private StartUpContract.IPresenter iPresenter;
 
@@ -27,7 +25,7 @@ public class StartUp extends AppCompatActivity implements StartUpContract.IView{
         ButterKnife.bind(this);
         iPresenter = new StartUpPresenter(this);
         iPresenter.playVideo(startUpVideo);
-        ivLogo.setOnClickListener(new View.OnClickListener() {
+        startUpVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 iPresenter.startNextActivity(v);

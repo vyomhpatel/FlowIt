@@ -28,7 +28,6 @@
             style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/normal_dimen"
             android:max="100"
             android:paddingEnd="@dimen/medium_dimen"
             android:paddingStart="@dimen/medium_dimen" />
@@ -39,15 +38,15 @@
             android:orientation="horizontal"
             android:paddingBottom="@dimen/small_padding"
             android:paddingEnd="@dimen/medium_dimen"
-            android:paddingStart="@dimen/medium_dimen"
-            android:paddingTop="@dimen/small_padding">
+            android:paddingStart="@dimen/medium_dimen">
 
             <TextView
                 android:id="@+id/tv_startDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="end"
-                android:text="start date"
+                android:paddingTop="@dimen/normal_dimen"
+                android:text="start"
                 android:textSize="10sp"
                 android:textStyle="bold" />
 

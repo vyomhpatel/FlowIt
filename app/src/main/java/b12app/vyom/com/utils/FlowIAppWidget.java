@@ -4,6 +4,7 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.widget.RemoteViews;
 
@@ -30,9 +31,15 @@ public class FlowIAppWidget extends AppWidgetProvider {
     private static String taskName, taskDesc;
     private static String TAG="tag widget";
 
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        super.onReceive(context, intent);
+
+
+    }
 
     private void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId) {
+                                 int appWidgetId) {
 
 
         views = new RemoteViews(context.getPackageName(), R.layout.flow_iapp_widget);
@@ -43,7 +50,6 @@ public class FlowIAppWidget extends AppWidgetProvider {
 
         CharSequence widgetText = context.getString(R.string.appwidget_text);
         // Construct the RemoteViews object
-
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);

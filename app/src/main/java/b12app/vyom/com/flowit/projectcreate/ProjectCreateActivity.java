@@ -56,6 +56,7 @@ import b12app.vyom.com.flowit.home.Global;
 import b12app.vyom.com.flowit.home.HomeActivity;
 import b12app.vyom.com.flowit.login.LoginActivity;
 import b12app.vyom.com.flowit.model.Project;
+import b12app.vyom.com.flowit.subtaskcreate.SubTaskCreateActivity;
 import b12app.vyom.com.utils.CircleImageView;
 import b12app.vyom.com.utils.DropboxUtils;
 import b12app.vyom.com.utils.MyFlowlayout;
@@ -271,13 +272,13 @@ public class ProjectCreateActivity extends BaseActivity implements View.OnClickL
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                startActivity(new Intent(ProjectCreateActivity.this, HomeActivity.class));
                 finish();
                 break;
             case R.id.menu_attach:
                 // In the class declaration section:
                 // And later in some initialization function:
                 showFileChooser();
-
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -286,9 +287,7 @@ public class ProjectCreateActivity extends BaseActivity implements View.OnClickL
     @Override
     protected void onResume() {
         super.onResume();
-
         accessToken = Auth.getOAuth2Token(); //generate Access Token
-
     }
 
     @Override
@@ -332,7 +331,6 @@ public class ProjectCreateActivity extends BaseActivity implements View.OnClickL
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         startActivity(new Intent(ProjectCreateActivity.this, HomeActivity.class));
         finish();
     }

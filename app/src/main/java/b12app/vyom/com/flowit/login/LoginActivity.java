@@ -195,17 +195,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     "n" + account.getFamilyName()
                     + "\n " + account.zzabc());
 
-
-            Snackbar.make(container, getString(R.string.google_signin) + " " + account.getGivenName(), Snackbar.LENGTH_SHORT).setAction(Global.SNACK_OK, new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    User user = new User("", Global.FLAG_MANAGER, account.getGivenName(), account.getFamilyName(), account.getEmail(), "");
-                    SpHelper.saveUserInfo(sharedPreferences, user);
-                    startActivity(new Intent(LoginActivity.this, HomeActivity.class));
-                    finish();
-                }
-            }).show();
-
+            User user = new User("", Global.FLAG_MANAGER, account.getGivenName(), account.getFamilyName(), account.getEmail(), "");
+            SpHelper.saveUserInfo(sharedPreferences, user);
+            startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+            finish();
 
         } else {
             Snackbar.make(container, R.string.login_fail, Snackbar.LENGTH_SHORT).setAction(Global.SNACK_OK, new View.OnClickListener() {

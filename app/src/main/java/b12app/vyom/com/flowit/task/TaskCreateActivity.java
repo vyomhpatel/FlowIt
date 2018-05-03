@@ -2,6 +2,7 @@ package b12app.vyom.com.flowit.task;
 
 import android.app.DatePickerDialog;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -33,7 +34,9 @@ import b12app.vyom.com.flowit.datasource.DataManager;
 import b12app.vyom.com.flowit.dialog.ProjectListFragmentDialog;
 import b12app.vyom.com.flowit.home.BaseActivity;
 import b12app.vyom.com.flowit.home.Global;
+import b12app.vyom.com.flowit.home.HomeActivity;
 import b12app.vyom.com.flowit.model.GeneralTask;
+import b12app.vyom.com.flowit.subtaskcreate.SubTaskCreateActivity;
 import b12app.vyom.com.utils.CircleImageView;
 import b12app.vyom.com.utils.MyFlowlayout;
 import butterknife.BindView;
@@ -152,11 +155,6 @@ public class TaskCreateActivity extends BaseActivity implements TaskCreateContra
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_attachment, menu);
-        return true;
-    }
 
     public void addAssignee(View view) {
         Snackbar.make(task_create_container, "Task Created Successfully!", Snackbar.LENGTH_SHORT).setAction("Ok", new View.OnClickListener() {
@@ -192,9 +190,11 @@ public class TaskCreateActivity extends BaseActivity implements TaskCreateContra
 
     @Override
     public void displaySnackbar() {
-        Snackbar.make(task_create_container, "Task Created Successfully!", Snackbar.LENGTH_SHORT).setAction("Ok", new View.OnClickListener() {
+        Snackbar.make(task_create_container, "Task Created Successfully!", Snackbar.LENGTH_LONG).setAction("Ok", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                startActivity(new Intent(TaskCreateActivity.this, HomeActivity.class));
+                finish();
             }
         }).setActionTextColor(getResources().getColor(R.color.colorAccent)).show();
     }
@@ -222,37 +222,19 @@ public class TaskCreateActivity extends BaseActivity implements TaskCreateContra
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                startActivity(new Intent(TaskCreateActivity.this, HomeActivity.class));
                 finish();
                 break;
             case R.id.menu_attach:
-                // In the class declaration section:
 
-                // And later in some initialization function:
-                AppKeyPair appKeys = new AppKeyPair(Global.APP_KEY, Global.APP_SECRET);
-                AndroidAuthSession session = new AndroidAuthSession(appKeys);
-                mDBApi = new DropboxAPI<>(session);
-
-                // MyActivity below should be your activity class name
-                mDBApi.getSession().startOAuth2Authentication(TaskCreateActivity.this);
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        if (mDBApi != null) {
-            if (mDBApi.getSession().authenticationSuccessful()) {
-                try {
-                    // Required to complete auth, sets the access token on the session
-                    mDBApi.getSession().finishAuthentication();
-
-                    String accessToken = mDBApi.getSession().getOAuth2AccessToken();
-                } catch (IllegalStateException e) {
-                    Log.i("DbAuthLog", "Error authenticating", e);
-                }
-            }
-        }
+    public void onBackPressed() {
+        startActivity(new Intent(TaskCreateActivity.this, HomeActivity.class));
+        finish();
     }
 }
